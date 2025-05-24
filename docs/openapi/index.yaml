@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+  title: Community API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+paths:
+  /api/report/checkin:
+    $ref: './paths/checkin.yaml#/paths/~1api~1report~1checkin'
+components:
+  $ref: './components/schemas.yaml#/components'
+  securitySchemes:
+    $ref: './components/security.yaml#/components/securitySchemes'

@@ -1,0 +1,33 @@
+components:
+  schemas:
+    CheckinResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            meetingId:
+              type: integer
+            residentId:
+              type: integer
+            userId:
+              type: integer
+            isManual:
+              type: boolean
+            createdAt:
+              type: string
+              format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string

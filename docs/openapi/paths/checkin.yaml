@@ -1,0 +1,46 @@
+paths:
+  /api/report/checkin:
+    post:
+      tags:
+        - Check-in
+      summary: 住戶報到 (Resident Check-in)
+      description: |
+        由管理者或掃碼頁呼叫，用來建立或檢查住戶報到紀錄。
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                meetingId:
+                  type: integer
+                  description: 會議 ID
+                residentId:
+                  type: integer
+                  description: 住戶 ID
+                isManual:
+                  type: boolean
+                  description: 是否手動報到
+              required: [meetingId, residentId]
+      responses:
+        '201':
+          description: 成功新增報到紀錄
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckinResponse'
+        '400':
+          description: 報到失敗
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: 已報到過
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
