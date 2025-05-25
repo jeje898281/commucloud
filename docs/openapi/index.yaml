@@ -7,6 +7,8 @@ servers:
 paths:
   /api/report/checkin:
     $ref: './paths/checkin.yaml#/paths/~1api~1report~1checkin'
+  /api/meeting/attendance-summary/{meetingId}:
+    $ref: './paths/summary.yaml#/paths/~1api~1meeting~1attendance-summary~1{meetingId}'
 components:
   $ref: './components/schemas.yaml#/components'
   securitySchemes:

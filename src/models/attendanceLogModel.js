@@ -34,4 +34,25 @@ function createLog({ meetingId, residentId, userId, isManual }) {
     });
 }
 
-module.exports = { existsLog, createLog };
+/**
+ * 統計指定會議的報到人數與坪數
+ * @param {number} meetingId
+ * @returns {Promise<{residentCount: number, totalSqm: number}>}
+ */
+async function getAttendanceStats(meetingId) {
+    // 使用 Raw SQL 簡潔撈出結果
+    const [result] = await prisma.$queryRaw`
+      SELECT 
+        COUNT(*)::int AS "residentAttendanceCount",
+        COALESCE(SUM(r.resident_sqm), 0)::double precision AS "totalAttendanceSqm"
+      FROM meeting_attendance_log log
+      JOIN resident r ON log.resident_id = r.id
+      WHERE log.meeting_id = ${meetingId};
+    `;
+    return {
+        residentAttendanceCount: result.residentAttendanceCount,
+        totalAttendanceSqm: parseFloat(result.totalAttendanceSqm),
+    };
+}
+
+module.exports = { existsLog, createLog, getAttendanceStats };

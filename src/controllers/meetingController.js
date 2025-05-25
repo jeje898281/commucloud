@@ -1,4 +1,4 @@
-const { checkin } = require('../services/meetingService');
+const { checkin, getAttendanceSummary } = require('../services/meetingService');
 
 async function handleCheckin(req, res) {
     try {
@@ -17,7 +17,19 @@ async function handleCheckin(req, res) {
         }
         console.error(err);
         res.status(400).json({ success: false, error: err.message });
+
+async function handleGetAttendanceSummary(req, res) {
+    try {
+        const meetingId = parseInt(req.params.meetingId, 10);
+        const summary = await getAttendanceSummary(meetingId);
+        res.status(200).json({
+            success: true, data: summary
+        });
+    } catch (err) {
+        res
+            .status(err.status || 500)
+            .json({ success: false, error: err.message });
     }
 }
 
-module.exports = { handleCheckin };
+module.exports = { handleCheckin, handleGetAttendanceSummary };

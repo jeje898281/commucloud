@@ -12,7 +12,7 @@ app.use(express.json());
 const apiSpec = loadSwaggerSpec();
 
 app.use('/api/auth', authRoutes);
-app.use('/api/residents', residentRoutes);
+app.use('/api/resident', residentRoutes);
 app.use('/api/meeting', meetingRoutes);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiSpec));

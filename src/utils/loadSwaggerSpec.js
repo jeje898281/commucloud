@@ -12,6 +12,11 @@ function loadSwaggerSpec() {
         ...indexSpec.paths,
         '/api/report/checkin': checkinSpec.paths['/api/report/checkin'],
     };
+    const summarySpec = yaml.load(fs.readFileSync(path.join(__dirname, '../../docs/openapi/paths/summary.yaml'), 'utf8'));
+    indexSpec.paths = {
+        ...indexSpec.paths,
+        '/api/meeting/attendance-summary/{meetingId}': summarySpec.paths['/api/meeting/attendance-summary/{meetingId}'],
+    };
 
     // 合併 components
     const schemasComp = yaml.load(fs.readFileSync(path.join(__dirname, '../../docs/openapi/components/schemas.yaml'), 'utf8')).components.schemas;

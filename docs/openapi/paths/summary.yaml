@@ -1,0 +1,36 @@
+paths:
+  /api/meeting/attendance-summary/{meetingId}:
+    get:
+      summary: 取得會議報到統計資訊
+      description: |
+        傳入會議 ID，回傳該會議的住戶報到人數、總區權坪數，以及是否達到出席門檻。
+      tags:
+        - Meeting
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: meetingId
+          in: path
+          required: true
+          description: 會議 ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 報到統計資訊成功回傳
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceSummaryResponse'
+        '404':
+          description: 找不到會議
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 伺服器錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'

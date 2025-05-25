@@ -22,6 +22,42 @@ components:
             createdAt:
               type: string
               format: date-time
+    AttendanceSummaryResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            residentAttendanceCount:
+              type: integer
+              example: 2
+              description: 出席住戶人數
+            totalAttendanceSqm:
+              type: number
+              format: float
+              example: 89.36
+              description: 出席住戶的總區權坪數
+            residentThreshold:
+              type: number
+              format: float
+              example: 200
+              description: 住戶人數門檻
+            sqmThreshold:
+              type: number
+              format: float
+              example: 1000
+              description: 坪數門檻
+            reachedResidentThreshold:
+              type: boolean
+              example: false
+              description: 是否達到住戶人數門檻
+            reachedSqmThreshold:
+              type: boolean
+              example: false
+              description: 是否達到坪數門檻
 
     ErrorResponse:
       type: object
