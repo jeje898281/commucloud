@@ -23,7 +23,7 @@ function existsLog(meetingId, residentId) {
  * @param {boolean} data.isManual
  * @returns {Promise<MeetingAttendanceLog>}
  */
-function createLog({ meetingId, residentId, userId, isManual }) {
+function createLog(meetingId, residentId, userId, isManual) {
     return prisma.meetingAttendanceLog.create({
         data: {
             meetingId,
