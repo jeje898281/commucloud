@@ -30,4 +30,23 @@ async function handleGetAttendanceSummary(req, res) {
     }
 }
 
-module.exports = { handleCheckin, handleGetAttendanceSummary };
+async function handleGenerateQRCodes(req, res) {
+    try {
+        const { meetingId, residentIds } = req.body;
+        const data = await generateBatchQRCodes({ meetingId, residentIds });
+        return res.json({
+            success: true,
+            data: data.map(item => ({
+                residentId: item.residentId,
+                qrDataURL: item.qrDataURL,
+                token: item.token
+            }))
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ success: false, error: err.message });
+    }
+}
+
+
+module.exports = { handleCheckin, handleGetAttendanceSummary, handleGenerateQRCodes };

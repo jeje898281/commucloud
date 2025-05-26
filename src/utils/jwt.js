@@ -1,6 +1,6 @@
 // src/utils/jwt.js
 const jwt = require('jsonwebtoken');
-const SECRET = process.env.JWT_SECRET || 'supersecretkey';
+const SECRET = process.env.JWT_SECRET;
 
 function signToken(payload, options = {}) {
     return jwt.sign(payload, SECRET, { expiresIn: '7d', ...options });
