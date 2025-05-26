@@ -1,15 +1,11 @@
 const { checkin, getAttendanceSummary } = require('../services/meetingService');
+const { generateBatchQRCodes } = require('../services/qrService');
 
 async function handleCheckin(req, res) {
     try {
         const userId = req.user.userId;
         const { qrCode, meetingId, residentId } = req.body;
-        const checkInRecord = await checkin(
-            qrCode,
-            meetingId,
-            residentId,
-            userId
-        );
+        const checkInRecord = await checkin({ qrCode, meetingId, residentId, userId });
         return res.status(201).json({ success: true, data: checkInRecord });
     } catch (err) {
         if (err.code === 'ALREADY_CHECKED_IN') {
