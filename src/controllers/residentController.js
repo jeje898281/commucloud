@@ -3,10 +3,15 @@ const { listResidents } = require('../services/residentService');
 
 async function getResidents(req, res) {
     try {
-        const data = await listResidents();
-        res.json(data);
+        const { fromCache, data } = await listResidents();
+        res.status(200).json({
+            success: true,
+            fromCache,
+            data
+        });
     } catch (err) {
-        res.status(500).json({ error: 'Server error' });
+        console.error('getResidents error:', err);
+        res.status(500).json({ success: false, error: 'Server error' });
     }
 }
 
