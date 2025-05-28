@@ -11,10 +11,13 @@ async function login({ username, password }) {
     const token = signToken({ userId: user.id, role: user.role });
     return {
         token,
+        username: user.username,
         displayName: user.displayName,
+        role: user.role,
         community: {
             id: user.community.id,
-            name: user.community.name
+            name: user.community.name,
+            description: user.community.description
         }
     };
 }

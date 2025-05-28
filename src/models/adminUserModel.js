@@ -9,4 +9,8 @@ function findByUsername(username) {
     });
 }
 
-module.exports = { findByUsername };
+function findById(id) {
+    return prisma.adminUser.findUnique({ where: { id } });
+}
+
+module.exports = { findByUsername, findById };
