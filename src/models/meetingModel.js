@@ -2,11 +2,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-/**
- * 取出會議門檻設定
- * @param {number} meetingId
- * @returns {Promise<Meeting|null>}
- */
 function getMeetingById(meetingId) {
     return prisma.meeting.findUnique({
         where: { id: meetingId },
@@ -21,5 +16,19 @@ function getMeetingById(meetingId) {
     });
 }
 
+function getMeetingsByCommunityId(communityId) {
+    return prisma.meeting.findMany({
+        where: { communityId, status: { not: 'deleted' } },
+        orderBy: { date: 'desc' },
+        select: {
+            id: true,
+            name: true,
+            date: true,
+            status: true,
+            sqmThreshold: true,
+            residentThreshold: true
+        }
+    });
+}
 
-module.exports = { getMeetingById };
+module.exports = { getMeetingById, getMeetingsByCommunityId };

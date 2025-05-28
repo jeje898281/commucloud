@@ -1,7 +1,8 @@
 // src/services/reportService.js
 const { existsLog, createLog, getAttendanceStats } = require('../models/attendanceLogModel');
 const { verifyToken } = require('../utils/jwt');
-const { getMeetingById } = require('../models/meetingModel');
+const { getMeetingById, getMeetingsByCommunityId } = require('../models/meetingModel');
+const { findById: findAdminById } = require('../models/adminUserModel');
 
 /**
  * 檢查某會議與住戶是否已有報到紀錄
@@ -62,5 +63,24 @@ async function getAttendanceSummary(meetingId) {
     };
 }
 
+async function listMeetingsByAdminUser(adminUserId) {
+    const admin = await findAdminById(adminUserId);
+    if (!admin) throw new Error('Admin user not found');
 
-module.exports = { checkin, getAttendanceSummary };
+    const meetings = await getMeetingsByCommunityId(admin.communityId);
+    return meetings;
+}
+
+async function getMeetingDetail(adminUserId, meetingId) {
+    const admin = await findAdminById(adminUserId);
+    if (!admin) throw new Error('Admin user not found');
+
+    const meeting = await getMeetingById(meetingId);
+    if (!meeting || meeting.communityId !== admin.communityId) {
+        throw new Error('Meeting not found or no permission');
+    }
+    return meeting;
+}
+
+
+module.exports = { checkin, getAttendanceSummary, listMeetingsByAdminUser, getMeetingDetail };

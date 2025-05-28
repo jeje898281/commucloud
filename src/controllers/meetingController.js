@@ -1,4 +1,4 @@
-const { checkin, getAttendanceSummary } = require('../services/meetingService');
+const { checkin, getAttendanceSummary, listMeetingsByAdminUser, getMeetingDetail } = require('../services/meetingService');
 const { generateBatchQRCodes } = require('../services/qrService');
 
 async function handleCheckin(req, res) {
@@ -30,6 +30,27 @@ async function handleGetAttendanceSummary(req, res) {
     }
 }
 
+async function handleListMeetings(req, res) {
+    try {
+        const adminUserId = req.user.userId;
+        const meetings = await listMeetingsByAdminUser(adminUserId);
+        res.json({ success: true, data: meetings });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, error: err.message });
+    }
+}
+
+async function handleGetMeeting(req, res) {
+    try {
+        const meeting = await getMeetingDetail(req.user.userId, +req.params.id);
+        res.json({ success: true, data: meeting });
+    } catch (err) {
+        const code = /not found/i.test(err.message) ? 404 : 403;
+        res.status(code).json({ success: false, error: err.message });
+    }
+}
+
 async function handleGenerateQRCodes(req, res) {
     try {
         const { meetingId, residentIds } = req.body;
@@ -49,4 +70,4 @@ async function handleGenerateQRCodes(req, res) {
 }
 
 
-module.exports = { handleCheckin, handleGetAttendanceSummary, handleGenerateQRCodes };
+module.exports = { handleCheckin, handleGetAttendanceSummary, handleGenerateQRCodes, handleListMeetings, handleGetMeeting };
