@@ -12,10 +12,14 @@ function getMeetingById(meetingId) {
         where: { id: meetingId },
         select: {
             id: true,
+            communityId: true,
+            name: true,
+            date: true,
             residentThreshold: true,
-            sqmThreshold: true,
-        },
+            sqmThreshold: true
+        }
     });
 }
+
 
 module.exports = { getMeetingById };
