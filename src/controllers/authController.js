@@ -3,8 +3,8 @@ const { login } = require('../services/authService');
 
 async function handleLogin(req, res) {
     try {
-        const { token } = await login(req.body);
-        res.json({ token });
+        const { token, displayName, community } = await login(req.body);
+        res.json({ token, displayName, community });
     } catch (err) {
         res.status(401).json({ error: err.message });
     }

@@ -28,6 +28,7 @@ model AdminUser {
   communityId      Int         @map("community_id")
   username         String      @unique @map("username")
   password         String      @map("password")
+  displayName     String       @map("display_name") @default("user")
   role             Role        @default(manager) @map("role")
   createdAt        DateTime    @default(now()) @map("created_at")
   updatedAt        DateTime    @updatedAt @map("updated_at")
@@ -48,6 +49,7 @@ model Resident {
   residentSqm  Float   @map("resident_sqm")
   username     String?   @unique @map("username")
   password     String?   @map("password")
+  email        String?   @unique @map("email")
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
 

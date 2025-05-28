@@ -9,7 +9,14 @@ async function login({ username, password }) {
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) throw new Error('Wrong password');
     const token = signToken({ userId: user.id, role: user.role });
-    return { token };
+    return {
+        token,
+        displayName: user.displayName,
+        community: {
+            id: user.community.id,
+            name: user.community.name
+        }
+    };
 }
 
 module.exports = { login };

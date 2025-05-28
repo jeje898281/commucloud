@@ -23,6 +23,7 @@ async function main() {
       username: 'admin001',
       password: await bcrypt.hash('test1234', 10),
       role: 'admin',
+      displayName: 'user001',
       communityId: community.id
     }
   });
@@ -36,7 +37,8 @@ async function main() {
       code: 'A101',
       residentSqm: 33.56,
       username: 'zhangsan',
-      password: await bcrypt.hash('zhangsan123', 10)
+      password: await bcrypt.hash('zhangsan123', 10),
+      email: 'jeje898281@gmail.com'
     }
   });
 
@@ -48,7 +50,8 @@ async function main() {
       code: 'B202',
       residentSqm: 28.40,
       username: 'lisi',
-      password: await bcrypt.hash('lisi123', 10)
+      password: await bcrypt.hash('lisi123', 10),
+      email: 'ctkho0828@gmail.com'
     }
   });
 
