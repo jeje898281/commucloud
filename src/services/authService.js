@@ -8,7 +8,7 @@ async function login({ username, password }) {
     if (!user) throw new Error('User not found');
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) throw new Error('Wrong password');
-    const token = signToken({ userId: user.id, role: user.role });
+    const token = signToken({ userId: user.id, role: user.role, communityId: user.community.id });
     return {
         token,
         username: user.username,

@@ -72,6 +72,12 @@ async function findResidentIdsByMeetingId(meetingId) {
     return result.map(item => item.id);
 }
 
+async function createResidentModel(code, residentSqm, email, communityId) {
+    const resident = await prisma.resident.create({
+        data: { code, residentSqm, email, communityId },
+    });
+    return resident;
+}
 
 module.exports = {
     getAllWithCommunity,
@@ -79,4 +85,5 @@ module.exports = {
     updateResident,
     findByCommunityWithEmail,
     findResidentIdsByMeetingId,
+    createResidentModel,
 };
