@@ -79,6 +79,56 @@ async function createResidentModel(code, residentSqm, email, communityId) {
     return resident;
 }
 
+/**
+ * 批量創建住戶
+ * @param {Array} residentsData - 住戶資料陣列
+ * @returns {Promise<Object>} - 創建結果
+ */
+async function bulkCreateResidents(residentsData) {
+    try {
+        // 使用 Prisma 的 createMany 進行批量插入
+        const result = await prisma.resident.createMany({
+            data: residentsData,
+        });
+
+        return {
+            success: true,
+            count: result.count
+        };
+    } catch (error) {
+        // 如果是重複戶號錯誤，我們需要更詳細的處理
+        if (error.code === 'P2002') {
+            // 使用 Promise.all 並行處理每個住戶的創建
+            const conflictedCodes = [];
+            const successfulResidents = [];
+
+            await Promise.all(residentsData.map(async (resident) => {
+                try {
+                    await prisma.resident.create({
+                        data: resident
+                    });
+                    successfulResidents.push(resident);
+                } catch (individualError) {
+                    if (individualError.code === 'P2002') {
+                        conflictedCodes.push(resident.code);
+                    } else {
+                        throw individualError;
+                    }
+                }
+            }));
+
+            return {
+                success: false,
+                count: successfulResidents.length,
+                successfulResidents,
+                conflictedCodes,
+                error: 'DUPLICATE_CODES'
+            };
+        }
+        throw error;
+    }
+}
+
 module.exports = {
     getAllWithCommunity,
     findById,
@@ -86,4 +136,5 @@ module.exports = {
     findByCommunityWithEmail,
     findResidentIdsByMeetingId,
     createResidentModel,
+    bulkCreateResidents,
 };

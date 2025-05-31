@@ -1,5 +1,5 @@
 // src/controllers/residentController.js
-const { listResidents, createResident } = require('../services/residentService');
+const { listResidents, createResident, bulkCreateResident } = require('../services/residentService');
 
 async function getResidents(req, res) {
     try {
@@ -40,4 +40,49 @@ async function handleCreateResident(req, res) {
     }
 }
 
-module.exports = { getResidents, handleCreateResident };
+async function handleBulkImportResident(req, res) {
+    try {
+        const { residents } = req.body;
+        const { communityId } = req.user;
+
+        // 基本驗證
+        if (!Array.isArray(residents) || residents.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: '請提供有效的住戶資料陣列'
+            });
+        }
+
+        // 調用服務層處理批量創建
+        const result = await bulkCreateResident(residents, communityId);
+
+        if (result.success) {
+            return res.status(200).json({
+                success: true,
+                importedCount: result.importedCount
+            });
+        } else if (result.type === 'VALIDATION_ERROR') {
+            return res.status(400).json({
+                success: false,
+                message: result.message,
+                invalidRows: result.invalidRows
+            });
+        } else if (result.type === 'PARTIAL_SUCCESS') {
+            return res.status(207).json({
+                success: false,
+                message: result.message,
+                importedCount: result.importedCount,
+                conflictedCodes: result.conflictedCodes
+            });
+        }
+
+    } catch (error) {
+        console.error('handleBulkImportResident error:', error);
+        return res.status(500).json({
+            success: false,
+            message: '伺服器內部錯誤，請稍後再試'
+        });
+    }
+}
+
+module.exports = { getResidents, handleCreateResident, handleBulkImportResident };
