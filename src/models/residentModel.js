@@ -62,9 +62,21 @@ function findByCommunityWithEmail(communityId) {
     });
 }
 
+async function findResidentIdsByMeetingId(meetingId) {
+    const result = await prisma.$queryRaw`
+      SELECT r.id
+      FROM resident r
+      JOIN meeting m ON r.community_id = m.community_id
+      WHERE m.id = ${meetingId};
+    `;
+    return result.map(item => item.id);
+}
+
+
 module.exports = {
     getAllWithCommunity,
     findById,
     updateResident,
     findByCommunityWithEmail,
+    findResidentIdsByMeetingId,
 };

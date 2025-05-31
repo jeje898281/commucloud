@@ -1,5 +1,5 @@
 const { checkin, getAttendanceSummary, listMeetingsByAdminUser, getMeetingDetail } = require('../services/meetingService');
-const { generateBatchQRCodes } = require('../services/qrService');
+const { generateBatchQRCodes, getResidentIdsByMeetingId } = require('../services/qrService');
 
 async function handleCheckin(req, res) {
     try {
@@ -53,7 +53,11 @@ async function handleGetMeeting(req, res) {
 
 async function handleGenerateQRCodes(req, res) {
     try {
-        const { meetingId, residentIds } = req.body;
+        const { meetingId } = req.body;
+        if (!meetingId) {
+            res.status(400).json({ success: false, error: 'Meeting ID is required' });
+        }
+        const residentIds = await getResidentIdsByMeetingId(meetingId);
         const data = await generateBatchQRCodes({ meetingId, residentIds });
         return res.json({
             success: true,

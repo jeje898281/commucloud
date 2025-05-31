@@ -1,6 +1,7 @@
 // src/services/qrService.js
 const QRCode = require('qrcode');
 const jwt = require('jsonwebtoken');
+const { findResidentIdsByMeetingId } = require('../models/residentModel');
 const SECRET = process.env.JWT_SECRET;
 
 async function generateQRCodeForResident({ meetingId, residentId }) {
@@ -24,4 +25,9 @@ async function generateBatchQRCodes({ meetingId, residentIds, expiresIn }) {
     return Promise.all(tasks);
 }
 
-module.exports = { generateBatchQRCodes };
+async function getResidentIdsByMeetingId(meetingId) {
+    const residents = await findResidentIdsByMeetingId(meetingId);
+    return residents;
+}
+
+module.exports = { generateBatchQRCodes, getResidentIdsByMeetingId };
