@@ -10,6 +10,7 @@ function getMeetingById(meetingId) {
             communityId: true,
             name: true,
             date: true,
+            status: true,
             residentThreshold: true,
             sqmThreshold: true
         }
@@ -31,4 +32,20 @@ function getMeetingsByCommunityId(communityId) {
     });
 }
 
-module.exports = { getMeetingById, getMeetingsByCommunityId };
+function updateMeeting(meetingId, updateData) {
+    return prisma.meeting.update({
+        where: { id: meetingId },
+        data: updateData,
+        select: {
+            id: true,
+            name: true,
+            date: true,
+            status: true,
+            sqmThreshold: true,
+            residentThreshold: true,
+            communityId: true
+        }
+    });
+}
+
+module.exports = { getMeetingById, getMeetingsByCommunityId, updateMeeting };

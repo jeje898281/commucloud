@@ -1,4 +1,4 @@
-const { checkin, getAttendanceSummary, listMeetingsByAdminUser, getMeetingDetail } = require('../services/meetingService');
+const { checkin, getAttendanceSummary, listMeetingsByAdminUser, getMeetingDetail, updateMeetingDetail } = require('../services/meetingService');
 const { generateBatchQRCodes, getResidentIdsByMeetingId } = require('../services/qrService');
 
 async function handleCheckin(req, res) {
@@ -43,11 +43,52 @@ async function handleListMeetings(req, res) {
 
 async function handleGetMeeting(req, res) {
     try {
-        const meeting = await getMeetingDetail(req.user.userId, +req.params.id);
+        const meeting = await getMeetingDetail(req.user.userId, + req.params.id);
         res.json({ success: true, data: meeting });
     } catch (err) {
         const code = /not found/i.test(err.message) ? 404 : 403;
         res.status(code).json({ success: false, error: err.message });
+    }
+}
+
+async function handleUpdateMeeting(req, res) {
+    try {
+        const { id: meetingId, ...updateData } = req.body;
+
+        if (!meetingId || isNaN(parseInt(meetingId))) {
+            return res.status(400).json({
+                success: false,
+                message: '請提供有效的會議ID'
+            });
+        }
+
+        const updatedMeeting = await updateMeetingDetail(req.user.userId, parseInt(meetingId), updateData);
+
+        res.status(200).json({
+            success: true,
+            data: updatedMeeting
+        });
+    } catch (err) {
+        console.error('handleUpdateMeeting error:', err);
+
+        if (err.message.includes('not found') || err.message.includes('no permission')) {
+            return res.status(404).json({
+                success: false,
+                message: '會議不存在或無權限修改'
+            });
+        }
+
+        if (err.message.includes('門檻') || err.message.includes('格式') || err.message.includes('狀態') || err.message.includes('欄位')) {
+            return res.status(400).json({
+                success: false,
+                message: err.message
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: '伺服器內部錯誤，請稍後再試'
+        });
     }
 }
 
@@ -73,5 +114,11 @@ async function handleGenerateQRCodes(req, res) {
     }
 }
 
-
-module.exports = { handleCheckin, handleGetAttendanceSummary, handleGenerateQRCodes, handleListMeetings, handleGetMeeting };
+module.exports = {
+    handleCheckin,
+    handleGetAttendanceSummary,
+    handleGenerateQRCodes,
+    handleListMeetings,
+    handleGetMeeting,
+    handleUpdateMeeting
+};

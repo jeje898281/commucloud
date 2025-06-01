@@ -1,7 +1,7 @@
 // src/services/reportService.js
 const { existsLog, createLog, getAttendanceStats } = require('../models/attendanceLogModel');
 const { verifyToken } = require('../utils/jwt');
-const { getMeetingById, getMeetingsByCommunityId } = require('../models/meetingModel');
+const { getMeetingById, getMeetingsByCommunityId, updateMeeting } = require('../models/meetingModel');
 const { findById: findAdminById } = require('../models/adminUserModel');
 
 /**
@@ -82,5 +82,67 @@ async function getMeetingDetail(adminUserId, meetingId) {
     return meeting;
 }
 
+async function updateMeetingDetail(adminUserId, meetingId, updateData) {
+    const admin = await findAdminById(adminUserId);
+    if (!admin) throw new Error('Admin user not found');
 
-module.exports = { checkin, getAttendanceSummary, listMeetingsByAdminUser, getMeetingDetail };
+    // 檢查會議是否存在且屬於該管理員的社區
+    const meeting = await getMeetingById(meetingId);
+    if (!meeting || meeting.communityId !== admin.communityId) {
+        throw new Error('Meeting not found or no permission');
+    }
+
+    // 驗證更新數據
+    const allowedFields = ['name', 'date', 'status', 'sqmThreshold', 'residentThreshold'];
+    const filteredData = {};
+
+    for (const field of allowedFields) {
+        if (updateData[field] !== undefined) {
+            filteredData[field] = updateData[field];
+        }
+    }
+
+    // 特殊驗證
+    if (filteredData.sqmThreshold !== undefined) {
+        if (typeof filteredData.sqmThreshold !== 'number' || filteredData.sqmThreshold < 0) {
+            throw new Error('坪數門檻必須是非負數');
+        }
+    }
+
+    if (filteredData.residentThreshold !== undefined) {
+        if (typeof filteredData.residentThreshold !== 'number' || filteredData.residentThreshold < 0) {
+            throw new Error('戶數門檻必須是非負數');
+        }
+    }
+
+    if (filteredData.date !== undefined) {
+        const date = new Date(filteredData.date);
+        if (isNaN(date.getTime())) {
+            throw new Error('無效的日期格式');
+        }
+        filteredData.date = date;
+    }
+
+    if (filteredData.status !== undefined) {
+        const validStatuses = ['pending', 'ongoing', 'completed', 'deleted', 'cancelled'];
+        if (!validStatuses.includes(filteredData.status)) {
+            throw new Error('無效的會議狀態');
+        }
+    }
+
+    // 如果沒有要更新的欄位
+    if (Object.keys(filteredData).length === 0) {
+        throw new Error('沒有要更新的欄位');
+    }
+
+    const updatedMeeting = await updateMeeting(meetingId, filteredData);
+    return updatedMeeting;
+}
+
+module.exports = {
+    checkin,
+    getAttendanceSummary,
+    listMeetingsByAdminUser,
+    getMeetingDetail,
+    updateMeetingDetail
+};

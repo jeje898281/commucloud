@@ -2,7 +2,7 @@
 const router = require('express').Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const {
-    handleCheckin, handleGetAttendanceSummary, handleGenerateQRCodes, handleListMeetings, handleGetMeeting
+    handleCheckin, handleGetAttendanceSummary, handleGenerateQRCodes, handleListMeetings, handleGetMeeting, handleUpdateMeeting
 } = require('../controllers/meetingController');
 
 router.post('/checkin', authMiddleware, handleCheckin);
@@ -10,5 +10,6 @@ router.get('/summary/:meetingId', authMiddleware, handleGetAttendanceSummary);
 router.post('/generate-qr-codes', authMiddleware, handleGenerateQRCodes);
 router.get('/', authMiddleware, handleListMeetings);
 router.get('/:id', authMiddleware, handleGetMeeting);
+router.patch('/', authMiddleware, handleUpdateMeeting);
 
 module.exports = router;
