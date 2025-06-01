@@ -1,5 +1,5 @@
 // src/controllers/residentController.js
-const { listResidents, createResident, bulkCreateResident } = require('../services/residentService');
+const { listResidents, createResident, bulkCreateResident, updateResident, deleteResident } = require('../services/residentService');
 
 async function getResidents(req, res) {
     try {
@@ -85,4 +85,53 @@ async function handleBulkImportResident(req, res) {
     }
 }
 
-module.exports = { getResidents, handleCreateResident, handleBulkImportResident };
+async function handleUpdateResident(req, res) {
+    try {
+        const { id, ...data } = req.body;
+        const resident = await updateResident(id, data);
+        res.status(200).json({ success: true, data: resident });
+    } catch (error) {
+        console.error('handleUpdateResident error:', error);
+        if (error.code === 'P2002') {
+            return res.status(400).json({
+                success: false,
+                message: '此住戶戶號已被使用，請更換其他戶號。',
+                errorCode: 'CODE_ALREADY_EXISTS'
+            });
+        }
+        return res.status(500).json({
+            success: false,
+            message: '伺服器內部錯誤，請稍後再試'
+        });
+    }
+}
+
+async function handleDeleteResident(req, res) {
+    try {
+        const { id } = req.body;
+        const resident = await deleteResident(id);
+        res.status(200).json({ success: true, data: resident });
+    } catch (error) {
+        console.error('handleDeleteResident error:', error);
+        if (error.code === 'P2025') {
+            return res.status(404).json({
+                success: false,
+                message: '住戶不存在',
+                errorCode: 'RESIDENT_NOT_FOUND'
+            });
+        }
+        if (error.code === 'P2003') {
+            return res.status(400).json({
+                success: false,
+                message: '此住戶已有簽到資料，無法刪除',
+                errorCode: 'RESIDENT_HAS_CHECKIN_DATA'
+            });
+        }
+        return res.status(500).json({
+            success: false,
+            message: '伺服器內部錯誤，請稍後再試'
+        });
+    }
+}
+
+module.exports = { getResidents, handleCreateResident, handleBulkImportResident, handleUpdateResident, handleDeleteResident };

@@ -1,5 +1,5 @@
 // src/services/residentService.js
-const { getAllWithCommunity, createResidentModel, bulkCreateResidents } = require('../models/residentModel');
+const { getAllWithCommunity, createResidentModel, bulkCreateResidents, updateResidentModel, deleteResidentModel } = require('../models/residentModel');
 const { cacheGet, cacheSet, cacheDel } = require('./cacheService');
 
 const CACHE_FEATURE = 'residentList';
@@ -136,4 +136,20 @@ async function bulkCreateResident(residents, communityId) {
     }
 }
 
-module.exports = { listResidents, createResident, bulkCreateResident };
+async function updateResident(id, data) {
+    const updatedResidentResult = await updateResidentModel(id, data);
+    if (updatedResidentResult) {
+        await cacheDel(CACHE_FEATURE, 'all');
+    }
+    return updatedResidentResult;
+}
+
+async function deleteResident(id) {
+    const deletedResidentResult = await deleteResidentModel(id);
+    if (deletedResidentResult) {
+        await cacheDel(CACHE_FEATURE, 'all');
+    }
+    return deletedResidentResult;
+}
+
+module.exports = { listResidents, createResident, bulkCreateResident, updateResident, deleteResident };

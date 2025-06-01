@@ -129,6 +129,21 @@ async function bulkCreateResidents(residentsData) {
     }
 }
 
+async function updateResidentModel(id, data) {
+    const updatedResidentResult = await prisma.resident.update({
+        where: { id },
+        data,
+    });
+    return updatedResidentResult;
+}
+
+async function deleteResidentModel(id) {
+    const deletedResidentResult = await prisma.resident.delete({
+        where: { id },
+    });
+    return deletedResidentResult;
+}
+
 module.exports = {
     getAllWithCommunity,
     findById,
@@ -137,4 +152,6 @@ module.exports = {
     findResidentIdsByMeetingId,
     createResidentModel,
     bulkCreateResidents,
+    updateResidentModel,
+    deleteResidentModel,
 };
