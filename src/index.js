@@ -4,6 +4,8 @@ const authRoutes = require('./routes/authRoutes');
 const residentRoutes = require('./routes/residentRoutes');
 const meetingRoutes = require('./routes/meetingRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
+const profileRoutes = require('./routes/profileRoutes');
+const communityRoutes = require('./routes/communityRoutes');
 const swaggerUi = require('swagger-ui-express');
 const loadSwaggerSpec = require('./utils/loadSwaggerSpec');
 const cors = require('cors');
@@ -32,9 +34,11 @@ app.use(cors({
 app.use('/api/auth', authRoutes);
 app.use('/api/resident', residentRoutes);
 app.use('/api/meeting', meetingRoutes);
+app.use('/api', notificationRoutes);
+app.use('/api', profileRoutes);
+app.use('/api', communityRoutes);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiSpec));
-app.use('/api', notificationRoutes);
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
