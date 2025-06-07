@@ -1,8 +1,5 @@
 const { getCommunityInfo, updateCommunityInfo } = require('../services/communityService');
 
-/**
- * 獲取社區資訊
- */
 async function handleGetCommunity(req, res) {
     try {
         const userId = req.user.userId;
@@ -23,8 +20,7 @@ async function handleGetCommunity(req, res) {
         }
 
         res.status(500).json({
-            success: false,
-            message: '獲取社區資訊失敗'
+            success: false
         });
     }
 }
