@@ -8,6 +8,8 @@ const profileRoutes = require('./routes/profileRoutes');
 const communityRoutes = require('./routes/communityRoutes');
 const swaggerUi = require('swagger-ui-express');
 const loadSwaggerSpec = require('./utils/loadSwaggerSpec');
+const authMiddleware = require('./middleware/authMiddleware');
+const errorHandler = require('./middleware/errorHandler');
 const cors = require('cors');
 const allowedOrigins = process.env.CORS_ORIGIN?.split(',') || [];
 const apiSpec = loadSwaggerSpec();
@@ -18,7 +20,6 @@ app.use(express.json());
 
 app.use(cors({
     origin: (origin, callback) => {
-        // 沒有 origin 表示 Postman / curl 之類，允許
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
@@ -27,20 +28,24 @@ app.use(cors({
     },
     credentials: true,
     optionsSuccessStatus: 204,
-    maxAge: 86400 // 預檢快取一天
+    maxAge: 86400
 }));
 
-
-app.use('/api/auth', authRoutes);
-app.use('/api/resident', residentRoutes);
-app.use('/api/meeting', meetingRoutes);
-app.use('/api', notificationRoutes);
-app.use('/api', profileRoutes);
-app.use('/api', communityRoutes);
-
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiSpec));
+app.get('/health', (_req, res) => res.json({ ok: true }));
+app.use('/api/auth', authRoutes); // login api is not required to be authenticated
 
-app.get('/api/health', (_req, res) => res.json({ ok: true }));
+const apiRouter = express.Router();
+apiRouter.use('/resident', residentRoutes);
+apiRouter.use('/meeting', meetingRoutes);
+apiRouter.use(notificationRoutes);
+apiRouter.use(profileRoutes);
+apiRouter.use(communityRoutes);
+
+app.use('/api', authMiddleware, apiRouter);
+
+// Global error handler (must be last)
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Backend listening on http://localhost:${PORT}`));

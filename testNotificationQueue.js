@@ -3,15 +3,18 @@ const notificationQueue = require('./src/queue/notificationQueue');
 
 async function test() {
     try {
+        const emailTo = 'test@example.com';
+        const subject = '測試通知';
+        const body = '這是一封測試郵件，確認隊列運作正常。';
         const job = await notificationQueue.add('test-email', {
-            to: 'test@example.com',
-            subject: '測試通知',
-            body: '這是一封測試郵件，確認隊列運作正常。'
+            to: emailTo,
+            subject: subject,
+            body: body
         });
-        console.log('✅ 通知任務已推入，jobId =', job.id);
+        console.log('✅ meeting-notify jobId =', job.id);
         process.exit(0);
     } catch (err) {
-        console.error('❌ 推送通知任務失敗：', err);
+        console.error('❌ meeting-notify job failed:', err);
         process.exit(1);
     }
 }

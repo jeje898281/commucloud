@@ -13,11 +13,6 @@ function findById(id) {
     return prisma.adminUser.findUnique({ where: { id } });
 }
 
-/**
- * 獲取用戶詳細資料（不包含社區資訊）
- * @param {number} id 用戶ID
- * @returns {Promise<AdminUser|null>}
- */
 function getProfile(id) {
     return prisma.adminUser.findUnique({
         where: { id },
@@ -32,12 +27,6 @@ function getProfile(id) {
     });
 }
 
-/**
- * 更新用戶資料
- * @param {number} id 用戶ID
- * @param {Object} data 要更新的資料
- * @returns {Promise<AdminUser>}
- */
 function updateProfile(id, data) {
     return prisma.adminUser.update({
         where: { id },
@@ -47,6 +36,7 @@ function updateProfile(id, data) {
             username: true,
             displayName: true,
             role: true,
+            createdAt: true,
             updatedAt: true
         }
     });

@@ -18,9 +18,9 @@ async function generateQRCodeForResident({ meetingId, residentId }) {
     return { residentId, token, qrDataURL };
 }
 
-async function generateBatchQRCodes({ meetingId, residentIds, expiresIn }) {
+async function generateBatchQRCodes({ meetingId, residentIds }) {
     const tasks = residentIds.map(id =>
-        generateQRCodeForResident({ meetingId, residentId: id, expiresIn })
+        generateQRCodeForResident({ meetingId, residentId: id })
     );
     return Promise.all(tasks);
 }

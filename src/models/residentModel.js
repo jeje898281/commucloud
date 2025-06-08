@@ -1,23 +1,17 @@
 // src/models/residentModel.js
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const { ResidentCodeAlreadyExistsError } = require('../errors');
 
-/**
- * 撈所有住戶，並包含社區與 email 欄位
- */
 function getAllWithCommunity() {
     return prisma.resident.findMany({
         include: {
             community: true,
         },
-        // Prisma 會自動包含所有 scalar 欄位（如 id、code、email…）
     });
 }
 
-/**
- * 根據 ID 找住戶
- * @param {number} id
- */
+
 function findById(id) {
     return prisma.resident.findUnique({
         where: { id },
@@ -26,7 +20,7 @@ function findById(id) {
             code: true,
             residentSqm: true,
             username: true,
-            email: true,         // 確保 email 被選出
+            email: true,
             community: true,
             createdAt: true,
             updatedAt: true,
@@ -34,25 +28,15 @@ function findById(id) {
     });
 }
 
-/**
- * 更新住戶資料（包含 email）
- * @param {number} id
- * @param {Object} data
- */
 function updateResident(id, data) {
     return prisma.resident.update({
         where: { id },
         data: {
-            ...data,           // 其中可含 email
+            ...data,
         },
     });
 }
 
-/**
- * 根據 communityId 撈出所有有 email 的住戶
- * @param {number} communityId
- * @returns {Promise<Resident[]>}
- */
 function findByCommunityWithEmail(communityId) {
     return prisma.resident.findMany({
         where: {
@@ -73,20 +57,22 @@ async function findResidentIdsByMeetingId(meetingId) {
 }
 
 async function createResidentModel(code, residentSqm, email, communityId) {
-    const resident = await prisma.resident.create({
-        data: { code, residentSqm, email, communityId },
-    });
-    return resident;
+    try {
+        const resident = await prisma.resident.create({
+            data: { code, residentSqm, email, communityId },
+        });
+        return resident;
+    } catch (error) {
+        if (error.code === 'P2002' && Array.isArray(error.meta?.target) && error.meta.target.includes('code')) {
+            throw new ResidentCodeAlreadyExistsError();
+        }
+        throw error;
+    }
 }
 
-/**
- * 批量創建住戶
- * @param {Array} residentsData - 住戶資料陣列
- * @returns {Promise<Object>} - 創建結果
- */
+
 async function bulkCreateResidents(residentsData) {
     try {
-        // 使用 Prisma 的 createMany 進行批量插入
         const result = await prisma.resident.createMany({
             data: residentsData,
         });
@@ -96,9 +82,7 @@ async function bulkCreateResidents(residentsData) {
             count: result.count
         };
     } catch (error) {
-        // 如果是重複戶號錯誤，我們需要更詳細的處理
         if (error.code === 'P2002') {
-            // 使用 Promise.all 並行處理每個住戶的創建
             const conflictedCodes = [];
             const successfulResidents = [];
 

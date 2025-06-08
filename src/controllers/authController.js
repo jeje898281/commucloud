@@ -2,12 +2,8 @@
 const { login } = require('../services/authService');
 
 async function handleLogin(req, res) {
-    try {
-        const { token, username, displayName, community, role } = await login(req.body);
-        res.json({ token, username, displayName, community, role });
-    } catch (err) {
-        res.status(401).json({ error: err.message });
-    }
+    const { token, username, displayName, community, role } = await login(req.body);
+    res.status(200).json({ token, username, displayName, community, role });
 }
 
 module.exports = { handleLogin };

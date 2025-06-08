@@ -48,4 +48,11 @@ function updateMeeting(meetingId, updateData) {
     });
 }
 
-module.exports = { getMeetingById, getMeetingsByCommunityId, updateMeeting };
+async function createMeetingModel(createAdminUserId, communityId, { name, status, date, sqmThreshold, residentThreshold }) {
+    const newMeeting = await prisma.meeting.create({
+        data: { name, status, date, sqmThreshold, residentThreshold, createAdminUserId, communityId }
+    });
+    return newMeeting;
+}
+
+module.exports = { getMeetingById, getMeetingsByCommunityId, updateMeeting, createMeetingModel };
