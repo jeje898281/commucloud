@@ -1,16 +1,20 @@
 // src/services/reportService.js
 const { existsLog, createLog, getAttendanceStats } = require('../models/attendanceLogModel');
 const { verifyToken } = require('../utils/jwt');
-const { getMeetingById, getMeetingsByCommunityId, updateMeeting, createMeetingModel } = require('../models/meetingModel');
+const { getMeetingById, getMeetingsByCommunityId, updateMeeting, createMeetingModel, findResidentByCode } = require('../models/meetingModel');
 const { findById: findAdminById } = require('../models/adminUserModel');
 const { MeetingNotFoundError, AlreadyCheckedInError, UserNotFoundError,
     MeetingSqmThresholdInvalidError, MeetingResidentThresholdInvalidError,
-    MeetingDateInvalidError, MeetingStatusInvalidError, NoUpdateFieldsError
+    MeetingDateInvalidError, MeetingStatusInvalidError, NoUpdateFieldsError, ResidentNotFoundError
 } = require('../errors');
 
-async function checkinByManual(meetingId, residentId, userId) {
+async function checkinByManual(meetingId, residentCode, communityId, userId) {
     const checkinMeetingId = meetingId;
-    const checkinResidentId = residentId;
+    const resident = await findResidentByCode(residentCode, communityId);
+    if (!resident) {
+        throw new ResidentNotFoundError();
+    }
+    const checkinResidentId = resident.id;
     const manualFlag = true;
 
     const already = await existsLog(checkinMeetingId, checkinResidentId);

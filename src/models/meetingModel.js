@@ -17,6 +17,13 @@ function getMeetingById(meetingId) {
     });
 }
 
+function findResidentByCode(residentCode, communityId) {
+    return prisma.resident.findFirst({
+        where: { code: residentCode, communityId },
+        select: { id: true }
+    });
+}
+
 function getMeetingsByCommunityId(communityId) {
     return prisma.meeting.findMany({
         where: { communityId, status: { not: 'deleted' } },
@@ -55,4 +62,4 @@ async function createMeetingModel(createAdminUserId, communityId, { name, status
     return newMeeting;
 }
 
-module.exports = { getMeetingById, getMeetingsByCommunityId, updateMeeting, createMeetingModel };
+module.exports = { getMeetingById, getMeetingsByCommunityId, updateMeeting, createMeetingModel, findResidentByCode };

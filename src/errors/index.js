@@ -21,6 +21,8 @@ const { WrongPasswordError, PasswordTooShortError,
 
 const { ResidentCodeAlreadyExistsError, ResidentNotFoundError, ResidentHasCheckinDataError } = require('./residentError');
 
+const { BadRequestError } = require('./commonError');
+
 const BaseError = require('./BaseError');
 
 module.exports = {
@@ -53,5 +55,6 @@ module.exports = {
     PasswordSameAsCurrentError,
     ResidentCodeAlreadyExistsError,
     ResidentNotFoundError,
-    ResidentHasCheckinDataError
+    ResidentHasCheckinDataError,
+    BadRequestError
 };

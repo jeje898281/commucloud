@@ -4,16 +4,21 @@ const {
     listMeetingsByAdminUser, getMeetingDetail, updateMeetingDetail, createMeeting
 } = require('../services/meetingService');
 const { generateBatchQRCodes, getResidentIdsByMeetingId } = require('../services/qrService');
-const { MeetingIdInvalidError } = require('../errors');
+const { MeetingIdInvalidError, MissingRequiredFieldsError } = require('../errors');
 
 async function handleCheckin(req, res) {
     const userId = req.user.userId;
-    const { qrCode, meetingId, residentId } = req.body;
+    const communityId = req.user.communityId;
+    const { qrCode, meetingId, residentCode } = req.body;
+    if (!qrCode && !(meetingId && residentCode)) {
+        throw new MissingRequiredFieldsError();
+    }
     let checkInRecord;
     if (qrCode) {
         checkInRecord = await checkinByQRCode(qrCode, userId);
     } else {
-        checkInRecord = await checkinByManual(meetingId, residentId, userId);
+        console.log('checkinByManual', meetingId, residentCode, communityId, userId);
+        checkInRecord = await checkinByManual(meetingId, residentCode, communityId, userId);
     }
     res.status(201).json({ data: checkInRecord });
 }
