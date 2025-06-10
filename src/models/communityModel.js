@@ -2,8 +2,8 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-function findById(id) {
-    return prisma.community.findUnique({
+async function findById(id) {
+    const community = await prisma.community.findUnique({
         where: { id },
         select: {
             id: true,
@@ -14,6 +14,7 @@ function findById(id) {
             updatedAt: true
         }
     });
+    return community;
 }
 
 async function getCommunityStats(id) {
@@ -35,8 +36,8 @@ async function getCommunityStats(id) {
     };
 }
 
-function updateCommunity(id, data) {
-    return prisma.community.update({
+async function updateCommunity(id, data) {
+    const community = await prisma.community.update({
         where: { id },
         data: data,
         select: {
@@ -47,6 +48,7 @@ function updateCommunity(id, data) {
             updatedAt: true
         }
     });
+    return community;
 }
 
 module.exports = {

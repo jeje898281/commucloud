@@ -2,14 +2,15 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-function existsLog(meetingId, residentId) {
-    return prisma.meetingAttendanceLog.findFirst({
+async function existsLog(meetingId, residentId) {
+    const log = await prisma.meetingAttendanceLog.findFirst({
         where: { meetingId, residentId },
     });
+    return log;
 }
 
-function createLog(meetingId, residentId, userId, isManual) {
-    return prisma.meetingAttendanceLog.create({
+async function createLog(meetingId, residentId, userId, isManual) {
+    const log = await prisma.meetingAttendanceLog.create({
         data: {
             meetingId,
             residentId,
@@ -17,6 +18,7 @@ function createLog(meetingId, residentId, userId, isManual) {
             isManual,
         },
     });
+    return log;
 }
 
 async function getAttendanceStats(meetingId) {

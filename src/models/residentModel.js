@@ -3,17 +3,18 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { ResidentCodeAlreadyExistsError } = require('../errors');
 
-function getAllWithCommunity() {
-    return prisma.resident.findMany({
+async function getAllWithCommunity() {
+    const residents = await prisma.resident.findMany({
         include: {
             community: true,
         },
     });
+    return residents;
 }
 
 
-function findById(id) {
-    return prisma.resident.findUnique({
+async function findById(id) {
+    const resident = await prisma.resident.findUnique({
         where: { id },
         select: {
             id: true,
@@ -26,24 +27,27 @@ function findById(id) {
             updatedAt: true,
         },
     });
+    return resident;
 }
 
-function updateResident(id, data) {
-    return prisma.resident.update({
+async function updateResident(id, data) {
+    const resident = await prisma.resident.update({
         where: { id },
         data: {
             ...data,
         },
     });
+    return resident;
 }
 
-function findByCommunityWithEmail(communityId) {
-    return prisma.resident.findMany({
+async function findByCommunityWithEmail(communityId) {
+    const residents = await prisma.resident.findMany({
         where: {
             communityId,
             email: { not: null },
         },
     });
+    return residents;
 }
 
 async function findResidentIdsByMeetingId(meetingId) {

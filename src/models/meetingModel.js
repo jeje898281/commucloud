@@ -2,8 +2,8 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-function getMeetingById(meetingId) {
-    return prisma.meeting.findUnique({
+async function getMeetingById(meetingId) {
+    const meeting = await prisma.meeting.findUnique({
         where: { id: meetingId },
         select: {
             id: true,
@@ -15,6 +15,7 @@ function getMeetingById(meetingId) {
             sqmThreshold: true
         }
     });
+    return meeting;
 }
 
 function findResidentByCode(residentCode, communityId) {
@@ -24,8 +25,8 @@ function findResidentByCode(residentCode, communityId) {
     });
 }
 
-function getMeetingsByCommunityId(communityId) {
-    return prisma.meeting.findMany({
+async function getMeetingsByCommunityId(communityId) {
+    const meetings = await prisma.meeting.findMany({
         where: { communityId, status: { not: 'deleted' } },
         orderBy: { date: 'desc' },
         select: {
@@ -37,10 +38,11 @@ function getMeetingsByCommunityId(communityId) {
             residentThreshold: true
         }
     });
+    return meetings;
 }
 
-function updateMeeting(meetingId, updateData) {
-    return prisma.meeting.update({
+async function updateMeeting(meetingId, updateData) {
+    const meeting = await prisma.meeting.update({
         where: { id: meetingId },
         data: updateData,
         select: {
@@ -53,6 +55,7 @@ function updateMeeting(meetingId, updateData) {
             communityId: true
         }
     });
+    return meeting;
 }
 
 async function createMeetingModel(createAdminUserId, communityId, { name, status, date, sqmThreshold, residentThreshold }) {

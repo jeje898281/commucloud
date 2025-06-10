@@ -2,19 +2,24 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-function findByUsername(username) {
-    return prisma.adminUser.findUnique({
+async function findByUsername(username) {
+    const user = await prisma.adminUser.findUnique({
         where: { username },
         include: { community: true }
     });
+    return user;
 }
 
-function findById(id) {
-    return prisma.adminUser.findUnique({ where: { id } });
+async function findById(id) {
+    const user = await prisma.adminUser.findUnique({
+        where: { id },
+        include: { community: true }
+    });
+    return user;
 }
 
-function getProfile(id) {
-    return prisma.adminUser.findUnique({
+async function getProfile(id) {
+    const user = await prisma.adminUser.findUnique({
         where: { id },
         select: {
             id: true,
@@ -25,10 +30,11 @@ function getProfile(id) {
             updatedAt: true
         }
     });
+    return user;
 }
 
-function updateProfile(id, data) {
-    return prisma.adminUser.update({
+async function updateProfile(id, data) {
+    const user = await prisma.adminUser.update({
         where: { id },
         data: data,
         select: {
@@ -40,6 +46,7 @@ function updateProfile(id, data) {
             updatedAt: true
         }
     });
+    return user;
 }
 
 module.exports = { findByUsername, findById, getProfile, updateProfile };
