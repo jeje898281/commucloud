@@ -1,7 +1,12 @@
+// /backend/prisma/seed.js
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcrypt');
+require('dotenv').config();
+const DATABASE_URL = process.env.DATABASE_URL;
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  datasources: { db: { url: DATABASE_URL } }
+});
 
 async function main() {
   console.log("🌱 開始建立 seed 資料");

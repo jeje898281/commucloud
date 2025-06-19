@@ -31,8 +31,8 @@ app.use(cors({
     maxAge: 86400
 }));
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiSpec));
-app.get('/health', (_req, res) => res.json({ ok: true }));
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(apiSpec));
+app.get('/api/health', (_req, res) => res.json({ ok: true }));
 app.use('/api/auth', authRoutes); // login api is not required to be authenticated
 
 const apiRouter = express.Router();

@@ -1,0 +1,52 @@
+###############################################################################
+# ⛑  Build stage – 安裝所有依賴、產生 Prisma Client
+###############################################################################
+FROM node:18-bullseye-slim AS builder
+
+WORKDIR /app
+
+# 1. 複製依賴清單並安裝「全部依賴」
+COPY package.json pnpm-lock.yaml* ./
+RUN corepack enable \
+  && corepack prepare pnpm@8.15.4 --activate \
+  && pnpm install
+
+# 2. 複製整個專案原始碼
+COPY . .
+
+# 3. 產生 Prisma Client（產生到 node_modules/.prisma 與 @prisma/client）
+RUN npx prisma generate
+
+###############################################################################
+# 🚀  Runtime stage – 僅留 production 依賴，映像檔最小
+###############################################################################
+FROM node:18-bullseye-slim
+
+WORKDIR /app
+
+# 1. 先複製依賴清單並安裝 *production* 依賴
+COPY package.json pnpm-lock.yaml* ./
+RUN corepack enable \
+  && corepack prepare pnpm@8.15.4 --activate \
+  && pnpm install --prod
+
+# 2. 複製程式碼與 Prisma schema（需在 generate 前就放好）
+COPY --from=builder /app/prisma ./prisma
+# 3. 再次產生「精簡版」 Prisma Client（僅 production 依賴，體積更小）
+RUN npx --package prisma -c "prisma generate"
+
+# 4. 複製其它靜態資源（如果有）
+COPY --from=builder /app/docs ./docs
+
+# 5. 複製應用程式原始碼與（可選）seed 腳本
+COPY --from=builder /app/src ./src
+COPY --from=builder /app/prisma/seed.js ./prisma/seed.js
+
+# 6. 預設環境變數與健康檢查（可自行調整）
+ENV NODE_ENV=production
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD node -e \
+  "require('http').get('http://localhost:3000/health', res => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
+
+# 7. 啟動服務
+EXPOSE 3000
+CMD ["node", "src/index.js"]
