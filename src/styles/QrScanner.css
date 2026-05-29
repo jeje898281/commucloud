@@ -1,94 +1,51 @@
-/* 外層容器樣式 */
+/* QR Scanner Component */
 .qr-scanner-container {
-  max-width: 400px;
-  margin: 20px auto; /* 居中 */
-  padding: 20px;
-  background-color: #f8f9fa; /* 淺灰背景 */
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 卡片樣式 */
-  text-align: center;
+  width: 100%;
 }
 
-/* 掃描區標題與描述 */
-.scanner-title {
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
+#qr-reader {
+  border: none !important;
+  border-radius: var(--radius-base);
+  overflow: hidden;
+  background: var(--bg-primary);
 }
 
-.scanner-description {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
+#qr-reader video {
+  border-radius: var(--radius-base);
 }
 
-/* 掃描框樣式 */
-.qr-reader {
-  width: 100%; /* 適應容器寬度 */
-  padding-top: 100%; /* 保持 1:1 比例 */
-  position: relative;
-  border: 2px dashed #007bff; /* 虛線邊框 */
-  border-radius: 8px; /* 圓角 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 掃描框陰影 */
+#qr-reader img { display: none; }
+
+#qr-reader__scan_region {
+  background: transparent !important;
 }
 
-/* 掃描結果樣式 */
-.scan-result {
-  margin-top: 20px;
-  font-size: 16px;
-  color: #007bff;
-  font-weight: bold;
+#qr-reader__dashboard {
+  padding: var(--space-3) 0 0 !important;
+  background: transparent !important;
 }
 
-/* ====== RWD 設計 ====== */
-
-/* 平板與中型裝置（螢幕寬度 ≤ 768px） */
-@media (max-width: 768px) {
-  .qr-scanner-container {
-    max-width: 90%; /* 減少寬度限制 */
-    padding: 15px; /* 減少內距 */
-  }
-
-  .scanner-title {
-    font-size: 18px; /* 縮小標題字體 */
-  }
-
-  .scanner-description {
-    font-size: 12px; /* 縮小描述字體 */
-  }
-
-  .qr-reader {
-    border-width: 1.5px; /* 邊框略微縮小 */
-    border-radius: 6px; /* 圓角縮小 */
-  }
-
-  .scan-result {
-    font-size: 14px; /* 縮小結果字體 */
-  }
+#qr-reader__dashboard_section_csr span {
+  font-size: var(--text-xs) !important;
+  color: var(--text-tertiary) !important;
 }
 
-/* 手機與小型裝置（螢幕寬度 ≤ 480px） */
-@media (max-width: 480px) {
-  .qr-scanner-container {
-    max-width: 100%; /* 使用全屏寬度 */
-    padding: 10px; /* 減少內距 */
-  }
+#qr-reader__dashboard button {
+  background: var(--primary-grad) !important;
+  color: var(--text-inverse) !important;
+  border: none !important;
+  border-radius: var(--radius-full) !important;
+  padding: var(--space-2) var(--space-4) !important;
+  font-size: var(--text-xs) !important;
+  font-weight: var(--font-semibold) !important;
+  cursor: pointer;
+}
 
-  .scanner-title {
-    font-size: 16px; /* 再次縮小標題字體 */
-  }
-
-  .scanner-description {
-    font-size: 10px; /* 再次縮小描述字體 */
-  }
-
-  .qr-reader {
-    border-width: 1px; /* 最小化邊框 */
-    border-radius: 4px; /* 更小的圓角 */
-  }
-
-  .scan-result {
-    font-size: 12px; /* 最小化結果字體 */
-  }
+#qr-reader select {
+  background: var(--bg-tertiary);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-base);
+  color: var(--text-primary);
+  font-size: var(--text-xs);
+  padding: var(--space-1) var(--space-2);
 }

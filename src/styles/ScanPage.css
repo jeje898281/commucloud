@@ -1,330 +1,139 @@
-/* frontend/src/styles/ScanPage.css */
-
-/* ====== QR 掃描頁面基本畫面 ====== */
+/* Scan Page */
 .scan-page {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: var(--space-6);
-  min-height: calc(100vh - 4rem);
-  box-sizing: border-box;
+  min-height: calc(100vh - 112px);
   background: var(--bg-primary);
+}
+
+.scan-page-header {
+  margin-bottom: var(--space-6);
+}
+
+.scan-page-title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-1);
+}
+
+.scan-page-desc {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.scan-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+
+.scanner-box {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.scanner-box-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+}
+
+.qr-camera-area {
+  background: var(--bg-primary);
+  border-radius: var(--radius-base);
+  border: 2px dashed var(--border-light);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.qr-camera-placeholder {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.checkin-list-box {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.checkin-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.checkin-list-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
   color: var(--text-primary);
 }
 
-/* ====== 左右並排容器，並縮短間距 ====== */
-.scan-content {
-  display: flex;
-  flex-direction: row;         /* 保持左右並排 */
-  gap: var(--space-6);                    /* 將間距縮小到 8px，讓掃描區與結果區更靠近 */
-  align-items: flex-start;
-  justify-content: center;
-}
-
-/* ====== 掃描器框架 ====== */
-.scanner-wrapper {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.scanner-frame {
-  position: relative;
-  background: var(--bg-secondary);
-  border-radius: var(--radius-xl);
-  padding: var(--space-6);
-  box-shadow: var(--shadow-lg);
-  border: 2px solid var(--primary-500);
-  overflow: hidden;
-  width: 100%;
-  max-width: 400px;
-}
-
-.scanner-frame::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary-500), var(--success-500), var(--primary-500));
-  animation: scannerGlow 2s ease-in-out infinite;
-}
-
-@keyframes scannerGlow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-.corner {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 3px solid var(--primary-400);
-  z-index: 10;
-}
-
-.corner-tl {
-  top: 16px;
-  left: 16px;
-  border-right: none;
-  border-bottom: none;
-  border-top-left-radius: 6px;
-}
-
-.corner-tr {
-  top: 16px;
-  right: 16px;
-  border-left: none;
-  border-bottom: none;
-  border-top-right-radius: 6px;
-}
-
-.corner-bl {
-  bottom: 16px;
-  left: 16px;
-  border-right: none;
-  border-top: none;
-  border-bottom-left-radius: 6px;
-}
-
-.corner-br {
-  bottom: 16px;
-  right: 16px;
-  border-left: none;
-  border-top: none;
-  border-bottom-right-radius: 6px;
-}
-
-.processing-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+.checkin-items {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-xl);
-  z-index: 100;
-  backdrop-filter: blur(4px);
-}
-
-.processing-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--border-light);
-  border-top: 3px solid var(--primary-500);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: var(--space-3);
-}
-
-.processing-overlay p {
-  color: var(--text-primary);
-  font-weight: var(--font-medium);
-  margin: 0;
-}
-
-/* ====== 結果區域 ====== */
-.result-section {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.result-card {
-  background: var(--bg-secondary);
-  border-radius: var(--radius-xl);
-  padding: var(--space-6);
-  box-shadow: var(--shadow-lg);
-  text-align: center;
-  width: 100%;
-  max-width: 400px;
-  border: 2px solid var(--border-light);
-  transition: all var(--transition-base);
-}
-
-.result-card.success-card {
-  border-color: var(--success-500);
-  background: var(--bg-secondary);
-}
-
-.result-card.error-card {
-  border-color: var(--error-500);
-  background: var(--bg-secondary);
-}
-
-.result-card.waiting-card {
-  border-color: var(--primary-500);
-  background: var(--bg-secondary);
-}
-
-.result-icon {
-  font-size: 3rem;
-  margin-bottom: var(--space-4);
-}
-
-.result-card h3 {
-  font-size: var(--text-xl);
-  font-weight: var(--font-semibold);
-  margin-bottom: var(--space-3);
-  color: var(--text-primary);
-}
-
-.result-card.success-card h3 {
-  color: var(--success-400);
-}
-
-.result-card.error-card h3 {
-  color: var(--error-400);
-}
-
-.resident-info {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   gap: var(--space-2);
-  margin-bottom: var(--space-4);
-  padding: var(--space-3);
-  background: var(--bg-tertiary);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-light);
 }
 
-.resident-label {
+.checkin-item {
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkin-item-name {
   font-size: var(--text-sm);
-  color: var(--text-secondary);
   font-weight: var(--font-medium);
+  color: var(--text-primary);
 }
 
-.resident-code {
-  font-size: var(--text-sm);
-  color: var(--text-primary);
-  font-weight: var(--font-bold);
-  font-family: var(--font-family-mono);
-  background: var(--primary-600);
-  padding: var(--space-1) var(--space-2);
+.checkin-item-time {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.scan-result {
+  padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-base);
-}
-
-.result-details {
-  color: var(--text-secondary);
-  margin-bottom: var(--space-4);
   font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  margin-top: var(--space-3);
+  text-align: center;
 }
 
-.result-actions {
-  display: flex;
-  gap: var(--space-3);
-  justify-content: center;
+.scan-result-success {
+  background: var(--success-100);
+  color: var(--success-700);
+  border: 1px solid rgba(74,158,110,.2);
 }
 
-.btn {
-  padding: var(--space-3) var(--space-6);
-  border-radius: var(--radius-lg);
-  font-size: var(--text-sm);
-  font-weight: var(--font-semibold);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  border: 1px solid transparent;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.btn-success {
-  background: var(--success-600);
-  color: var(--text-primary);
-  border-color: var(--success-600);
-}
-
-.btn-success:hover {
-  background: var(--success-700);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--text-primary);
-  border-color: var(--border-medium);
-}
-
-.btn-secondary:hover {
-  background: var(--bg-tertiary);
-  border-color: var(--border-dark);
-}
-
-/* ====== RWD 響應式 ====== */
-@media (max-width: 992px) {
-  .scan-content {
-    flex-direction: column;     /* 縮小螢幕時改回直向 */
-    gap: var(--space-6);                  /* 手機/平板時，可稍微保留一點間距 */
-  }
-  
-  .scanner-wrapper,
-  .result-section {
-    width: 100%;
-  }
+.scan-result-error {
+  background: var(--error-100);
+  color: var(--error-700);
+  border: 1px solid rgba(220,96,96,.2);
 }
 
 @media (max-width: 768px) {
-  .scan-page {
-    padding: var(--space-4);
-  }
-  
-  .meeting-header {
-    padding: var(--space-4);
-  }
-  
-  .meeting-title {
-    font-size: var(--text-2xl);
-    justify-content: center;
-  }
-  
-  .meeting-details {
-    grid-template-columns: 1fr;
-  }
-  
-  .result-card,
-  .scanner-frame {
-    max-width: 100%;
-  }
-
-  .result-icon {
-    font-size: 2.5rem;
-  }
-
-  .result-actions {
-    flex-direction: column;
-  }
+  .scan-page { padding: var(--space-4); }
+  .scan-grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 576px) {
-  .meeting-title::before {
-    display: none;
-  }
-  
-  .detail-item {
-    padding: var(--space-2);
-  }
-}
-
-/* ====== 動畫效果 ====== */
-.result-card {
-  animation: slideInUp 0.6s ease-out;
-}
-
-.result-card.success-card {
-  animation: slideInUp 0.6s ease-out, successPulse 2s ease-in-out;
-}
-
-@keyframes successPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.02); }
+@media (max-width: 480px) {
+  .scan-page { padding: var(--space-3); }
 }

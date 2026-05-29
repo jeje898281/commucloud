@@ -1,629 +1,76 @@
-/* 外層容器樣式 */
-.checkin-container {
-  max-width: 400px;
-  margin: 20px auto; /* 置中 */
-  padding: 20px;
-  background-color: #f8f9fa; /* 背景：淡灰 */
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 卡片樣式 */
-  text-align: center;
-}
-
-/* 標題與描述 */
-.checkin-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.checkin-description {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-/* 輸入區域 */
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* 按鈕與輸入框間距 */
-}
-
-.checkin-input {
-  flex: 1;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc; /* 淺灰邊框 */
-  border-radius: 5px;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
-
-.checkin-input:focus {
-  border-color: #007bff; /* 聚焦時邊框變藍 */
-}
-
-/* 按鈕樣式 */
-.checkin-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #007bff; /* 藍色按鈕 */
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.checkin-button:hover {
-  background-color: #0056b3; /* 按鈕 hover 深藍 */
-}
-
-/* ====== RWD 設計 ====== */
-
-/* 平板與中型裝置（螢幕寬度 ≤ 768px） */
-@media (max-width: 768px) {
-  .checkin-container {
-    max-width: 90%; /* 縮小容器寬度 */
-    padding: 15px;
-  }
-
-  .checkin-title {
-    font-size: 20px; /* 縮小標題字體 */
-  }
-
-  .checkin-description {
-    font-size: 12px; /* 縮小描述字體 */
-  }
-
-  .checkin-input,
-  .checkin-button {
-    font-size: 14px; /* 縮小輸入框與按鈕字體 */
-  }
-}
-
-/* 手機與小型裝置（螢幕寬度 ≤ 480px） */
-@media (max-width: 480px) {
-  .checkin-container {
-    max-width: 100%; /* 全屏寬度 */
-    padding: 10px;
-  }
-
-  .input-group {
-    flex-direction: column; /* 垂直排列 */
-    gap: 10px;
-  }
-
-  .checkin-input,
-  .checkin-button {
-    font-size: 14px;
-    padding: 10px;
-  }
-}
-
-/* 手動報到頁面現代化樣式 */
+/* Manual Check-In Page */
 .manual-checkin-page {
-  min-height: calc(100vh - 4rem);
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-}
-
-.manual-checkin-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: var(--space-6);
-}
-
-/* 載入狀態 */
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 400px;
-}
-
-.loading-spinner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.spinner {
-  width: 48px;
-  height: 48px;
-  border: 4px solid var(--border-light);
-  border-top: 4px solid var(--primary-600);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* 頁面標題區域 */
-.checkin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: var(--space-8);
-  padding: var(--space-6);
+  min-height: calc(100vh - 112px);
   background: var(--bg-primary);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-base);
-  border: 1px solid var(--border-light);
 }
 
-.header-content {
-  flex: 1;
-}
-
-.page-title {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  font-size: var(--text-3xl);
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: var(--space-2);
-  background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.title-icon {
-  font-size: 2rem;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
-
-.meeting-name {
-  font-size: var(--text-lg);
-  font-weight: 600;
-  color: var(--primary-600);
-  margin-bottom: var(--space-2);
-}
-
-.page-description {
-  font-size: var(--text-base);
-  color: var(--text-secondary);
-  margin: 0;
-  line-height: var(--leading-relaxed);
-}
-
-/* 統計區域 */
-.checkin-stats {
-  display: flex;
-  gap: var(--space-4);
-}
-
-.stat {
-  text-align: center;
-  padding: var(--space-4);
-  background: linear-gradient(135deg, var(--success-500) 0%, var(--success-600) 100%);
-  color: var(--text-white);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  min-width: 80px;
-}
-
-.stat-number {
-  display: block;
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  margin-bottom: var(--space-1);
-}
-
-.stat-label {
-  font-size: var(--text-xs);
-  opacity: 0.9;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* 內容區域 */
-.checkin-content {
-  display: flex;
-  gap: var(--space-6);
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-/* 通用卡片樣式 */
-.checkin-form-card,
-.instructions-card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-base);
-  overflow: hidden;
-  transition: all var(--transition-base);
-}
-
-.checkin-form-card {
-  flex: 0 0 400px;
-  animation: slideInUp 0.6s ease-out;
-}
-
-.instructions-card {
-  flex: 1;
-  animation: slideInRight 0.6s ease-out;
-}
-
-.card-header {
-  padding: var(--space-6);
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-  border-bottom: 1px solid var(--border-light);
-  position: relative;
-}
-
-.card-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary-500), var(--primary-600), var(--primary-700));
-}
-
-.card-title {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  font-size: var(--text-xl);
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.card-icon {
-  font-size: 1.5rem;
-}
-
-.card-body {
-  padding: var(--space-6);
-}
-
-/* 表單樣式 */
-.checkin-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.form-label {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.label-icon {
-  font-size: 1.1rem;
-}
-
-.input-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.form-input {
-  font-size: var(--text-lg);
-  padding: var(--space-4);
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 600;
-  transition: all var(--transition-base);
-}
-
-.form-input:focus {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
-}
-
-.input-hint {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-  padding: var(--space-2) var(--space-3);
-  background: var(--bg-secondary);
-  border-radius: var(--radius-base);
-  border-left: 3px solid var(--primary-400);
-}
-
-.hint-icon {
-  font-size: 1rem;
-}
-
-/* 報到按鈕 */
-.checkin-btn {
-  width: 100%;
-  padding: var(--space-4) var(--space-6);
-  font-size: var(--text-lg);
-  font-weight: 600;
-  box-shadow: var(--shadow-lg);
-  position: relative;
-  overflow: hidden;
-}
-
-.checkin-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.checkin-btn:hover::before {
-  left: 100%;
-}
-
-/* 載入動畫 */
-.loading-spinner-btn {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: var(--text-white);
-  animation: spin 1s ease-in-out infinite;
-  margin-right: var(--space-2);
-}
-
-/* 結果訊息 */
-.result-message {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-4);
-  border-radius: var(--radius-lg);
-  margin-top: var(--space-4);
-  animation: slideInRight 0.5s ease-out;
-}
-
-.message-content {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex: 1;
-}
-
-.message-icon {
-  font-size: 1.2rem;
-}
-
-.message-text {
-  font-weight: 600;
-  font-size: var(--text-base);
-}
-
-.message-close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  opacity: 0.7;
-  transition: opacity var(--transition-fast);
-  padding: var(--space-1);
-}
-
-.message-close:hover {
-  opacity: 1;
-}
-
-/* 訊息類型樣式 */
-.success-message {
-  background: linear-gradient(135deg, var(--success-50) 0%, var(--success-100) 100%);
-  border: 1px solid var(--success-200);
-  color: var(--success-800);
-}
-
-.warning-message {
-  background: linear-gradient(135deg, var(--warning-50) 0%, var(--warning-100) 100%);
-  border: 1px solid var(--warning-200);
-  color: var(--warning-800);
-}
-
-.error-message {
-  background: linear-gradient(135deg, var(--error-50) 0%, var(--error-100) 100%);
-  border: 1px solid var(--error-200);
-  color: var(--error-800);
-}
-
-/* 使用說明 */
-.instructions-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+.manual-checkin-header {
   margin-bottom: var(--space-6);
 }
 
-.instruction-item {
-  display: flex;
-  gap: var(--space-3);
-  padding: var(--space-3);
-  background: var(--bg-secondary);
-  border-radius: var(--radius-base);
-  border-left: 3px solid var(--primary-400);
-}
-
-.instruction-icon {
-  font-size: 1.5rem;
-  flex-shrink: 0;
-}
-
-.instruction-content h4 {
-  font-size: var(--text-sm);
-  font-weight: 600;
+.manual-checkin-title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
   color: var(--text-primary);
-  margin: 0 0 var(--space-1) 0;
+  margin: 0 0 var(--space-1);
 }
 
-.instruction-content p {
+.manual-checkin-desc {
   font-size: var(--text-sm);
-  color: var(--text-secondary);
-  margin: 0;
-  line-height: var(--leading-relaxed);
-}
-
-/* 幫助區域 */
-.help-section {
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--border-light);
-}
-
-.help-title {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-base);
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space-3);
-}
-
-.help-icon {
-  font-size: 1.2rem;
-}
-
-.help-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.help-list li {
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-  padding: var(--space-2) var(--space-3);
-  background: var(--bg-secondary);
-  border-radius: var(--radius-base);
-  position: relative;
-  padding-left: var(--space-6);
-}
-
-.help-list li::before {
-  content: '•';
-  position: absolute;
-  left: var(--space-3);
-  color: var(--primary-500);
-  font-weight: bold;
-}
-
-/* 響應式設計 */
-@media (max-width: 768px) {
-  .manual-checkin-container {
-    padding: var(--space-4);
-  }
-
-  .checkin-header {
-    flex-direction: column;
-    gap: var(--space-4);
-    align-items: stretch;
-    padding: var(--space-4);
-  }
-
-  .page-title {
-    font-size: var(--text-2xl);
-  }
-
-  .checkin-content {
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-  }
-
-  .card-header,
-  .card-body {
-    padding: var(--space-4);
-  }
-
-  .form-input {
-    font-size: var(--text-base);
-    padding: var(--space-3);
-  }
-
-  .checkin-btn {
-    padding: var(--space-3) var(--space-5);
-    font-size: var(--text-base);
-  }
-
-  .instruction-item {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .page-title {
-    font-size: var(--text-xl);
-  }
-
-  .stat {
-    padding: var(--space-3);
-    min-width: 60px;
-  }
-
-  .stat-number {
-    font-size: var(--text-xl);
-  }
-
-  .message-content {
-    flex-direction: column;
-    gap: var(--space-2);
-    text-align: center;
-  }
-}
-
-/* 動畫 */
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  color: var(--text-tertiary);
 }
 
 .checkin-form-card {
-  animation-delay: 0.1s;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  max-width: 520px;
 }
 
-.instructions-card {
-  animation-delay: 0.2s;
+.resident-result {
+  background: var(--bg-primary);
+  border-radius: var(--radius-base);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border-medium);
+}
+
+.resident-result-name {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.resident-result-phone {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.checkin-btn-wrap {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.checkin-btn-wrap .btn-primary {
+  flex: 1;
+  justify-content: center;
+  padding: var(--space-3) var(--space-4);
+}
+
+@media (max-width: 768px) {
+  .manual-checkin-page { padding: var(--space-4); }
+  .checkin-form-card { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .manual-checkin-page { padding: var(--space-3); }
+  .checkin-btn-wrap { flex-direction: column; }
 }
