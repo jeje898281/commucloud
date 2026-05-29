@@ -1,6 +1,6 @@
 /* Profile Page */
 .profile-page {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: var(--space-6);
   min-height: calc(100vh - 56px);

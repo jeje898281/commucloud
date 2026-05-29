@@ -92,7 +92,10 @@ export default function NavBar() {
                 aria-expanded={isMenuOpen}
                 aria-haspopup="true"
               >
-                {displayName}
+                <span className="user-avatar">
+                  {displayName?.charAt(0)?.toUpperCase()}
+                </span>
+                <span className="user-name">{displayName}</span>
               </button>
               {isMenuOpen && (
                 <ul className="dropdown-menu show">
