@@ -257,6 +257,16 @@ body {
   transform: translateY(-1px);
 }
 
+.btn-outline {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border-light);
+}
+.btn-outline:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  border-color: var(--border-dark);
+}
+
 .btn-sm {
   padding: var(--space-1) var(--space-3);
   font-size: var(--text-xs);
@@ -356,6 +366,7 @@ body {
 .badge-success { background: var(--success-100); color: var(--success-700); }
 .badge-warning { background: var(--warning-100); color: var(--warning-700); }
 .badge-error   { background: var(--error-100);   color: var(--error-700); }
+.badge-info    { background: #e0eaf5;             color: #2a5a9a; }
 
 /* ── Utility ── */
 .text-center { text-align: center; }
@@ -378,6 +389,19 @@ body {
 .shadow-lg   { box-shadow: var(--shadow-lg); }
 .border-t { border-top: 1px solid var(--border-light); }
 .border-b { border-bottom: 1px solid var(--border-light); }
+
+/* ── Spinner ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-medium);
+  border-top-color: var(--primary-600);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
