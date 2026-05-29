@@ -157,7 +157,6 @@ export default function MeetingListPage() {
 
       {filteredMeetings.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-icon">📅</div>
           <h3>目前沒有會議</h3>
           <p>
             {activeFilter === 'all'
@@ -207,7 +206,7 @@ export default function MeetingListPage() {
                     onClick={() => handleEditMeeting(meeting)}
                     title="編輯會議"
                   >
-                    ✏️ 編輯
+                    編輯
                   </button>
                   <button
                     className="btn btn-primary btn-sm"

@@ -194,9 +194,6 @@ function ScanPage() {
         <div className="result-section">
           {scanResult ? (
             <div className={`result-card ${scanResult.type === 'success' ? 'success-card' : 'error-card'}`}>
-              <div className="result-icon">
-                {scanResult.type === 'success' ? '✅' : '❌'}
-              </div>
               <h3>{scanResult.message}</h3>
 
               {scanResult.residentCode && (
@@ -219,7 +216,6 @@ function ScanPage() {
             </div>
           ) : (
             <div className="result-card waiting-card">
-              <div className="result-icon">🔍</div>
               <h3>等待掃描</h3>
               <p>請將QR碼對準掃描框進行簽到</p>
             </div>

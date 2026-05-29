@@ -64,7 +64,6 @@ export default function LoginPage() {
         <div className="login-card">
           <div className="login-header">
             <div className="login-logo">
-              <span className="logo-icon">🏘️</span>
               <h1>社區管理平台</h1>
             </div>
             <p className="login-subtitle">歡迎回來，請登入您的帳戶</p>
@@ -73,7 +72,6 @@ export default function LoginPage() {
           <form className="login-form" onSubmit={handleLogin}>
             <div className="form-group">
               <label htmlFor="username" className="form-label">
-                <span className="label-icon">👤</span>
                 帳號
               </label>
               <input
@@ -89,7 +87,6 @@ export default function LoginPage() {
 
             <div className="form-group">
               <label htmlFor="password" className="form-label">
-                <span className="label-icon">🔒</span>
                 密碼
               </label>
               <input
@@ -105,7 +102,6 @@ export default function LoginPage() {
 
             {error && (
               <div className="error-message">
-                <span className="error-icon">⚠️</span>
                 {error}
               </div>
             )}
@@ -122,7 +118,6 @@ export default function LoginPage() {
                 </>
               ) : (
                 <>
-                  <span>🚀</span>
                   登入
                 </>
               )}
@@ -131,7 +126,6 @@ export default function LoginPage() {
 
           <div className="login-footer">
             <p className="help-text">
-              <span className="help-icon">💡</span>
               如有問題請聯繫系統管理員
             </p>
           </div>

@@ -165,7 +165,6 @@ function ResidentsList() {
     return (
       <div className="residents-page">
         <div className="error-state">
-          <div className="error-icon">⚠️</div>
           <h3>載入失敗</h3>
           <p>{error}</p>
           <button className="btn btn-primary" onClick={() => window.location.reload()}>
@@ -196,7 +195,7 @@ function ResidentsList() {
             className="btn btn-secondary"
             onClick={() => setIsBulkImportModalOpen(true)}
           >
-            📄 批量匯入
+            批量匯入
           </button>
         </div>
       </div>
@@ -205,7 +204,6 @@ function ResidentsList() {
       <div className="controls-section">
         <div className="search-container">
           <div className="search-input-wrapper">
-            <span className="search-icon">🔍</span>
             <input
               type="text"
               placeholder="搜索住戶編號、電子信箱或社區名稱..."
@@ -218,7 +216,7 @@ function ResidentsList() {
             />
             {searchTerm && (
               <button className="clear-btn" onClick={() => setSearchTerm('')}>
-                ✖️
+                ×
               </button>
             )}
           </div>
@@ -274,7 +272,6 @@ function ResidentsList() {
               <tr>
                 <td colSpan="5" className="no-data-row">
                   <div className="no-data">
-                    <span className="no-data-icon">📭</span>
                     <span>找不到符合條件的住戶</span>
                   </div>
                 </td>
@@ -310,14 +307,14 @@ function ResidentsList() {
                         onClick={() => handleEditResident(resident)}
                         title="編輯住戶"
                       >
-                        ✏️
+                        編輯
                       </button>
                       <button
                         className="btn-action btn-delete"
                         onClick={() => handleDeleteResident(resident)}
                         title="刪除住戶"
                       >
-                        🗑️
+                        刪除
                       </button>
                     </div>
                   </td>

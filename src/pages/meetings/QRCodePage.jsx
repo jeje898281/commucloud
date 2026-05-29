@@ -185,7 +185,6 @@ function QRCodePage() {
                 {/* 錯誤提示 */}
                 {error && (
                     <div className="error-alert">
-                        <div className="error-icon">⚠️</div>
                         <p>{error}</p>
                         <button
                             className="btn btn-sm btn-secondary"
@@ -211,7 +210,7 @@ function QRCodePage() {
                                 </>
                             ) : (
                                 <>
-                                    🔄 生成QR碼
+                                    生成 QR 碼
                                 </>
                             )}
                         </button>
@@ -229,7 +228,7 @@ function QRCodePage() {
                                     </>
                                 ) : (
                                     <>
-                                        📦 下載全部 ({qrCodes.length} 個)
+                                        下載全部 ({qrCodes.length} 個)
                                     </>
                                 )}
                             </button>
@@ -279,7 +278,7 @@ function QRCodePage() {
                                                 className="btn btn-sm btn-outline"
                                                 onClick={() => handleDownloadSingle(qrCode)}
                                             >
-                                                💾 下載
+                                                下載
                                             </button>
                                         </div>
                                     </div>
@@ -292,7 +291,6 @@ function QRCodePage() {
                 {/* 空狀態 */}
                 {qrCodes.length === 0 && !isGenerating && (
                     <div className="empty-state">
-                        <div className="empty-icon">📱</div>
                         <h3>尚未生成QR碼</h3>
                         <p>點擊「生成QR碼」按鈕為所有住戶創建簽到用的QR碼</p>
                     </div>

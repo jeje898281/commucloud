@@ -60,7 +60,6 @@ function ManualCheckIn() {
           <div className="checkin-form-card">
             <div className="card-header">
               <h2 className="card-title">
-                <span className="card-icon">🏠</span>
                 輸入戶號
               </h2>
             </div>
@@ -69,7 +68,6 @@ function ManualCheckIn() {
               <form onSubmit={handleCheckIn} className="checkin-form">
                 <div className="form-group">
                   <label htmlFor="unitCode" className="form-label">
-                    <span className="label-icon">🏷️</span>
                     戶號
                   </label>
                   <div className="input-wrapper">
@@ -84,7 +82,6 @@ function ManualCheckIn() {
                       autoComplete="off"
                     />
                     <div className="input-hint">
-                      <span className="hint-icon">💡</span>
                       <span>格式範例：A101、B205、C301</span>
                     </div>
                   </div>
@@ -102,7 +99,6 @@ function ManualCheckIn() {
                     </>
                   ) : (
                     <>
-                      <span>✅</span>
                       確認報到
                     </>
                   )}
@@ -112,17 +108,13 @@ function ManualCheckIn() {
               {msg && (
                 <div className={`result-message ${msgType}-message`}>
                   <div className="message-content">
-                    <span className="message-icon">
-                      {msgType === 'success' ? '✅' :
-                        msgType === 'warning' ? '⚠️' : '❌'}
-                    </span>
                     <span className="message-text">{msg}</span>
                   </div>
                   <button
                     className="message-close"
                     onClick={clearMessage}
                   >
-                    ✖️
+                    ×
                   </button>
                 </div>
               )}
@@ -132,28 +124,27 @@ function ManualCheckIn() {
           <div className="instructions-card">
             <div className="card-header">
               <h3 className="card-title">
-                <span className="card-icon">📖</span>
                 使用說明
               </h3>
             </div>
             <div className="card-body">
               <div className="instructions-list">
                 <div className="instruction-item">
-                  <span className="instruction-icon">1️⃣</span>
+                  <span className="instruction-icon">1</span>
                   <div className="instruction-content">
                     <h4>輸入戶號</h4>
                     <p>請輸入完整的戶號，如：A101、B205</p>
                   </div>
                 </div>
                 <div className="instruction-item">
-                  <span className="instruction-icon">2️⃣</span>
+                  <span className="instruction-icon">2</span>
                   <div className="instruction-content">
                     <h4>確認報到</h4>
                     <p>檢查戶號無誤後，點擊確認報到按鈕</p>
                   </div>
                 </div>
                 <div className="instruction-item">
-                  <span className="instruction-icon">3️⃣</span>
+                  <span className="instruction-icon">3</span>
                   <div className="instruction-content">
                     <h4>查看結果</h4>
                     <p>系統會顯示報到結果，成功則可繼續下一位</p>
