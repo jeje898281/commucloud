@@ -1,586 +1,133 @@
-/* 個人資料頁面樣式 */
+/* Profile Page */
 .profile-page {
-  min-height: calc(100vh - 4rem);
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-}
-
-.profile-container {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: var(--space-6);
+  min-height: calc(100vh - 56px);
+  background: var(--bg-primary);
 }
 
-/* 載入狀態 */
-.loading-container {
+.profile-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-1);
+}
+
+.profile-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-6);
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--space-5);
+}
+
+/* Sidebar */
+.profile-sidebar {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
+  gap: var(--space-3);
   text-align: center;
+  height: fit-content;
 }
 
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #007bff;
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  background: var(--primary-grad);
   border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-inverse);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  box-shadow: var(--shadow-md);
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* 頁面標題 - 更精緻 */
-.profile-header {
-  margin-bottom: var(--space-6);
-  text-align: center;
-}
-
-.page-title {
-  font-size: var(--text-3xl);
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space-2);
-  background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.page-subtitle {
+.profile-display-name {
   font-size: var(--text-base);
-  color: var(--text-secondary);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
   margin: 0;
 }
 
-/* 內容區域 */
-.profile-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+.profile-community {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
 }
 
-/* 通用卡片樣式 - 更精緻 */
-.profile-card,
-.community-card,
-.actions-card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
+/* Content Area */
+.profile-content { display: flex; flex-direction: column; gap: var(--space-4); }
+
+.profile-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
-  transition: all var(--transition-base);
-  animation: slideInUp 0.4s ease-out;
 }
 
-.profile-card:hover,
-.community-card:hover,
-.actions-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-/* 卡片標題區域 - 確保編輯按鈕在右邊 */
-.card-header {
+.profile-card-header {
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border-medium);
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  padding: var(--space-3) var(--space-4);
-  background: var(--bg-tertiary);
-  border-bottom: 1px solid var(--border-light);
-  position: relative;
-  gap: var(--space-3);
 }
 
-.card-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--primary-500), var(--primary-600), var(--primary-700));
-}
-
-.card-title {
-  font-size: var(--text-lg);
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0;
-  flex: 1;
-}
-
-.card-body {
-  padding: var(--space-4);
-}
-
-/* 個人資訊網格 - 更緊湊 */
-.profile-grid {
-  display: grid;
-  gap: var(--space-3);
-}
-
-.profile-item {
-  display: grid;
-  grid-template-columns: 100px 1fr;
-  gap: var(--space-3);
-  align-items: start;
-  padding: var(--space-2) 0;
-}
-
-.profile-label {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding-top: var(--space-1);
-}
-
-.profile-value {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-}
-
-.value-text {
+.profile-card-title {
   font-size: var(--text-sm);
-  color: var(--text-secondary);
-  font-weight: 500;
-  min-height: 1.5rem;
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
 }
 
-.value-badge {
-  font-size: var(--text-xs);
+.profile-card-body {
+  padding: var(--space-5);
 }
 
-.form-input {
-  font-size: var(--text-sm);
-  padding: var(--space-2) var(--space-3);
-  max-width: 300px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  transition: border-color 0.2s;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-}
-
-.form-input:disabled {
-  background: #f8f9fa;
-  color: #666;
-  cursor: not-allowed;
-}
-
-/* 編輯模式 - 更緊湊 */
-.profile-actions {
+.profile-form-actions {
   display: flex;
-  gap: var(--space-2);
-  margin-top: var(--space-3);
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--border-light);
   justify-content: flex-end;
+  margin-top: var(--space-4);
 }
 
-/* 社區資訊 - 更緊湊 */
-.community-info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.community-item {
-  display: grid;
-  grid-template-columns: 100px 1fr;
-  gap: var(--space-3);
-  align-items: start;
-  padding: var(--space-2) 0;
-}
-
-.community-label {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding-top: var(--space-1);
-}
-
-.community-value {
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-.community-description {
-  background: var(--bg-tertiary);
+.profile-success {
+  padding: var(--space-3) var(--space-4);
+  background: var(--success-100);
+  color: var(--success-700);
   border-radius: var(--radius-base);
-  padding: var(--space-3);
-  border: 1px solid var(--border-light);
   font-size: var(--text-sm);
-  color: var(--text-secondary);
-  line-height: var(--leading-relaxed);
-  white-space: pre-wrap;
+  margin-bottom: var(--space-4);
+  border: 1px solid rgba(74,158,110,.2);
 }
 
-/* 快速操作 - 更緊湊 */
-.quick-actions {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-3);
-}
-
-.action-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-3);
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-light);
+.profile-error {
+  padding: var(--space-3) var(--space-4);
+  background: var(--error-100);
+  color: var(--error-700);
   border-radius: var(--radius-base);
-  text-decoration: none;
-  transition: all var(--transition-base);
-  cursor: pointer;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-4);
+  border: 1px solid rgba(220,96,96,.2);
 }
 
-.action-button:hover:not(:disabled) {
-  background: var(--bg-tertiary);
-  border-color: var(--border-medium);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
-}
-
-.action-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.action-text {
-  color: var(--text-primary);
-}
-
-.action-arrow {
-  color: var(--text-secondary);
-  transition: transform var(--transition-fast);
-}
-
-.action-button:hover:not(:disabled) .action-arrow {
-  transform: translateX(2px);
-}
-
-.action-note {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-  margin-top: var(--space-2);
-  text-align: center;
-  font-style: italic;
-}
-
-/* 按鈕樣式 - 更小巧精緻 */
-.btn {
-  padding: var(--space-1) var(--space-2);
-  font-size: var(--text-xs);
-  font-weight: var(--font-medium);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  border: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  box-sizing: border-box;
-}
-
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background: var(--primary-600);
-  color: var(--text-primary);
-  box-shadow: var(--shadow-sm);
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: var(--primary-700);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-
-.btn-secondary {
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-light);
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background: var(--bg-quaternary);
-  color: var(--text-primary);
-  border-color: var(--border-medium);
-}
-
-.btn-sm {
-  padding: var(--space-1) var(--space-2);
-  font-size: var(--text-xs);
-  min-width: auto;
-}
-
-/* 編輯按鈕特殊樣式 - 超小尺寸，放在右邊 */
-.edit-button,
-.profile-edit-button {
-  padding: 2px 6px !important;
-  font-size: 10px !important;
-  min-width: auto !important;
-  white-space: nowrap;
-  height: auto !important;
-  line-height: 1.1 !important;
-  border-radius: 3px !important;
-  flex-shrink: 0;
-  background: var(--primary-600) !important;
-  color: var(--text-white) !important;
-  border: none !important;
-  box-shadow: var(--shadow-sm) !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.025em !important;
-}
-
-.edit-button:hover,
-.profile-edit-button:hover {
-  background: var(--primary-700) !important;
-  transform: translateY(-1px) !important;
-  box-shadow: var(--shadow-md) !important;
-}
-
-/* 卡片標題區的編輯按鈕 - 使用统一的圆角设计 */
-.card-header .btn,
-.card-header .edit-button,
-.card-header .profile-edit-button {
-  padding: 0.375rem 0.75rem !important;
-  font-size: 0.875rem !important;
-  min-width: auto !important;
-  height: auto !important;
-  line-height: 1.4 !important;  
-  border-radius: var(--radius-lg) !important;
-  flex-shrink: 0;
-  margin-left: auto;
-  font-weight: 500 !important;
-  letter-spacing: 0.025em !important;
-}
-
-/* 確保卡片標題區的佈局 */
-.card-header {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-}
-
-.card-header .card-title {
-  flex: 1;
-  margin-right: var(--space-2);
-}
-
-/* Badge樣式 - 更小巧且圓滑 */
-.badge {
-  display: inline-block;
-  padding: var(--space-1) var(--space-2);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  border-radius: var(--radius-lg);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.badge-primary {
-  background: #007bff;
-  color: white;
-}
-
-.badge-error {
-  background: #dc3545;
-  color: white;
-}
-
-.badge-warning {
-  background: #ffc107;
-  color: #212529;
-}
-
-.badge-info {
-  background: #17a2b8;
-  color: white;
-}
-
-.badge-success {
-  background: #28a745;
-  color: white;
-}
-
-/* 響應式設計 */
 @media (max-width: 768px) {
-  .profile-container {
-    padding: var(--space-3);
-  }
-
-  .page-title {
-    font-size: var(--text-2xl);
-  }
-
-  .card-header {
-    flex-direction: row !important;
-    gap: var(--space-2);
-    align-items: center !important;
-    padding: var(--space-3);
-  }
-
-  .card-header .card-title {
-    flex: 1;
-    margin-right: var(--space-2);
-  }
-
-  .card-header .edit-button,
-  .card-header .profile-edit-button {
-    flex-shrink: 0;
-    margin-left: auto;
-  }
-
-  .card-body {
-    padding: var(--space-3);
-  }
-
-  .profile-item,
-  .community-item {
-    grid-template-columns: 1fr;
-    gap: var(--space-1);
-  }
-
-  .profile-actions {
-    flex-direction: column;
-  }
-
-  .quick-actions {
-    grid-template-columns: 1fr;
-  }
-
-  .action-button {
-    justify-content: center;
-  }
+  .profile-page { padding: var(--space-4); }
+  .profile-layout { grid-template-columns: 1fr; }
+  .profile-sidebar { flex-direction: row; text-align: left; gap: var(--space-4); }
+  .profile-avatar { flex-shrink: 0; }
 }
 
 @media (max-width: 480px) {
-  .page-title {
-    font-size: var(--text-xl);
-  }
-
-  .community-description {
-    padding: var(--space-2);
-  }
-
-  .action-button {
-    padding: var(--space-2);
-  }
-
-  .action-text {
-    font-size: var(--text-sm);
-  }
-
-  /* 移動端編輯按鈕稍微大一點以便點擊 */
-  .edit-button,
-  .profile-edit-button,
-  .card-header .edit-button,
-  .card-header .profile-edit-button {
-    padding: 3px 8px !important;
-    font-size: 11px !important;
-  }
+  .profile-page { padding: var(--space-3); }
+  .profile-sidebar { flex-direction: column; text-align: center; }
 }
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.profile-card {
-  animation-delay: 0.1s;
-}
-
-.community-card {
-  animation-delay: 0.2s;
-}
-
-.actions-card {
-  animation-delay: 0.3s;
-}
-
-.profile-card:has(.form-input:focus) {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-3px);
-}
-
-/* CSS變數定義（如果專案中沒有的話） */
-:root {
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #212529;
-  --text-secondary: #6c757d;
-  --border-light: #e9ecef;
-  
-  --primary-50: #e3f2fd;
-  --primary-200: #90caf9;
-  --primary-500: #2196f3;
-  --primary-600: #1976d2;
-  --primary-700: #1565c0;
-  --primary-800: #0d47a1;
-  
-  --radius-base: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-sm: 0.25rem;
-  
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  
-  --transition-base: 0.2s ease-in-out;
-  --transition-fast: 0.15s ease-in-out;
-}
-
-/* 覆盖全局样式 - 移除emoji */
-.profile-title::before {
-  content: '' !important;
-}
-
-.profile-card-title::before {
-  content: '' !important;
-} 
