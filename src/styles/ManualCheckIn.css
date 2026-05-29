@@ -1,76 +1,208 @@
 /* Manual Check-In Page */
 .manual-checkin-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--space-6);
   min-height: calc(100vh - 112px);
   background: var(--bg-primary);
+  padding: var(--space-6) 0;
 }
 
-.manual-checkin-header {
-  margin-bottom: var(--space-6);
+.manual-checkin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
 }
 
-.manual-checkin-title {
-  font-size: var(--text-xl);
+.checkin-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+/* ── Cards ── */
+.checkin-form-card,
+.instructions-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+}
+
+.checkin-form-card .card-header,
+.instructions-card .card-header {
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border-medium);
+  background: var(--bg-secondary);
+}
+
+.checkin-form-card .card-title,
+.instructions-card .card-title {
+  font-size: var(--text-base);
   font-weight: var(--font-bold);
   color: var(--text-primary);
-  margin: 0 0 var(--space-1);
+  margin: 0;
 }
 
-.manual-checkin-desc {
-  font-size: var(--text-sm);
-  color: var(--text-tertiary);
+.checkin-form-card .card-body,
+.instructions-card .card-body {
+  padding: var(--space-5);
 }
 
-.checkin-form-card {
-  background: var(--bg-secondary);
-  border-radius: var(--radius-md);
-  padding: var(--space-6);
-  box-shadow: var(--shadow-sm);
-  max-width: 520px;
-}
+/* ── Form ── */
+.checkin-form .form-group { margin-bottom: var(--space-5); }
 
-.resident-result {
-  background: var(--bg-primary);
-  border-radius: var(--radius-base);
-  padding: var(--space-4);
-  margin-bottom: var(--space-4);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid var(--border-medium);
-}
-
-.resident-result-name {
+.checkin-form .form-label {
+  display: block;
+  margin-bottom: var(--space-2);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
-  color: var(--text-primary);
+  color: var(--text-secondary);
 }
 
-.resident-result-phone {
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.input-wrapper .form-input {
+  font-size: var(--text-base);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.input-hint {
   font-size: var(--text-xs);
   color: var(--text-muted);
-  margin-top: 2px;
 }
 
-.checkin-btn-wrap {
+.checkin-btn {
+  width: 100%;
+  justify-content: center;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--text-sm);
+}
+
+.loading-spinner-btn {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: var(--space-1);
+}
+
+/* ── Result Message ── */
+.result-message {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-base);
+  margin-top: var(--space-4);
+  border: 1px solid transparent;
+  animation: fadeInUp 0.2s ease-out;
+}
+
+.result-message .message-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.result-message .message-text {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  line-height: var(--leading-snug);
+}
+
+.result-message .message-close {
+  background: transparent;
+  border: none;
+  font-size: var(--text-xl);
+  line-height: 1;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 0;
+  flex-shrink: 0;
+  transition: opacity var(--transition-fast);
+}
+.result-message .message-close:hover { opacity: 1; }
+
+.result-message.success-message {
+  background: var(--success-50);
+  color: var(--success-700);
+  border-color: rgba(82,174,122,.25);
+}
+
+.result-message.error-message {
+  background: var(--error-50);
+  color: var(--error-700);
+  border-color: rgba(220,96,96,.25);
+}
+
+.result-message.warning-message {
+  background: var(--warning-50);
+  color: var(--warning-700);
+  border-color: rgba(220,160,23,.25);
+}
+
+/* ── Instructions ── */
+.instructions-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.instruction-item {
+  display: flex;
+  align-items: flex-start;
   gap: var(--space-3);
 }
 
-.checkin-btn-wrap .btn-primary {
-  flex: 1;
+.instruction-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary-100);
+  color: var(--primary-700);
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  padding: var(--space-3) var(--space-4);
+}
+
+.instruction-content h4 {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0 0 2px;
+}
+
+.instruction-content p {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .checkin-content { gap: var(--space-4); }
 }
 
 @media (max-width: 768px) {
-  .manual-checkin-page { padding: var(--space-4); }
-  .checkin-form-card { max-width: 100%; }
+  .manual-checkin-page { padding: var(--space-4) 0; }
+  .manual-checkin-container { padding: 0 var(--space-4); }
+  .checkin-content { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
-  .manual-checkin-page { padding: var(--space-3); }
-  .checkin-btn-wrap { flex-direction: column; }
+  .manual-checkin-container { padding: 0 var(--space-3); }
+  .checkin-form-card .card-body,
+  .instructions-card .card-body { padding: var(--space-4); }
 }

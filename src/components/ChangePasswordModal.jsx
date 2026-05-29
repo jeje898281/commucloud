@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { changePassword } from '../services/api';
 import Toast from './Toast';
+import '../styles/modal-enhanced.css';
 import '../styles/ChangePasswordModal.css';
 import { getErrorMessage } from '../constants/errorCodes';
 
@@ -184,9 +185,9 @@ export default function ChangePasswordModal({ isOpen, onClose, onSuccess, onErro
 
         score = checks.filter(Boolean).length;
 
-        if (score <= 1) return { level: 1, text: '弱', color: '#dc3545' };
-        if (score <= 2) return { level: 2, text: '中', color: '#ffc107' };
-        return { level: 3, text: '強', color: '#28a745' };
+        if (score <= 1) return { level: 1, text: '弱', color: 'var(--error-500)' };
+        if (score <= 2) return { level: 2, text: '中', color: 'var(--warning-500)' };
+        return { level: 3, text: '強', color: 'var(--success-500)' };
     };
 
     const passwordStrength = getPasswordStrength(formData.newPassword);
@@ -222,7 +223,7 @@ export default function ChangePasswordModal({ isOpen, onClose, onSuccess, onErro
                                 onClick={() => togglePasswordVisibility('current')}
                                 disabled={updating}
                             >
-                                {showPasswords.current ? '🙈' : '👁️'}
+                                {showPasswords.current ? '隱藏' : '顯示'}
                             </button>
                         </div>
                     </div>
@@ -245,7 +246,7 @@ export default function ChangePasswordModal({ isOpen, onClose, onSuccess, onErro
                                 onClick={() => togglePasswordVisibility('new')}
                                 disabled={updating}
                             >
-                                {showPasswords.new ? '🙈' : '👁️'}
+                                {showPasswords.new ? '隱藏' : '顯示'}
                             </button>
                         </div>
                         {formData.newPassword && (
@@ -298,7 +299,7 @@ export default function ChangePasswordModal({ isOpen, onClose, onSuccess, onErro
                                 onClick={() => togglePasswordVisibility('confirm')}
                                 disabled={updating}
                             >
-                                {showPasswords.confirm ? '🙈' : '👁️'}
+                                {showPasswords.confirm ? '隱藏' : '顯示'}
                             </button>
                         </div>
                         {formData.confirmPassword && formData.newPassword !== formData.confirmPassword && (

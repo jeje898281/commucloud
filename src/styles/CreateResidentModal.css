@@ -10,3 +10,5 @@
   color: var(--text-muted);
   margin-top: var(--space-1);
 }
+
+.form-input-uppercase { text-transform: uppercase; }

@@ -123,14 +123,13 @@ function EditResidentModal({ isOpen, onClose, onSuccess, resident }) {
                         disabled={isSubmitting}
                         title="關閉對話框"
                     >
-                        ✕
+                        ×
                     </button>
                 </div>
 
                 <div className="modal-body">
                     {errors.general && (
                         <div className="error-message">
-                            <span className="error-icon">⚠️</span>
                             {errors.general}
                         </div>
                     )}

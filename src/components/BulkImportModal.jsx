@@ -234,7 +234,7 @@ function BulkImportModal({ isOpen, onClose, onSuccess }) {
                                     <h3>選擇檔案</h3>
                                     
                                     <div className="upload-area" onClick={triggerFileSelect}>
-                                        <div className="upload-icon">📄</div>
+                                        <div className="upload-icon" aria-hidden="true"></div>
                                         <div className="upload-text">
                                             {csvFile ? csvFile.name : '點擊選擇CSV檔案'}
                                         </div>

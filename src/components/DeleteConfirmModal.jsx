@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { deleteResident } from '../services/api';
 import { getErrorMessage } from '../constants/errorCodes';
+import '../styles/modal-enhanced.css';
 import '../styles/DeleteConfirmModal.css';
 
 function DeleteConfirmModal({ isOpen, onClose, onSuccess, resident }) {
@@ -42,7 +43,7 @@ function DeleteConfirmModal({ isOpen, onClose, onSuccess, resident }) {
         <div className="modal-overlay" onClick={handleClose}>
             <div className="delete-modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="delete-modal-header">
-                    <div className="delete-warning-icon">⚠️</div>
+                    <div className="delete-warning-icon" aria-hidden="true"></div>
                     <h2 className="delete-modal-title">確認刪除住戶</h2>
                 </div>
 
@@ -74,7 +75,6 @@ function DeleteConfirmModal({ isOpen, onClose, onSuccess, resident }) {
 
                     {error && (
                         <div className="delete-error-alert">
-                            <span className="error-icon">❌</span>
                             {error}
                         </div>
                     )}
@@ -101,9 +101,7 @@ function DeleteConfirmModal({ isOpen, onClose, onSuccess, resident }) {
                                 刪除中...
                             </>
                         ) : (
-                            <>
-                                🗑️ 確認刪除
-                            </>
+                            '確認刪除'
                         )}
                     </button>
                 </div>

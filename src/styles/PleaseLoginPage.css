@@ -1,54 +1,65 @@
 /* Please Login Page */
 .please-login-page {
-  min-height: 100vh;
+  min-height: calc(100vh - 56px);
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--bg-primary);
-  padding: var(--space-4);
+  padding: var(--space-6) var(--space-4);
 }
 
-.please-login-card {
+.login-prompt {
+  width: 100%;
+  max-width: 440px;
+}
+
+.prompt-content {
   background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
-  padding: var(--space-12) var(--space-10);
+  padding: var(--space-10) var(--space-8);
   text-align: center;
-  max-width: 400px;
-  width: 100%;
   animation: fadeInUp 0.4s ease-out;
 }
 
-.please-login-icon {
-  width: 64px;
-  height: 64px;
-  background: var(--primary-100);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto var(--space-6);
-  font-size: var(--text-2xl);
+.prompt-icon {
+  width: 56px;
+  height: 56px;
+  background: var(--primary-grad);
+  border-radius: var(--radius-lg);
+  margin: 0 auto var(--space-5);
+  box-shadow: var(--shadow-accent);
 }
 
-.please-login-card h2 {
+.prompt-content h1 {
   font-size: var(--text-xl);
   font-weight: var(--font-bold);
   color: var(--text-primary);
-  margin-bottom: var(--space-2);
+  margin: 0 0 var(--space-3);
+  line-height: var(--leading-snug);
 }
 
-.please-login-card p {
+.prompt-content p {
   font-size: var(--text-sm);
   color: var(--text-tertiary);
-  margin-bottom: var(--space-6);
   line-height: var(--leading-relaxed);
+  margin: 0 0 var(--space-6);
 }
 
-.please-login-card .btn-primary {
-  padding: var(--space-3) var(--space-8);
+.prompt-content .action-buttons {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+.prompt-content .action-buttons .btn {
+  padding: var(--space-3) var(--space-6);
+  min-width: 120px;
 }
 
 @media (max-width: 480px) {
-  .please-login-card { padding: var(--space-8) var(--space-6); }
+  .prompt-content { padding: var(--space-8) var(--space-5); }
+  .prompt-content .action-buttons { flex-direction: column; }
+  .prompt-content .action-buttons .btn { width: 100%; }
 }
