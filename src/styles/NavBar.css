@@ -127,7 +127,7 @@
 }
 
 .btn-login:hover {
-  box-shadow: var(--shadow-accent, 0 4px 12px rgba(124,111,168,.25));
+  box-shadow: var(--shadow-accent);
   transform: translateY(-1px);
 }
 
