@@ -1,0 +1,213 @@
+<h2>第二題：主導覽結構</h2>
+<p class="subtitle">決定整個平台的空間邏輯</p>
+
+<style>
+  .mock-frame {
+    background: #eaedf2;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+  }
+  .mock-topbar {
+    background: #f4f6f9;
+    border-bottom: 1px solid #d4d9e3;
+    padding: 0 16px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  .mock-topbar-logo {
+    width: 20px; height: 20px;
+    background: linear-gradient(135deg, #5b7fa6, #7c6fa8);
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .mock-topbar-nav {
+    display: flex; gap: 4px; margin-left: 8px;
+  }
+  .mock-nav-item {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+  }
+  .mock-nav-item.active {
+    background: #dbe4f0;
+    color: #3d5273;
+  }
+  .mock-avatar {
+    width: 26px; height: 26px;
+    background: linear-gradient(135deg, #5b7fa6, #7c6fa8);
+    border-radius: 50%;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .mock-body {
+    display: flex; flex: 1; overflow: hidden;
+  }
+  .mock-sidebar {
+    background: #f0f3f8;
+    border-right: 1px solid #d4d9e3;
+    width: 140px;
+    flex-shrink: 0;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .mock-sidebar-item {
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+  }
+  .mock-sidebar-item.active {
+    background: #dbe4f0;
+    color: #3d5273;
+    font-weight: 600;
+  }
+  .mock-content {
+    flex: 1;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .mock-content-title {
+    font-size: 13px; font-weight: 700; color: #1e293b;
+  }
+  .mock-card-row {
+    display: flex; gap: 8px;
+  }
+  .mock-card {
+    background: #f4f6f9;
+    border-radius: 10px;
+    padding: 10px 12px;
+    flex: 1;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  .mock-card-label {
+    font-size: 10px; color: #94a3b8; font-weight: 500; margin-bottom: 4px;
+  }
+  .mock-card-value {
+    font-size: 16px; font-weight: 700; color: #1e293b;
+  }
+  .mock-table-row {
+    background: #f4f6f9;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: #475569;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+
+<div class="cards">
+
+  <div class="card" data-choice="top-nav" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 20px; background: #eaedf2;">
+      <div class="mock-frame">
+        <div class="mock-topbar">
+          <div class="mock-topbar-logo"></div>
+          <div style="font-size: 12px; font-weight: 700; color: #1e293b;">社區管理</div>
+          <div class="mock-topbar-nav">
+            <div class="mock-nav-item active">首頁</div>
+            <div class="mock-nav-item">會議</div>
+            <div class="mock-nav-item">住戶</div>
+            <div class="mock-nav-item">社區</div>
+          </div>
+          <div class="mock-avatar"></div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-content">
+            <div class="mock-content-title">近期會議</div>
+            <div class="mock-card-row">
+              <div class="mock-card"><div class="mock-card-label">本月會議</div><div class="mock-card-value">4</div></div>
+              <div class="mock-card"><div class="mock-card-label">出席率</div><div class="mock-card-value">87%</div></div>
+              <div class="mock-card"><div class="mock-card-label">待確認</div><div class="mock-card-value">12</div></div>
+            </div>
+            <div class="mock-table-row"><span>2025 年第一季大會</span><span style="color:#3d5273;font-weight:600;">進行中</span></div>
+            <div class="mock-table-row"><span>住戶大會 0312</span><span style="color:#94a3b8;">已結束</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>頂部導覽列（現有架構）</h3>
+      <p>延續現有的 NavBar 架構，精緻化視覺。橫向寬度利用率高，適合資訊密集的管理介面。導覽項目一目了然。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="sidebar" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 20px; background: #eaedf2;">
+      <div class="mock-frame" style="flex-direction: row;">
+        <div class="mock-sidebar">
+          <div style="display:flex;align-items:center;gap:8px;padding:4px 6px;margin-bottom:8px;">
+            <div style="width:20px;height:20px;background:linear-gradient(135deg,#5b7fa6,#7c6fa8);border-radius:6px;flex-shrink:0;"></div>
+            <div style="font-size:11px;font-weight:700;color:#1e293b;">社區管理</div>
+          </div>
+          <div class="mock-sidebar-item active">首頁</div>
+          <div class="mock-sidebar-item">會議管理</div>
+          <div class="mock-sidebar-item">住戶資料</div>
+          <div class="mock-sidebar-item">社區設定</div>
+          <div style="margin-top:auto;">
+            <div class="mock-sidebar-item">個人帳號</div>
+          </div>
+        </div>
+        <div class="mock-content">
+          <div class="mock-content-title">近期會議</div>
+          <div class="mock-card-row">
+            <div class="mock-card"><div class="mock-card-label">本月</div><div class="mock-card-value">4</div></div>
+            <div class="mock-card"><div class="mock-card-label">出席率</div><div class="mock-card-value">87%</div></div>
+          </div>
+          <div class="mock-table-row"><span>2025 年第一季大會</span><span style="color:#3d5273;font-weight:600;">進行中</span></div>
+          <div class="mock-table-row"><span>住戶大會 0312</span><span style="color:#94a3b8;">已結束</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>左側固定側邊欄</h3>
+      <p>垂直導覽，類似 Notion / Linear 的專業工具風格。頁面空間更完整，適合複雜功能的巢狀導覽，但佔用水平寬度。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="top-sidebar" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 20px; background: #eaedf2;">
+      <div class="mock-frame">
+        <div class="mock-topbar">
+          <div class="mock-topbar-logo"></div>
+          <div style="font-size: 12px; font-weight: 700; color: #1e293b;">社區管理</div>
+          <div class="mock-avatar"></div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-sidebar" style="width:110px;">
+            <div class="mock-sidebar-item active">首頁</div>
+            <div class="mock-sidebar-item">會議</div>
+            <div class="mock-sidebar-item">住戶</div>
+            <div class="mock-sidebar-item">社區</div>
+          </div>
+          <div class="mock-content">
+            <div class="mock-content-title">近期會議</div>
+            <div class="mock-card-row">
+              <div class="mock-card"><div class="mock-card-label">本月</div><div class="mock-card-value">4</div></div>
+              <div class="mock-card"><div class="mock-card-label">出席率</div><div class="mock-card-value">87%</div></div>
+            </div>
+            <div class="mock-table-row"><span>2025 年第一季大會</span><span style="color:#3d5273;font-weight:600;">進行中</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>頂部品牌列 + 左側功能導覽</h3>
+      <p>頂部只放 Logo 和帳號，主導覽移到左側。結合兩者優點：有品牌識別感，同時保留側邊欄的深度。</p>
+    </div>
+  </div>
+
+</div>

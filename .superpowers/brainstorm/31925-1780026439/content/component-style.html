@@ -1,0 +1,166 @@
+<h2>第四題：元件風格基調</h2>
+<p class="subtitle">圓角程度與主色調，決定整個介面的「個性」</p>
+
+<style>
+  .preview-wrap {
+    background: #eaedf2;
+    padding: 20px;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Style A - Moderate, Slate Blue */
+  .a-topbar {
+    background: #f4f6f9;
+    border-bottom: 1px solid #d1d9e6;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 14px;
+  }
+  .a-logo { width: 20px; height: 20px; background: #3a5a8c; border-radius: 6px; }
+  .a-title { font-size: 12px; font-weight: 700; color: #1e293b; }
+  .a-nav { font-size: 11px; color: #64748b; padding: 4px 10px; border-radius: 6px; }
+  .a-nav-active { font-size: 11px; color: #3a5a8c; background: #dbe4f0; padding: 4px 10px; border-radius: 6px; font-weight: 600; }
+  .a-btn { background: #3a5a8c; color: white; border-radius: 8px; padding: 7px 16px; font-size: 11px; font-weight: 600; display: inline-block; }
+  .a-btn-ghost { border: 1px solid #3a5a8c; color: #3a5a8c; border-radius: 8px; padding: 6px 16px; font-size: 11px; font-weight: 600; display: inline-block; }
+  .a-card { background: #f4f6f9; border-radius: 10px; padding: 12px 14px; box-shadow: 0 1px 3px rgba(0,0,0,.07); }
+  .a-badge { background: #dbe4f0; color: #3a5a8c; border-radius: 6px; padding: 2px 8px; font-size: 10px; font-weight: 600; }
+  .a-input { background: #f4f6f9; border: 1px solid #c8d3e0; border-radius: 8px; padding: 7px 12px; font-size: 11px; color: #475569; width: 100%; box-sizing: border-box; }
+
+  /* Style B - Rounded, Blue-Purple */
+  .b-topbar {
+    background: #f4f6f9;
+    border-bottom: 1px solid #d4d9e3;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 14px;
+  }
+  .b-logo { width: 20px; height: 20px; background: linear-gradient(135deg, #5b7fa6, #7c6fa8); border-radius: 8px; }
+  .b-title { font-size: 12px; font-weight: 700; color: #1e293b; }
+  .b-nav { font-size: 11px; color: #64748b; padding: 4px 12px; border-radius: 20px; }
+  .b-nav-active { font-size: 11px; color: #4a6fa5; background: #dbe4f0; padding: 4px 12px; border-radius: 20px; font-weight: 600; }
+  .b-btn { background: linear-gradient(135deg, #5b7fa6, #7c6fa8); color: white; border-radius: 20px; padding: 7px 18px; font-size: 11px; font-weight: 600; display: inline-block; }
+  .b-btn-ghost { border: 1.5px solid #7c6fa8; color: #7c6fa8; border-radius: 20px; padding: 6px 18px; font-size: 11px; font-weight: 600; display: inline-block; }
+  .b-card { background: #f4f6f9; border-radius: 16px; padding: 12px 14px; box-shadow: 0 2px 8px rgba(91,127,166,.1); }
+  .b-badge { background: #ede8f5; color: #5e4b8b; border-radius: 20px; padding: 2px 10px; font-size: 10px; font-weight: 600; }
+  .b-input { background: #f4f6f9; border: 1.5px solid #c8d3e0; border-radius: 12px; padding: 7px 12px; font-size: 11px; color: #475569; width: 100%; box-sizing: border-box; }
+
+  /* Style C - Sharp-ish, Deep Slate */
+  .c-topbar {
+    background: #1e293b;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 14px;
+  }
+  .c-logo { width: 20px; height: 20px; background: #94b4d4; border-radius: 4px; }
+  .c-title { font-size: 12px; font-weight: 700; color: #f1f5f9; }
+  .c-nav { font-size: 11px; color: #94a3b8; padding: 4px 10px; border-radius: 4px; }
+  .c-nav-active { font-size: 11px; color: #e2e8f0; background: rgba(255,255,255,.12); padding: 4px 10px; border-radius: 4px; font-weight: 600; }
+  .c-btn { background: #94b4d4; color: #0f172a; border-radius: 6px; padding: 7px 16px; font-size: 11px; font-weight: 700; display: inline-block; }
+  .c-btn-ghost { border: 1px solid #475569; color: #94a3b8; border-radius: 6px; padding: 6px 16px; font-size: 11px; font-weight: 600; display: inline-block; }
+  .c-card { background: #f8fafc; border-radius: 6px; padding: 12px 14px; border: 1px solid #e2e8f0; }
+  .c-badge { background: #dbeafe; color: #1e40af; border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 600; }
+  .c-input { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 7px 12px; font-size: 11px; color: #475569; width: 100%; box-sizing: border-box; }
+</style>
+
+<div class="cards">
+
+  <div class="card" data-choice="style-a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0; overflow:hidden; border-radius:12px 12px 0 0;">
+      <div class="a-topbar">
+        <div class="a-logo"></div>
+        <div class="a-title">社區管理</div>
+        <div class="a-nav-active">會議</div>
+        <div class="a-nav">住戶</div>
+        <div class="a-nav">社區</div>
+      </div>
+      <div class="preview-wrap">
+        <div class="a-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:12px;font-weight:600;color:#1e293b;">2025 年第一季大會</span>
+            <div class="a-badge">進行中</div>
+          </div>
+          <div style="font-size:10px;color:#94a3b8;">2025/03/15 · 出席率 87%</div>
+        </div>
+        <input class="a-input" placeholder="搜尋會議或住戶..." readonly />
+        <div style="display:flex;gap:8px;">
+          <div class="a-btn">新增會議</div>
+          <div class="a-btn-ghost">匯出報告</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>穩重藍 · 中等圓角</h3>
+      <p>單一深藍主色，圓角適中（8–10px），無漸層。整體最接近 Google Workspace 的嚴謹專業感，適合政府或物業管理情境。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="style-b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0; overflow:hidden; border-radius:12px 12px 0 0;">
+      <div class="b-topbar">
+        <div class="b-logo"></div>
+        <div class="b-title">社區管理</div>
+        <div class="b-nav-active">會議</div>
+        <div class="b-nav">住戶</div>
+        <div class="b-nav">社區</div>
+      </div>
+      <div class="preview-wrap">
+        <div class="b-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:12px;font-weight:600;color:#1e293b;">2025 年第一季大會</span>
+            <div class="b-badge">進行中</div>
+          </div>
+          <div style="font-size:10px;color:#94a3b8;">2025/03/15 · 出席率 87%</div>
+        </div>
+        <input class="b-input" placeholder="搜尋會議或住戶..." readonly />
+        <div style="display:flex;gap:8px;">
+          <div class="b-btn">新增會議</div>
+          <div class="b-btn-ghost">匯出報告</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>藍紫漸層 · 大圓角膠囊</h3>
+      <p>藍到紫的低飽和漸層，按鈕和標籤採膠囊形狀，最接近新版 Gemini app 的視覺語言，現代感強。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="style-c" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0; overflow:hidden; border-radius:12px 12px 0 0;">
+      <div class="c-topbar">
+        <div class="c-logo"></div>
+        <div class="c-title">社區管理</div>
+        <div class="c-nav-active">會議</div>
+        <div class="c-nav">住戶</div>
+        <div class="c-nav">社區</div>
+      </div>
+      <div class="preview-wrap">
+        <div class="c-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:12px;font-weight:600;color:#1e293b;">2025 年第一季大會</span>
+            <div class="c-badge">進行中</div>
+          </div>
+          <div style="font-size:10px;color:#94a3b8;">2025/03/15 · 出席率 87%</div>
+        </div>
+        <input class="c-input" placeholder="搜尋會議或住戶..." readonly />
+        <div style="display:flex;gap:8px;">
+          <div class="c-btn">新增會議</div>
+          <div class="c-btn-ghost">匯出報告</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>深色導覽列 · 小圓角</h3>
+      <p>頂部導覽保持深色以區分層次，內容區維持淺灰底。圓角保守（4–6px），線條利落，偏向工程師工具或財務系統的風格。</p>
+    </div>
+  </div>
+
+</div>

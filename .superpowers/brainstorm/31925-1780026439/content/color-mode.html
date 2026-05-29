@@ -1,0 +1,70 @@
+<h2>第一題：主題色調方向</h2>
+<p class="subtitle">Gemini 風格有幾種不同的色調解讀，你希望哪個方向？</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="light" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: linear-gradient(135deg, #f8faff 0%, #e8f0fe 50%, #f3e8fd 100%); padding: 24px; min-height: 160px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="background: white; border-radius: 12px; padding: 10px 16px; box-shadow: 0 1px 6px rgba(60,64,67,.1); font-size: 13px; color: #3c4043; font-family: 'Google Sans', sans-serif; font-weight: 500;">社區大會管理平台</div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <div style="background: #e8f0fe; color: #1a73e8; border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 500;">會議列表</div>
+        <div style="background: #e6f4ea; color: #1e8e3e; border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 500;">出席統計</div>
+        <div style="background: #fce8e6; color: #d93025; border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 500;">住戶管理</div>
+      </div>
+      <div style="background: white; border-radius: 16px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.12); display: flex; align-items: center; gap: 10px;">
+        <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #4285f4, #9c4dcc); border-radius: 50%;"></div>
+        <div>
+          <div style="font-size: 13px; font-weight: 600; color: #202124;">今日會議</div>
+          <div style="font-size: 11px; color: #80868b;">3 個進行中</div>
+        </div>
+        <div style="margin-left: auto; background: #1a73e8; color: white; border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 600;">查看</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>淺色 · Material You 風格</h3>
+      <p>乾淨白底，藍紫漸層點綴，圓角卡片，接近最新 Google Workspace 的視覺語言。適合白天辦公環境使用。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="dark" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: linear-gradient(135deg, #0f1117 0%, #1a1f2e 50%, #16101e 100%); padding: 24px; min-height: 160px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 10px 16px; font-size: 13px; color: #e8eaed; font-weight: 500;">社區大會管理平台</div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <div style="background: rgba(138,180,248,0.15); color: #8ab4f8; border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 500; border: 1px solid rgba(138,180,248,0.2);">會議列表</div>
+        <div style="background: rgba(129,201,149,0.15); color: #81c995; border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 500; border: 1px solid rgba(129,201,149,0.2);">出席統計</div>
+        <div style="background: rgba(242,139,130,0.15); color: #f28b82; border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 500; border: 1px solid rgba(242,139,130,0.2);">住戶管理</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.06); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 12px; display: flex; align-items: center; gap: 10px;">
+        <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #8ab4f8, #c58af9); border-radius: 50%;"></div>
+        <div>
+          <div style="font-size: 13px; font-weight: 600; color: #e8eaed;">今日會議</div>
+          <div style="font-size: 11px; color: #9aa0a6;">3 個進行中</div>
+        </div>
+        <div style="margin-left: auto; background: linear-gradient(135deg, #8ab4f8, #c58af9); color: #1a1f2e; border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 700;">查看</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>深色 · Gemini Advanced 風格</h3>
+      <p>深邃黑底，藍紫光暈效果，毛玻璃材質，接近 Gemini app 的高端 AI 工具感。適合長時間操作和夜間使用。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="both" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: linear-gradient(135deg, #f8faff 0%, #1a1f2e 100%); padding: 24px; min-height: 160px; display: flex; align-items: center; justify-content: center;">
+      <div style="display: flex; gap: 16px; align-items: center;">
+        <div style="background: white; border-radius: 12px; padding: 10px 18px; box-shadow: 0 2px 8px rgba(0,0,0,.12); font-size: 12px; color: #202124; font-weight: 600;">☀️ 淺色</div>
+        <div style="font-size: 20px; color: #9e9e9e;">⇄</div>
+        <div style="background: #1a1f2e; border-radius: 12px; padding: 10px 18px; border: 1px solid rgba(255,255,255,0.15); font-size: 12px; color: #e8eaed; font-weight: 600;">🌙 深色</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>雙主題切換</h3>
+      <p>同時支援淺色和深色兩套主題，使用者可以自行切換。實作成本較高，但使用彈性最大。</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" style="margin-top: 24px; background: rgba(66,133,244,0.08); border-radius: 12px; padding: 16px;">
+  <p class="subtitle" style="margin: 0;">💡 目前的介面是深色主題。如果選淺色，整個視覺語言會有大幅轉變。</p>
+</div>
