@@ -81,6 +81,7 @@
   --shadow-lg:   0 8px 24px rgba(91,127,166,.16);
   --shadow-xl:   0 16px 40px rgba(91,127,166,.18);
   --shadow-accent: 0 4px 12px rgba(124,111,168,.25);
+  --shadow-error: 0 4px 12px rgba(220,96,96,.3);
 
   /* ── 圓角 ── */
   --radius-none: 0;

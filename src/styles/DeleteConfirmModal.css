@@ -75,7 +75,7 @@
   width: 52px;
   height: 52px;
   background: var(--error-100);
-  border: 2px solid rgba(220,96,96,.2);
+  border: 2px solid var(--error-200);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -152,7 +152,7 @@
 
 .btn-danger:hover:not(:disabled) {
   background: var(--error-700);
-  box-shadow: 0 4px 12px rgba(220,96,96,.3);
+  box-shadow: var(--shadow-error);
   transform: translateY(-1px);
 }
 
