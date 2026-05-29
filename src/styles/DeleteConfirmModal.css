@@ -1,188 +1,180 @@
-/* 刪除確認對話框樣式 - 深色主題 */
+/* Delete Confirm Modal */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(8px);
+  inset: 0;
+  background: rgba(15,23,42,.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: var(--z-modal);
   padding: var(--space-4);
-  animation: modalOverlayIn 0.3s ease-out;
+  animation: modalOverlayIn 0.2s ease-out;
 }
 
 .modal-content {
-  background: var(--bg-secondary);
+  background: var(--bg-light);
   border: 1px solid var(--border-light);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   width: 100%;
-  max-width: 420px;
+  max-width: 380px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: modalSlideIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-6);
-  border-bottom: 1px solid var(--border-light);
-  background: var(--bg-tertiary);
-  position: relative;
-}
-
-.modal-header::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--error-500), var(--error-600));
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--border-medium);
 }
 
 .modal-title {
-  font-size: var(--text-xl);
+  font-size: var(--text-base);
   font-weight: var(--font-bold);
-  color: var(--error-400);
+  color: var(--error-600);
   margin: 0;
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
-.modal-title::before {
-  content: "🗑️";
-  font-size: 1.5rem;
-}
+.modal-title::before { content: none; }
 
 .modal-close-btn {
-  background: var(--bg-quaternary);
-  border: 1px solid var(--border-medium);
-  border-radius: var(--radius-full);
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: var(--bg-primary);
+  color: var(--text-muted);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
-  font-size: var(--text-lg);
+  font-size: var(--text-sm);
 }
 
 .modal-close-btn:hover {
-  background: var(--error-600);
-  border-color: var(--error-600);
-  color: var(--text-primary);
-  transform: scale(1.05);
+  background: var(--error-100);
+  color: var(--error-700);
 }
 
 .modal-body {
-  padding: var(--space-8);
+  padding: var(--space-6);
   text-align: center;
 }
 
 .warning-icon {
-  font-size: 4rem;
-  color: var(--error-400);
-  margin-bottom: var(--space-4);
+  width: 52px;
+  height: 52px;
+  background: var(--error-100);
+  border: 2px solid rgba(220,96,96,.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-4);
+  font-size: var(--text-xl);
+  color: var(--error-600);
 }
 
 .warning-message {
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
   color: var(--text-primary);
   margin-bottom: var(--space-2);
-  font-weight: var(--font-semibold);
 }
 
 .warning-detail {
-  font-size: var(--text-base);
-  color: var(--text-secondary);
-  margin-bottom: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
   line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-4);
 }
 
 .resident-info {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  margin: var(--space-4) 0;
-  font-family: var(--font-family-mono);
-  color: var(--text-primary);
+  border-radius: var(--radius-base);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
   font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: var(--space-3) 0;
 }
 
 .modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: var(--space-3);
-  padding: var(--space-6);
-  border-top: 1px solid var(--border-light);
-  background: var(--bg-tertiary);
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--border-medium);
 }
 
 .btn {
-  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
-  border-radius: var(--radius-lg);
-  transition: all var(--transition-fast);
+  padding: var(--space-2) var(--space-5);
   cursor: pointer;
-  border: 1px solid transparent;
-  display: flex;
+  transition: all var(--transition-fast);
+  border: 1.5px solid transparent;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  min-width: 100px;
+  min-width: 80px;
 }
 
 .btn-cancel {
   background: transparent;
-  border-color: var(--border-medium);
-  color: var(--text-primary);
+  border-color: var(--border-light);
+  color: var(--text-secondary);
 }
 
 .btn-cancel:hover:not(:disabled) {
-  background: var(--bg-quaternary);
+  background: var(--bg-tertiary);
   border-color: var(--border-dark);
-  transform: translateY(-1px);
 }
 
 .btn-danger {
   background: var(--error-600);
-  border-color: var(--error-600);
-  color: var(--text-primary);
+  color: var(--text-inverse);
+  border-color: transparent;
 }
 
 .btn-danger:hover:not(:disabled) {
   background: var(--error-700);
-  border-color: var(--error-700);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px -8px var(--error-600);
+  box-shadow: 0 4px 12px rgba(220,96,96,.3);
+  transform: translateY(-1px);
 }
 
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 .loading-spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top: 2px solid var(--text-primary);
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-top: 2px solid var(--text-inverse);
   border-radius: 50%;
   animation: spin 1s linear infinite;
+}
+
+@keyframes modalOverlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modalSlideIn {
+  from { opacity: 0; transform: scale(0.92) translateY(-12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 @keyframes spin {
@@ -190,43 +182,8 @@
   100% { transform: rotate(360deg); }
 }
 
-/* 響應式設計 */
 @media (max-width: 480px) {
-  .modal-content {
-    max-width: 95%;
-  }
-  
-  .modal-body {
-    padding: var(--space-6);
-  }
-  
-  .modal-actions {
-    flex-direction: column;
-  }
-  
-  .btn {
-    width: 100%;
-  }
+  .modal-content { max-width: 95vw; }
+  .modal-actions { flex-direction: column-reverse; }
+  .btn { width: 100%; }
 }
-
-/* 點擊外部彈跳動畫 */
-@keyframes modalBounce {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-}
-
-@keyframes modalOverlayIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-} 
