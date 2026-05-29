@@ -40,14 +40,14 @@
   /* ── 語意色 ── */
   --success-50:  #f0faf4;
   --success-100: #d8ead2;
-  --success-500: #4a9e6e;
+  --success-500: #52ae7a;
   --success-600: #4a9e6e;
   --success-700: #2d6a4f;
   --success-800: #1a4a37;
 
   --warning-50:  #fdf8ec;
   --warning-100: #f5e8c8;
-  --warning-500: #d4a017;
+  --warning-500: #dca820;
   --warning-600: #d4a017;
   --warning-700: #8a5c00;
   --warning-800: #5c3d00;
@@ -55,8 +55,8 @@
   --error-50:  #fdf3f3;
   --error-100: #f5d8d8;
   --error-200: #f0c0c0;
-  --error-400: #dc6060;
-  --error-500: #dc6060;
+  --error-400: #e87070;
+  --error-500: #e06868;
   --error-600: #dc6060;
   --error-700: #8a1c1c;
   --error-800: #5c1010;
@@ -246,7 +246,7 @@ body {
 .btn-danger {
   background: var(--error-100);
   color: var(--error-600);
-  border-color: #f0c0c0;
+  border-color: var(--error-200);
 }
 .btn-danger:hover:not(:disabled) {
   background: var(--error-600);
