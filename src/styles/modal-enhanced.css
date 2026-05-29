@@ -1,209 +1,138 @@
-/* 优化的模态框样式 - 强制纯白色文字版本 */
+/* Modal Foundation - Light Theme */
 
-/* 添加超高对比度的颜色变量 */
 :root {
-  --modal-bg: #1e293b;
-  --modal-border: #475569;
-  --modal-text-primary: #ffffff;
-  --modal-text-secondary: #ffffff;
-  --modal-text-muted: #ffffff;
-  --modal-input-bg: #334155;
-  --modal-input-border: #64748b;
-  --modal-input-focus: #3b82f6;
-  --gray-750: #374151;
-  --gray-850: #1e293b;
+  --modal-bg: #ffffff;
+  --modal-border: var(--border-light);
+  --modal-text-primary: var(--text-primary);
+  --modal-text-secondary: var(--text-secondary);
+  --modal-input-bg: var(--bg-tertiary);
+  --modal-input-border: var(--border-light);
+  --modal-input-focus: var(--primary-600);
 }
 
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  inset: 0;
+  background: rgba(15,23,42,.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: var(--z-modal);
   padding: var(--space-4);
-  animation: modalOverlayIn 0.3s ease-out;
+  animation: modalOverlayIn 0.2s ease-out;
 }
 
 .modal-content {
-  background: rgba(30, 41, 59, 0.4);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  border-radius: var(--radius-2xl);
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.6),
-    0 0 0 1px rgba(255, 255, 255, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  background: var(--bg-light);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
   width: 100%;
   max-width: 480px;
-  max-height: 85vh;
+  max-height: 88vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-}
-
-/* 添加微妙的边框光晕 */
-.modal-content::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--primary-400), var(--primary-500), var(--primary-600));
-  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  animation: modalSlideIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-6);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
-  background: rgba(51, 65, 85, 0.3);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--border-medium);
   flex-shrink: 0;
 }
 
 .modal-title {
-  font-size: 1.2rem !important;
-  font-weight: var(--font-bold) !important;
-  color: #ffffff !important;
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
   margin: 0;
-  line-height: 1.4;
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  gap: var(--space-2);
 }
 
-.modal-icon {
-  font-size: 1.5rem;
-  opacity: 0.9;
-}
+.modal-icon { font-size: var(--text-lg); }
 
 .modal-close-btn {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border: none;
-  background: #334155;
-  color: #ffffff !important;
-  border-radius: var(--radius-xl);
+  background: var(--bg-primary);
+  color: var(--text-muted);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all var(--transition-fast);
-  font-size: 1.2rem;
+  font-size: var(--text-sm);
   flex-shrink: 0;
-  font-weight: bold;
 }
 
 .modal-close-btn:hover:not(:disabled) {
-  background: #64748b;
-  color: #ffffff !important;
-  transform: scale(1.05);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
-.modal-close-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+.modal-close-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* 表单区域 - 毛玻璃效果 */
-.modal-form {
-  padding: var(--space-6);
-  overflow-y: auto;
-  flex: 1;
-  min-height: 0;
-  background: transparent;
-}
-
+.modal-form,
 .modal-body {
-  padding: var(--space-6);
+  padding: var(--space-5) var(--space-6);
   overflow-y: auto;
   flex: 1;
   min-height: 0;
-  background: transparent;
 }
 
-.form-group {
-  margin-bottom: var(--space-6);
-}
-
-.form-group:last-of-type {
-  margin-bottom: var(--space-8);
-}
+.form-group { margin-bottom: var(--space-4); }
+.form-group:last-of-type { margin-bottom: var(--space-2); }
 
 .form-label {
-  display: block !important;
-  font-size: 0.95rem !important;
-  font-weight: var(--font-bold) !important;
-  color: #ffffff !important;
-  margin-bottom: var(--space-3);
-  line-height: 1.3;
-  letter-spacing: 0.01em;
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
 }
 
-.required {
-  color: #fbbf24 !important;
-  margin-left: 3px;
-  font-weight: var(--font-bold) !important;
-}
-
-.optional {
-  color: #ffffff !important;
-  font-weight: var(--font-medium) !important;
-  opacity: 0.8;
-}
+.required { color: var(--error-600); margin-left: 2px; }
+.optional  { color: var(--text-muted); font-weight: var(--font-normal); font-size: var(--text-xs); }
 
 .form-input,
 .form-textarea,
 .form-select {
   width: 100%;
-  padding: var(--space-3);
-  background: rgba(51, 65, 85, 0.4) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 2px solid rgba(148, 163, 184, 0.3);
-  border-radius: var(--radius-lg);
-  color: #ffffff !important;
-  font-size: 0.9rem !important;
-  line-height: 1.5;
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-tertiary);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-base);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
   transition: all var(--transition-base);
   box-sizing: border-box;
   font-family: inherit;
-  font-weight: var(--font-medium) !important;
 }
 
 .form-textarea {
   resize: vertical;
-  min-height: 100px;
-  max-height: 150px;
+  min-height: 80px;
+  max-height: 160px;
 }
 
 .form-input:focus,
 .form-textarea:focus,
 .form-select:focus {
   outline: none;
-  border-color: var(--primary-500);
-  box-shadow: 
-    0 0 0 3px rgba(14, 165, 233, 0.3),
-    0 0 0 1px var(--primary-500);
-  background: rgba(71, 85, 105, 0.6) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  color: #ffffff !important;
+  border-color: var(--primary-600);
+  box-shadow: 0 0 0 3px rgba(91,127,166,.15);
+  background: var(--bg-light);
 }
 
 .form-input:disabled,
@@ -211,128 +140,64 @@
 .form-select:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  background: #1e293b !important;
-  color: #ffffff !important;
+  background: var(--bg-secondary);
 }
 
 .form-input::placeholder,
-.form-textarea::placeholder {
-  color: #ffffff !important;
-  opacity: 0.7;
-  font-size: 0.85rem;
-}
+.form-textarea::placeholder { color: var(--text-muted); }
 
 .form-input.error,
 .form-textarea.error,
 .form-select.error {
-  border-color: #ef4444;
-  box-shadow: 
-    0 0 0 3px rgba(239, 68, 68, 0.2),
-    0 0 0 1px #ef4444;
+  border-color: var(--error-500);
+  box-shadow: 0 0 0 3px rgba(220,96,96,.12);
 }
 
-/* 错误信息 */
-.error-message {
-  display: flex !important;
+.form-hint {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
+
+.error-message,
+.error-alert {
+  display: flex;
   align-items: flex-start;
   gap: var(--space-2);
-  color: #ffffff !important;
-  font-size: 0.85rem !important;
-  margin-top: var(--space-3);
+  color: var(--error-700);
+  font-size: var(--text-sm);
+  margin-top: var(--space-2);
   padding: var(--space-3) var(--space-4);
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  border-radius: var(--radius-lg);
-  line-height: 1.4;
-  font-weight: var(--font-semibold) !important;
+  background: var(--error-100);
+  border: 1px solid rgba(220,96,96,.2);
+  border-radius: var(--radius-base);
+  line-height: var(--leading-normal);
 }
 
-.error-icon {
-  flex-shrink: 0;
-  font-size: 1rem;
-  color: #fca5a5;
-}
+.error-icon { flex-shrink: 0; }
 
-/* 操作按钮区域 - 毛玻璃效果 */
 .modal-actions {
   display: flex;
-  gap: var(--space-4);
-  padding: var(--space-6);
-  border-top: 1px solid rgba(148, 163, 184, 0.15);
-  background: rgba(51, 65, 85, 0.3);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--border-medium);
   flex-shrink: 0;
+  justify-content: flex-end;
 }
 
-/* 按钮样式 */
-.btn {
-  padding: var(--space-3) var(--space-5);
-  border-radius: var(--radius-xl);
-  font-size: 0.9rem !important;
-  font-weight: var(--font-bold) !important;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  border: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  line-height: 1.4;
-  min-height: 42px;
-  flex: 1;
-  letter-spacing: 0.01em;
-  color: #ffffff !important;
+.modal-actions .btn {
+  min-height: 36px;
+  flex: none;
 }
 
-.btn-secondary {
-  background: #334155 !important;
-  color: #ffffff !important;
-  border: 2px solid #64748b;
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background: #64748b !important;
-  color: #ffffff !important;
-  border-color: #94a3b8;
-  transform: translateY(-1px);
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--primary-600), var(--primary-700)) !important;
-  color: #ffffff !important;
-  border: 2px solid var(--primary-500);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--primary-700), var(--primary-800)) !important;
-  color: #ffffff !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-/* 加载动画 */
 .loading-spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top: 2px solid #ffffff;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-top: 2px solid var(--text-inverse);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-}
-
-/* 特殊样式 */
-.datetime-input {
-  font-family: var(--font-family-mono);
-  font-size: 1rem;
+  flex-shrink: 0;
 }
 
 .datetime-group {
@@ -340,165 +205,29 @@
   grid-template-columns: 1fr 1fr;
   gap: var(--space-4);
 }
+.datetime-group .form-group { margin-bottom: 0; }
 
-.datetime-group .form-group {
-  margin-bottom: 0;
-}
-
-/* 成功/警告/错误弹窗特殊样式 */
-.modal-content.success .modal-header {
-  background: linear-gradient(135deg, #059669, #047857);
-}
-
-.modal-content.warning .modal-header {
-  background: linear-gradient(135deg, #d97706, #b45309);
-}
-
-.modal-content.error .modal-header {
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
-}
-
-/* 响应式设计 */
-@media (max-width: 480px) {
-  .modal-content {
-    max-width: 95vw;
-    margin: var(--space-4);
-  }
-  
-  .modal-header,
-  .modal-form,
-  .modal-body,
-  .modal-actions {
-    padding: var(--space-4);
-  }
-  
-  .modal-title {
-    font-size: 1.1rem !important;
-  }
-  
-  .form-label {
-    font-size: 0.9rem !important;
-  }
-  
-  .form-input,
-  .form-textarea,
-  .form-select {
-    font-size: 0.85rem !important;
-  }
-  
-  .btn {
-    font-size: 0.85rem !important;
-    min-height: 40px;
-  }
-  
-  .datetime-group {
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-  
-  .datetime-group .form-group {
-    margin-bottom: var(--space-4);
-  }
-  
-  .datetime-group .form-group:last-child {
-    margin-bottom: 0;
-  }
-}
-
-/* 滚动条样式 */
+/* Scrollbar */
 .modal-form::-webkit-scrollbar,
-.modal-body::-webkit-scrollbar {
-  width: 8px;
-}
-
+.modal-body::-webkit-scrollbar { width: 4px; }
 .modal-form::-webkit-scrollbar-track,
-.modal-body::-webkit-scrollbar-track {
-  background: #334155;
-  border-radius: 4px;
-}
-
+.modal-body::-webkit-scrollbar-track { background: transparent; }
 .modal-form::-webkit-scrollbar-thumb,
-.modal-body::-webkit-scrollbar-thumb {
-  background: #64748b;
-  border-radius: 4px;
-}
+.modal-body::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: var(--radius-full); }
 
-.modal-form::-webkit-scrollbar-thumb:hover,
-.modal-body::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-/* 动画定义 */
+/* Animations */
 @keyframes modalOverlayIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
 @keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: scale(0.8) translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+  from { opacity: 0; transform: scale(0.92) translateY(-12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@media (max-width: 480px) {
+  .modal-content { max-width: 95vw; }
+  .modal-header, .modal-form, .modal-body, .modal-actions { padding-left: var(--space-4); padding-right: var(--space-4); }
+  .datetime-group { grid-template-columns: 1fr; }
 }
-
-/* 特殊状态样式 */
-.modal-content.success::before {
-  background: linear-gradient(90deg, #10b981, #059669, #047857);
-}
-
-.modal-content.warning::before {
-  background: linear-gradient(90deg, #f59e0b, #d97706, #b45309);
-}
-
-.modal-content.error::before {
-  background: linear-gradient(90deg, #ef4444, #dc2626, #b91c1c);
-}
-
-/* 增强表单提示样式 */
-.form-hint {
-  font-size: 0.9rem !important;
-  color: #ffffff !important;
-  margin-top: var(--space-2);
-  line-height: 1.4;
-  opacity: 0.8;
-}
-
-.error-alert {
-  display: flex !important;
-  align-items: flex-start;
-  gap: var(--space-2);
-  color: #ffffff !important;
-  font-size: 0.95rem !important;
-  margin-bottom: var(--space-4);
-  padding: var(--space-4);
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  border-radius: var(--radius-lg);
-  line-height: 1.4;
-  font-weight: var(--font-semibold) !important;
-}
-
-/* 通用文本样式强制白色 */
-.modal-content h1,
-.modal-content h2,
-.modal-content h3,
-.modal-content h4,
-.modal-content h5,
-.modal-content h6,
-.modal-content p,
-.modal-content span,
-.modal-content div,
-.modal-content li,
-.modal-content td,
-.modal-content th {
-  color: #ffffff !important;
-} 
