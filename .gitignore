@@ -1,6 +1,7 @@
 # 環境變數與密鑰
 .env
 .env.*
+!.env.*.example
 
 # 容器暫存與日誌
 *.log
