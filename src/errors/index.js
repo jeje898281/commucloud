@@ -14,7 +14,8 @@ const { CommunityNotFoundError, CommunityNameEmptyError,
 } = require('./communityError');
 
 const { AlreadyCheckedInError, MeetingIdInvalidError, MeetingSqmThresholdInvalidError,
-    MeetingResidentThresholdInvalidError, MeetingDateInvalidError, MeetingStatusInvalidError
+    MeetingResidentThresholdInvalidError, MeetingDateInvalidError, MeetingStatusInvalidError,
+    QRCodeInvalidError
 } = require('./meetingError');
 
 const { WrongPasswordError, PasswordTooShortError,
@@ -67,5 +68,6 @@ module.exports = {
     RoleInvalidError,
     TargetUserNotInCommunityError,
     AccountDeactivatedError,
-    ForbiddenError
+    ForbiddenError,
+    QRCodeInvalidError
 };

@@ -29,7 +29,12 @@ class MeetingStatusInvalidError extends BaseError {
     constructor() { super('Meeting status is invalid', 'MEETING_STATUS_INVALID', 400); }
 }
 
+class QRCodeInvalidError extends BaseError {
+    constructor() { super('QR code is invalid or expired', 'QRCODE_INVALID', 400); }
+}
+
 module.exports = {
     MeetingNotFoundError, AlreadyCheckedInError, MeetingIdInvalidError, MeetingSqmThresholdInvalidError,
-    MeetingResidentThresholdInvalidError, MeetingDateInvalidError, MeetingStatusInvalidError
+    MeetingResidentThresholdInvalidError, MeetingDateInvalidError, MeetingStatusInvalidError,
+    QRCodeInvalidError
 };

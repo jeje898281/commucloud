@@ -5,7 +5,8 @@ const { getMeetingById, getMeetingsByCommunityId, updateMeeting, createMeetingMo
 const { findById: findAdminById } = require('../models/adminUserModel');
 const { MeetingNotFoundError, AlreadyCheckedInError, UserNotFoundError,
     MeetingSqmThresholdInvalidError, MeetingResidentThresholdInvalidError,
-    MeetingDateInvalidError, MeetingStatusInvalidError, NoUpdateFieldsError, ResidentNotFoundError
+    MeetingDateInvalidError, MeetingStatusInvalidError, NoUpdateFieldsError, ResidentNotFoundError,
+    MissingRequiredFieldsError, QRCodeInvalidError
 } = require('../errors');
 
 async function checkinByManual(meetingId, residentCode, communityId, userId) {
@@ -26,7 +27,15 @@ async function checkinByManual(meetingId, residentCode, communityId, userId) {
 }
 
 async function checkinByQRCode(qrCode, userId) {
-    const payload = await verifyToken(qrCode);
+    let payload;
+    try {
+        payload = await verifyToken(qrCode);
+    } catch (err) {
+        throw new QRCodeInvalidError();
+    }
+    if (!payload || !payload.meetingId || !payload.residentId) {
+        throw new QRCodeInvalidError();
+    }
     const checkinMeetingId = payload.meetingId;
     const checkinResidentId = payload.residentId;
     const manualFlag = false;
@@ -130,9 +139,32 @@ async function updateMeetingDetail(adminUserId, meetingId, updateData) {
     return updatedMeeting;
 }
 
+const VALID_STATUSES = ['pending', 'ongoing', 'completed', 'cancelled', 'deleted'];
+
 async function createMeeting(adminUserId, communityId, { name, status, date, sqmThreshold, residentThreshold }) {
-    const newMeeting = await createMeetingModel(adminUserId, communityId, { name, status, date, sqmThreshold, residentThreshold });
-    return newMeeting;
+    if (!name || !date || sqmThreshold === undefined || residentThreshold === undefined) {
+        throw new MissingRequiredFieldsError();
+    }
+    const finalStatus = status || 'pending';
+    if (!VALID_STATUSES.includes(finalStatus)) {
+        throw new MeetingStatusInvalidError();
+    }
+    const parsedDate = new Date(date);
+    if (Number.isNaN(parsedDate.getTime())) {
+        throw new MeetingDateInvalidError();
+    }
+    const sqm = Number(sqmThreshold);
+    const residents = Number(residentThreshold);
+    if (Number.isNaN(sqm) || sqm < 0) throw new MeetingSqmThresholdInvalidError();
+    if (Number.isNaN(residents) || residents < 0) throw new MeetingResidentThresholdInvalidError();
+
+    return createMeetingModel(adminUserId, communityId, {
+        name,
+        status: finalStatus,
+        date: parsedDate,
+        sqmThreshold: sqm,
+        residentThreshold: residents,
+    });
 }
 
 module.exports = {
