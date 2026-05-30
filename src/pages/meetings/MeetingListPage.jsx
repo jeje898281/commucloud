@@ -6,6 +6,7 @@ import { getErrorMessage } from '../../constants/errorCodes';
 import EditMeetingModal from '../../components/EditMeetingModal';
 import Toast from '../../components/Toast';
 import CreateMeetingModal from '../../components/CreateMeetingModal';
+import NotifyResidentsModal from '../../components/NotifyResidentsModal';
 import '../../styles/MeetingList.css';
 
 export default function MeetingListPage() {
@@ -16,6 +17,7 @@ export default function MeetingListPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedMeeting, setSelectedMeeting] = useState(null);
   const [toast, setToast] = useState({ isVisible: false, message: '', type: 'success' });
+  const [notifyMeetingTarget, setNotifyMeetingTarget] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,6 +61,10 @@ export default function MeetingListPage() {
 
   const handleCreateMeeting = () => {
     setIsCreateModalOpen(true);
+  };
+
+  const handleOpenNotifyModal = (meeting) => {
+    setNotifyMeetingTarget(meeting);
   };
 
   const handleCreateSuccess = () => {
@@ -209,6 +215,14 @@ export default function MeetingListPage() {
                     編輯
                   </button>
                   <button
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => handleOpenNotifyModal(meeting)}
+                    disabled={meeting.status === 'completed' || meeting.status === 'cancelled'}
+                    title="通知住戶"
+                  >
+                    通知住戶
+                  </button>
+                  <button
                     className="btn btn-primary btn-sm"
                     onClick={() => navigate(`/meetings/${meeting.id}/scan`)}
                     disabled={meeting.status === 'completed' || meeting.status === 'cancelled'}
@@ -238,6 +252,15 @@ export default function MeetingListPage() {
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         onSuccess={handleCreateSuccess}
+      />
+
+      {/* 通知住戶彈窗 */}
+      <NotifyResidentsModal
+        isOpen={!!notifyMeetingTarget}
+        onClose={() => setNotifyMeetingTarget(null)}
+        meeting={notifyMeetingTarget}
+        onSuccess={(msg) => showToast(msg, 'success')}
+        onError={(msg) => showToast(msg, 'error')}
       />
 
       {/* Toast 提示 */}

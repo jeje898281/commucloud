@@ -52,6 +52,14 @@ export function generateQRCodes(meetingId) {
   return apiClient.post('/meeting/generate-qr-codes', { meetingId });
 }
 
+export function notifyMeeting(meetingId, payload = {}) {
+  return apiClient.post(`/meetings/${meetingId}/notify`, payload);
+}
+
+export function getMeetingNotifyPreview(meetingId) {
+  return apiClient.get(`/meetings/${meetingId}/notify/preview`);
+}
+
 // 新增住戶
 export function createResident(data) {
   return apiClient.post('/resident', data);
