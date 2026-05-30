@@ -29,15 +29,17 @@ model AdminUser {
   communityId      Int         @map("community_id")
   username         String      @unique @map("username")
   password         String      @map("password")
-  displayName     String       @map("display_name") @default("user")
+  email            String?     @unique @map("email")
+  displayName      String      @map("display_name") @default("user")
   role             Role        @default(manager) @map("role")
+  isActive         Boolean     @default(true) @map("is_active")
   createdAt        DateTime    @default(now()) @map("created_at")
   updatedAt        DateTime    @updatedAt @map("updated_at")
 
-  createdMeetings  Meeting[]       @relation("MeetingCreator")
-  createdProposals Proposal[]      @relation("ProposalCreator")
+  createdMeetings  Meeting[]              @relation("MeetingCreator")
+  createdProposals Proposal[]             @relation("ProposalCreator")
   checkinLogs      MeetingAttendanceLog[] @relation("CheckinHandler")
-  supervisedVotes  VoteLog[]      @relation("VoteSupervisor")
+  supervisedVotes  VoteLog[]              @relation("VoteSupervisor")
 
   @@map("admin_user")
 }
