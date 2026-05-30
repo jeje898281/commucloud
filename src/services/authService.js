@@ -9,6 +9,10 @@ async function login({ username, password }) {
     if (!user) throw new UserNotFoundError();
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) throw new WrongPasswordError();
+    if (!user.isActive) {
+        const { AccountDeactivatedError } = require('../errors');
+        throw new AccountDeactivatedError();
+    }
     const token = signToken({ userId: user.id, role: user.role, communityId: user.community.id });
     return {
         token,
