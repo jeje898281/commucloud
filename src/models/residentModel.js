@@ -3,13 +3,18 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { ResidentCodeAlreadyExistsError } = require('../errors');
 
-async function getAllWithCommunity() {
+async function getAllWithCommunity(communityId) {
     const residents = await prisma.resident.findMany({
+        where: { communityId },
         include: {
             community: true,
         },
     });
     return residents;
+}
+
+async function findResidentById(id) {
+    return prisma.resident.findUnique({ where: { id } });
 }
 
 
@@ -135,6 +140,7 @@ async function deleteResidentModel(id) {
 module.exports = {
     getAllWithCommunity,
     findById,
+    findResidentById,
     updateResident,
     findByCommunityWithEmail,
     findResidentIdsByMeetingId,

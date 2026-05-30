@@ -1,27 +1,37 @@
 // src/services/residentService.js
-const { getAllWithCommunity, createResidentModel, bulkCreateResidents, updateResidentModel, deleteResidentModel } = require('../models/residentModel');
+const { getAllWithCommunity, createResidentModel, bulkCreateResidents, updateResidentModel, deleteResidentModel, findResidentById } = require('../models/residentModel');
 const { cacheGet, cacheSet, cacheDel } = require('./cacheService');
-const { ResidentCodeAlreadyExistsError, ResidentNotFoundError, ResidentHasCheckinDataError } = require('../errors');
+const { ResidentCodeAlreadyExistsError, ResidentNotFoundError, ResidentHasCheckinDataError, TargetUserNotInCommunityError } = require('../errors');
 
 const CACHE_FEATURE = 'residentList';
 const CACHE_TTL = 6000;
 
-async function listResidents() {
-    const cached = await cacheGet(CACHE_FEATURE, 'all');
+const cacheKey = (communityId) => `community:${communityId}`;
+
+async function listResidents(communityId) {
+    const key = cacheKey(communityId);
+    const cached = await cacheGet(CACHE_FEATURE, key);
     if (cached) {
         return { fromCache: true, data: cached };
     }
-    const residents = await getAllWithCommunity();
-    await cacheSet(CACHE_FEATURE, 'all', residents, CACHE_TTL);
+    const residents = await getAllWithCommunity(communityId);
+    await cacheSet(CACHE_FEATURE, key, residents, CACHE_TTL);
     return { fromCache: false, data: residents };
 }
 
 async function createResident(code, residentSqm, email = null, communityId) {
     const createdResidentResult = await createResidentModel(code, residentSqm, email, communityId);
     if (createdResidentResult) {
-        await cacheDel(CACHE_FEATURE, 'all');
+        await cacheDel(CACHE_FEATURE, cacheKey(communityId));
     }
     return createdResidentResult;
+}
+
+async function assertResidentInCommunity(id, communityId) {
+    const target = await findResidentById(id);
+    if (!target) throw new ResidentNotFoundError();
+    if (target.communityId !== communityId) throw new TargetUserNotInCommunityError();
+    return target;
 }
 
 
@@ -91,7 +101,7 @@ async function bulkCreateResident(residents, communityId) {
     try {
         const result = await bulkCreateResidents(residentsWithCommunity);
 
-        await cacheDel(CACHE_FEATURE, 'all');
+        await cacheDel(CACHE_FEATURE, cacheKey(communityId));
 
         if (result.success) {
             return {
@@ -114,11 +124,12 @@ async function bulkCreateResident(residents, communityId) {
     }
 }
 
-async function updateResident(id, data) {
+async function updateResident(id, data, communityId) {
     try {
+        await assertResidentInCommunity(id, communityId);
         const updatedResidentResult = await updateResidentModel(id, data);
         if (updatedResidentResult) {
-            await cacheDel(CACHE_FEATURE, 'all');
+            await cacheDel(CACHE_FEATURE, cacheKey(communityId));
         }
         return updatedResidentResult;
     } catch (error) {
@@ -129,11 +140,12 @@ async function updateResident(id, data) {
     }
 }
 
-async function deleteResident(id) {
+async function deleteResident(id, communityId) {
     try {
+        await assertResidentInCommunity(id, communityId);
         const deletedResidentResult = await deleteResidentModel(id);
         if (deletedResidentResult) {
-            await cacheDel(CACHE_FEATURE, 'all');
+            await cacheDel(CACHE_FEATURE, cacheKey(communityId));
         }
         return deletedResidentResult;
     } catch (error) {

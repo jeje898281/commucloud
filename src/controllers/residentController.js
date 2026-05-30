@@ -3,7 +3,8 @@ const { listResidents, createResident, bulkCreateResident, updateResident, delet
 const { MissingRequiredFieldsError } = require('../errors');
 
 async function getResidents(req, res) {
-    const { fromCache, data } = await listResidents();
+    const { communityId } = req.user;
+    const { fromCache, data } = await listResidents(communityId);
     res.status(200).json({ fromCache, data });
 }
 
@@ -42,13 +43,15 @@ async function handleBulkImportResident(req, res) {
 
 async function handleUpdateResident(req, res) {
     const { id, ...data } = req.body;
-    const resident = await updateResident(id, data);
+    const { communityId } = req.user;
+    const resident = await updateResident(id, data, communityId);
     res.status(200).json({ data: resident });
 }
 
 async function handleDeleteResident(req, res) {
     const { id } = req.body;
-    const resident = await deleteResident(id);
+    const { communityId } = req.user;
+    const resident = await deleteResident(id, communityId);
     res.status(200).json({ data: resident });
 }
 
