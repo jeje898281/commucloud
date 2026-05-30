@@ -4,11 +4,12 @@ const {
     getResidents, handleCreateResident, handleBulkImportResident,
     handleUpdateResident, handleDeleteResident
 } = require('../controllers/residentController');
+const requireRole = require('../middleware/requireRole');
 
 router.get('/', getResidents);
-router.post('/', handleCreateResident);
-router.post('/bulk', handleBulkImportResident);
-router.patch('/', handleUpdateResident);
-router.delete('/', handleDeleteResident);
+router.post('/', requireRole('admin', 'manager'), handleCreateResident);
+router.post('/bulk', requireRole('admin', 'manager'), handleBulkImportResident);
+router.patch('/', requireRole('admin', 'manager'), handleUpdateResident);
+router.delete('/', requireRole('admin', 'manager'), handleDeleteResident);
 
 module.exports = router;
