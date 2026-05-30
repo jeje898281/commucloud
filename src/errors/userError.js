@@ -17,7 +17,33 @@ class MissingRequiredFieldsError extends BaseError {
 }
 
 
+class UsernameTakenError extends BaseError {
+    constructor() { super('Username already taken', 'USERNAME_TAKEN', 409); }
+}
+
+class EmailTakenError extends BaseError {
+    constructor() { super('Email already taken', 'EMAIL_TAKEN', 409); }
+}
+
+class CannotModifySelfError extends BaseError {
+    constructor() { super('Cannot modify own account via this endpoint', 'CANNOT_MODIFY_SELF', 400); }
+}
+
+class LastAdminProtectedError extends BaseError {
+    constructor() { super('Community must keep at least one active admin', 'LAST_ADMIN_PROTECTED', 400); }
+}
+
+class RoleInvalidError extends BaseError {
+    constructor() { super('Invalid role', 'ROLE_INVALID', 400); }
+}
+
+class TargetUserNotInCommunityError extends BaseError {
+    constructor() { super('Target user not in your community', 'TARGET_USER_NOT_IN_COMMUNITY', 403); }
+}
+
 module.exports = {
     UserNotFoundError, DisplayNameEmptyError, DisplayNameTooLongError,
     MissingRequiredFieldsError,
+    UsernameTakenError, EmailTakenError, CannotModifySelfError,
+    LastAdminProtectedError, RoleInvalidError, TargetUserNotInCommunityError,
 };

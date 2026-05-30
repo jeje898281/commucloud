@@ -2,7 +2,9 @@ const { MeetingNotFoundError } = require('./meetingError');
 const { UnauthorizedError, TokenNotFoundError } = require('./authErrors');
 const {
     UserNotFoundError, DisplayNameEmptyError, DisplayNameTooLongError,
-    MissingRequiredFieldsError
+    MissingRequiredFieldsError,
+    UsernameTakenError, EmailTakenError, CannotModifySelfError,
+    LastAdminProtectedError, RoleInvalidError, TargetUserNotInCommunityError
 } = require('./userError');
 
 const { CommunityNotFoundError, CommunityNameEmptyError,
@@ -16,7 +18,8 @@ const { AlreadyCheckedInError, MeetingIdInvalidError, MeetingSqmThresholdInvalid
 } = require('./meetingError');
 
 const { WrongPasswordError, PasswordTooShortError,
-    PasswordTooLongError, PasswordInvalidFormatError, PasswordSameAsCurrentError
+    PasswordTooLongError, PasswordInvalidFormatError, PasswordSameAsCurrentError,
+    AccountDeactivatedError, ForbiddenError
 } = require('./authErrors');
 
 const { ResidentCodeAlreadyExistsError, ResidentNotFoundError, ResidentHasCheckinDataError } = require('./residentError');
@@ -56,5 +59,13 @@ module.exports = {
     ResidentCodeAlreadyExistsError,
     ResidentNotFoundError,
     ResidentHasCheckinDataError,
-    BadRequestError
+    BadRequestError,
+    UsernameTakenError,
+    EmailTakenError,
+    CannotModifySelfError,
+    LastAdminProtectedError,
+    RoleInvalidError,
+    TargetUserNotInCommunityError,
+    AccountDeactivatedError,
+    ForbiddenError
 };

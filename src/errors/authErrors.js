@@ -41,7 +41,16 @@ class PasswordSameAsCurrentError extends BaseError {
 }
 
 
+class AccountDeactivatedError extends BaseError {
+    constructor() { super('Account is deactivated', 'ACCOUNT_DEACTIVATED', 401); }
+}
+
+class ForbiddenError extends BaseError {
+    constructor() { super('Forbidden', 'FORBIDDEN', 403); }
+}
+
 module.exports = {
     UnauthorizedError, TokenNotFoundError, WrongPasswordError, PasswordTooShortError,
-    PasswordTooLongError, PasswordInvalidFormatError, PasswordSameAsCurrentError
+    PasswordTooLongError, PasswordInvalidFormatError, PasswordSameAsCurrentError,
+    AccountDeactivatedError, ForbiddenError
 };
