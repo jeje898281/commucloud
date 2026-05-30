@@ -27,6 +27,8 @@ async function main() {
     create: {
       username: 'admin001',
       password: await bcrypt.hash('test1234', 10),
+      email: 'admin001@example.com',
+      isActive: true,
       role: 'admin',
       displayName: 'user001',
       communityId: community.id
