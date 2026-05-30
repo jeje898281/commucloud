@@ -3,6 +3,7 @@ const express = require('express');
 const authRoutes = require('./routes/authRoutes');
 const residentRoutes = require('./routes/residentRoutes');
 const meetingRoutes = require('./routes/meetingRoutes');
+const adminUserRoutes = require('./routes/adminUserRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const communityRoutes = require('./routes/communityRoutes');
@@ -38,6 +39,7 @@ app.use('/api/auth', authRoutes); // login api is not required to be authenticat
 const apiRouter = express.Router();
 apiRouter.use('/resident', residentRoutes);
 apiRouter.use('/meeting', meetingRoutes);
+apiRouter.use('/admin', adminUserRoutes);
 apiRouter.use(notificationRoutes);
 apiRouter.use(profileRoutes);
 apiRouter.use(communityRoutes);
