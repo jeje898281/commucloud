@@ -1,0 +1,13 @@
+// src/controllers/authController.js
+const { login } = require('../services/authService');
+
+async function handleLogin(req, res) {
+    try {
+        const { token } = await login(req.body);
+        res.json({ token });
+    } catch (err) {
+        res.status(401).json({ error: err.message });
+    }
+}
+
+module.exports = { handleLogin };

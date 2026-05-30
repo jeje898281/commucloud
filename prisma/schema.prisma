@@ -1,0 +1,148 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Community {
+  id          Int          @id @default(autoincrement()) @map("id")
+  name        String       @map("name")
+  description String       @map("description")
+  logoUrl     String       @map("logo_url")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  residents   Resident[]
+  admins      AdminUser[]
+  meetings    Meeting[]
+
+  @@map("community")
+}
+
+model AdminUser {
+  id               Int         @id @default(autoincrement()) @map("id")
+  community        Community   @relation(fields: [communityId], references: [id])
+  communityId      Int         @map("community_id")
+  username         String      @unique @map("username")
+  password         String      @map("password")
+  role             Role        @default(manager) @map("role")
+  createdAt        DateTime    @default(now()) @map("created_at")
+  updatedAt        DateTime    @updatedAt @map("updated_at")
+
+  createdMeetings  Meeting[]       @relation("MeetingCreator")
+  createdProposals Proposal[]      @relation("ProposalCreator")
+  checkinLogs      MeetingAttendanceLog[] @relation("CheckinHandler")
+  supervisedVotes  VoteLog[]      @relation("VoteSupervisor")
+
+  @@map("admin_user")
+}
+
+model Resident {
+  id           Int       @id @default(autoincrement()) @map("id")
+  community    Community @relation(fields: [communityId], references: [id])
+  communityId  Int       @map("community_id")
+  code         String    @map("code")
+  residentSqm  Float   @map("resident_sqm")
+  username     String?   @unique @map("username")
+  password     String?   @map("password")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  checkins     MeetingAttendanceLog[]
+  votes        VoteLog[]
+
+  @@map("resident")
+}
+
+model Meeting {
+  id                 Int         @id @default(autoincrement()) @map("id")
+  name               String      @map("name")
+  date               DateTime    @map("date")
+  status             MeetingStatus @map("status")
+  sqmThreshold       Float     @map("sqm_threshold")
+  residentThreshold  Float     @map("resident_threshold")
+
+  community          Community   @relation(fields: [communityId], references: [id])
+  communityId        Int         @map("community_id")
+
+  createdBy          AdminUser   @relation("MeetingCreator", fields: [createAdminUserId], references: [id])
+  createAdminUserId  Int         @map("create_admin_user_id")
+  createdAt          DateTime    @default(now()) @map("created_at")
+  updatedAt          DateTime    @updatedAt @map("updated_at")
+
+  attendances        MeetingAttendanceLog[]
+  proposals          Proposal[]
+
+  @@map("meeting")
+}
+
+model MeetingAttendanceLog {
+  id               Int       @id @default(autoincrement()) @map("id")
+  meeting          Meeting   @relation(fields: [meetingId], references: [id])
+  meetingId        Int       @map("meeting_id")
+  resident         Resident  @relation(fields: [residentId], references: [id])
+  residentId       Int       @map("resident_id")
+  handledBy        AdminUser @relation("CheckinHandler", fields: [createAdminUserId], references: [id])
+  createAdminUserId Int      @map("create_admin_user")
+  checkedInAt      DateTime  @default(now()) @map("checked_in_at")
+  isManual         Boolean   @default(false) @map("is_manual")
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  @@map("meeting_attendance_log")
+}
+
+model Proposal {
+  id                 Int       @id @default(autoincrement()) @map("id")
+  meeting            Meeting   @relation(fields: [meetingId], references: [id])
+  meetingId          Int       @map("meeting_id")
+  title              String    @map("title")
+  content            String    @map("content")
+  sqmThreshold       Float   @map("sqm_threshold")
+  residentThreshold  Float   @map("resident_threshold")
+  createdBy          AdminUser @relation("ProposalCreator", fields: [createAdminUserId], references: [id])
+  createAdminUserId  Int       @map("create_admin_user_id")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  votes              VoteLog[]
+
+  @@map("proposal")
+}
+
+model VoteLog {
+  id                 Int       @id @default(autoincrement()) @map("id")
+  proposal           Proposal  @relation(fields: [proposalId], references: [id])
+  proposalId         Int       @map("proposal_id")
+  resident           Resident  @relation(fields: [residentId], references: [id])
+  residentId         Int       @map("resident_id")
+  result             VoteResult @map("vote_result")
+  supervisedBy       AdminUser @relation("VoteSupervisor", fields: [createAdminUserId], references: [id])
+  createAdminUserId  Int       @map("create_admin_user_id")
+  votedAt            DateTime  @default(now()) @map("voted_at")
+  createdAt          DateTime  @default(now()) @map("created_at")
+
+  @@map("vote_log")
+}
+
+enum Role {
+  admin
+  manager
+  meeting_assistant
+}
+
+enum MeetingStatus {
+  pending
+  ongoing
+  completed
+  deleted
+  cancelled
+}
+
+enum VoteResult {
+  agree
+  disagree
+  void
+}

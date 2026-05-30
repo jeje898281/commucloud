@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "migrate": "npx prisma migrate dev",
+    "seed": "node prisma/seed.js"
+  }
+}
