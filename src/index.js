@@ -1,5 +1,6 @@
 require('dotenv').config();               // 請先 pnpm install dotenv
 const express = require('express');
+const helmet = require('helmet');
 const authRoutes = require('./routes/authRoutes');
 const residentRoutes = require('./routes/residentRoutes');
 const meetingRoutes = require('./routes/meetingRoutes');
@@ -11,12 +12,18 @@ const swaggerUi = require('swagger-ui-express');
 const loadSwaggerSpec = require('./utils/loadSwaggerSpec');
 const authMiddleware = require('./middleware/authMiddleware');
 const errorHandler = require('./middleware/errorHandler');
+const { authLimiter } = require('./middleware/rateLimiters');
 const cors = require('cors');
 const allowedOrigins = process.env.CORS_ORIGIN?.split(',') || [];
 const apiSpec = loadSwaggerSpec();
 
 const app = express();
-app.use(express.json());
+
+// Behind a reverse proxy (e.g. nginx, fly.io) so req.ip reflects the real client IP
+app.set('trust proxy', 1);
+
+app.use(helmet());
+app.use(express.json({ limit: '1mb' }));
 
 
 app.use(cors({
@@ -34,7 +41,7 @@ app.use(cors({
 
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(apiSpec));
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
-app.use('/api/auth', authRoutes); // login api is not required to be authenticated
+app.use('/api/auth', authLimiter, authRoutes); // login api is not required to be authenticated
 
 const apiRouter = express.Router();
 apiRouter.use('/resident', residentRoutes);
