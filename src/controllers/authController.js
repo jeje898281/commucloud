@@ -1,9 +1,22 @@
 // src/controllers/authController.js
-const { login } = require('../services/authService');
+const { login, register } = require('../services/authService');
 
-async function handleLogin(req, res) {
-    const { token, username, displayName, community, role } = await login(req.body);
-    res.status(200).json({ token, username, displayName, community, role });
+async function handleLogin(req, res, next) {
+    try {
+        const result = await login(req.body);
+        return res.status(200).json(result);
+    } catch (err) {
+        return next(err);
+    }
 }
 
-module.exports = { handleLogin };
+async function handleRegister(req, res, next) {
+    try {
+        const result = await register(req.body || {});
+        return res.status(201).json(result);
+    } catch (err) {
+        return next(err);
+    }
+}
+
+module.exports = { handleLogin, handleRegister };

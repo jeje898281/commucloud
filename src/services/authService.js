@@ -23,4 +23,43 @@ async function login({ username, password }) {
     };
 }
 
-module.exports = { login };
+const {
+    UsernameTakenError, EmailTakenError, MissingRequiredFieldsError,
+    PasswordTooShortError, CommunityNameEmptyError
+} = require('../errors');
+const { findByEmail, createAdminAndCommunity } = require('../models/adminUserModel');
+
+async function register({ username, email, password, displayName, communityName, communityDescription, logoUrl }) {
+    if (!username || !email || !password || !displayName || !communityName) {
+        throw new MissingRequiredFieldsError();
+    }
+    if (password.length < 8) throw new PasswordTooShortError();
+    if (!communityName.trim()) throw new CommunityNameEmptyError();
+
+    const existingByUsername = await findByUsername(username);
+    if (existingByUsername) throw new UsernameTakenError();
+
+    const existingByEmail = await findByEmail(email);
+    if (existingByEmail) throw new EmailTakenError();
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const admin = await createAdminAndCommunity({
+        username, email, passwordHash, displayName,
+        communityName, communityDescription: communityDescription || '', logoUrl: logoUrl || ''
+    });
+
+    const token = signToken({ userId: admin.id, role: admin.role, communityId: admin.community.id });
+    return {
+        token,
+        username: admin.username,
+        displayName: admin.displayName,
+        role: admin.role,
+        community: {
+            id: admin.community.id,
+            name: admin.community.name,
+            description: admin.community.description
+        }
+    };
+}
+
+module.exports = { login, register };
