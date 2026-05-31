@@ -216,10 +216,10 @@ export default function MeetingListPage() {
                     </span>
                   </div>
                   <div className="info-item">
-                    <span className="info-text">坪數門檻: {meeting.sqmThreshold}</span>
+                    <span className="info-text">坪數門檻: {meeting.sqmThreshold}%</span>
                   </div>
                   <div className="info-item">
-                    <span className="info-text">戶數門檻: {meeting.residentThreshold}</span>
+                    <span className="info-text">戶數門檻: {meeting.residentThreshold} 戶</span>
                   </div>
                 </div>
               </div>
@@ -245,13 +245,21 @@ export default function MeetingListPage() {
                       通知住戶
                     </button>
                   )}
-                  <button
-                    className="btn btn-primary btn-sm"
-                    onClick={() => navigate(`/meetings/${meeting.id}/scan`)}
-                    disabled={meeting.status === 'completed' || meeting.status === 'cancelled'}
-                  >
-                    {meeting.status === 'ongoing' ? '進入會議' : '進入會議'}
-                  </button>
+                  {meeting.status === 'completed' || meeting.status === 'cancelled' ? (
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => navigate(`/meetings/${meeting.id}/summary`)}
+                    >
+                      查看紀錄
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => navigate(`/meetings/${meeting.id}/scan`)}
+                    >
+                      進入會議
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

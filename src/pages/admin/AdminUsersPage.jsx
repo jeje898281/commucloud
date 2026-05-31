@@ -27,7 +27,12 @@ export default function AdminUsersPage() {
     try {
       setLoading(true);
       const res = await listAdminUsers();
-      setUsers(res.data.data);
+      const list = [...res.data.data].sort((a, b) => {
+        if (a.username === currentUsername) return -1;
+        if (b.username === currentUsername) return 1;
+        return 0;
+      });
+      setUsers(list);
     } catch (err) {
       show(getErrorMessage(err.response?.data?.code) || '載入失敗', 'error');
     } finally {

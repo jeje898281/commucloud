@@ -33,17 +33,14 @@ function InnerLayout() {
 
   return (
     <>
-      <div className="meeting-info-header">
-        <div className="meeting-nav-container">
-          <h2 className="meeting-info-title">{meeting.name}</h2>
-          {meeting.date && (
-            <p className="meeting-info-sub">{formatDate(meeting.date)}</p>
-          )}
-        </div>
-      </div>
-
       <nav className="meeting-nav">
         <div className="meeting-nav-container">
+          <div className="meeting-nav-title">
+            <span className="meeting-nav-name">{meeting.name}</span>
+            {meeting.date && (
+              <span className="meeting-nav-date">{formatDate(meeting.date)}</span>
+            )}
+          </div>
           <ul className="meeting-nav-tabs">
             <li className="meeting-nav-tab">
               <NavLink to={`/meetings/${id}/scan`}>掃描報到</NavLink>
@@ -55,7 +52,13 @@ function InnerLayout() {
               <NavLink to={`/meetings/${id}/summary`}>統計</NavLink>
             </li>
             <li className="meeting-nav-tab">
-              <NavLink to={`/meetings/${id}/qrcodes`}>QR Code</NavLink>
+              <NavLink to={`/meetings/${id}/proposals`}>提案投票</NavLink>
+            </li>
+            <li className="meeting-nav-tab">
+              <NavLink to={`/meetings/${id}/vote-scan`}>掃碼計票</NavLink>
+            </li>
+            <li className="meeting-nav-tab">
+              <NavLink to={`/meetings/${id}/qrcodes`}>住戶報到碼</NavLink>
             </li>
           </ul>
         </div>

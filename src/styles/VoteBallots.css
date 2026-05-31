@@ -1,0 +1,159 @@
+/* VoteBallots.css — 投票單批量列印 */
+.ballots-root {
+    background: #f3f4f6;
+    min-height: 100vh;
+}
+
+.ballots-state {
+    text-align: center;
+    padding: 64px 16px;
+    color: #555;
+    font-size: 1rem;
+}
+
+.ballots-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 20px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.ballot-sheet {
+    background: #fff;
+    width: 190mm;
+    min-height: 277mm;
+    margin: 16px auto;
+    padding: 18mm 16mm;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+}
+
+.ballot-header {
+    border-bottom: 2px solid #111;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+}
+
+.ballot-meeting-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.ballot-meeting-date {
+    margin: 4px 0 8px;
+    color: #444;
+}
+
+.ballot-resident {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+}
+
+.ballot-proposal {
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+}
+
+.ballot-proposal-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.ballot-proposal-content {
+    font-size: 0.82rem;
+    color: #374151;
+    line-height: 1.5;
+    margin: 0 0 10px;
+    white-space: pre-wrap;
+}
+
+.ballot-options {
+    display: flex;
+    gap: 12px;
+}
+
+/* 每個選項改為左右排列：勾選框＋文字在左，較小的 QR 在右，整體更緊湊 */
+.ballot-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.ballot-option-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ballot-checkbox {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #111;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.ballot-option-text {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.ballot-option-text.agree { color: #047857; }
+.ballot-option-text.disagree { color: #b91c1c; }
+
+.ballot-option-qr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.ballot-qr {
+    width: 60px;
+    height: 60px;
+}
+
+.ballot-qr-hint {
+    font-size: 0.65rem;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+.ballot-footer {
+    margin-top: 12px;
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-align: center;
+}
+
+@media print {
+    .no-print { display: none !important; }
+    .ballots-root { background: #fff; }
+    .ballot-sheet {
+        width: auto;
+        min-height: auto;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        page-break-after: always;
+    }
+    .ballot-sheet:last-child { page-break-after: auto; }
+}

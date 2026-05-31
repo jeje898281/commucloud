@@ -134,6 +134,12 @@
   margin-left: 2px;
 }
 
+.threshold-subtext {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
 /* ── Progress Bar ── */
 .progress-container {
   display: flex;
@@ -249,6 +255,81 @@
   border: none;
   padding: 0;
   margin: 0;
+}
+
+/* ── Attendance Records ── */
+.attendance-records-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: var(--space-6);
+  margin-top: var(--space-5);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.records-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.records-header h2 {
+  font-size: var(--text-lg);
+  margin: 0;
+}
+
+.records-count {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.records-empty {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: var(--space-6) 0;
+}
+
+.records-table-wrap {
+  overflow-x: auto;
+}
+
+.records-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.records-table th,
+.records-table td {
+  text-align: left;
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--border-light);
+  white-space: nowrap;
+}
+
+.records-table th {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.method-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm, 4px);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.method-badge.qr {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.method-badge.manual {
+  background: #eff6ff;
+  color: #1d4ed8;
 }
 
 /* ── Responsive ── */

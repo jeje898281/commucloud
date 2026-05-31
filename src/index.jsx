@@ -26,6 +26,9 @@ import ManualCheckIn from './pages/meetings/ManualCheckIn';
 import SummaryPage from './pages/meetings/SummaryPage';
 import ResidentsList from './components/ResidentsList';
 import QRCodePage from './pages/meetings/QRCodePage';
+import ProposalsPage from './pages/meetings/ProposalsPage';
+import VoteScanPage from './pages/meetings/VoteScanPage';
+import VoteBallotsPage from './pages/meetings/VoteBallotsPage';
 
 // Guards
 import RequireAuth from './components/RequireAuth';
@@ -100,9 +103,18 @@ root.render(
               <Route path="scan" element={<ScanPage />} />
               <Route path="manual" element={<ManualCheckIn />} />
               <Route path="summary" element={<SummaryPage />} />
+              <Route path="proposals" element={<ProposalsPage />} />
+              <Route path="vote-scan" element={<VoteScanPage />} />
               <Route path="qrcodes" element={<QRCodePage />} />
             </Route>
           </Route>
+
+          {/* 投票單批量列印頁（獨立全頁，無導覽列，方便列印） */}
+          <Route path="/meetings/:id/ballots" element={
+            <RequireAuth redirectTo="/please-login">
+              <VoteBallotsPage />
+            </RequireAuth>
+          } />
 
           {/* 5. 其他不存在的路由導回首頁 */}
           <Route path="*" element={<Navigate to="/" replace />} />

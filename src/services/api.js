@@ -38,6 +38,9 @@ export function manualCheckIn({ meetingId, residentCode }) {
 export function getAttendanceSummary(meetingId) {
   return apiClient.get(`/meeting/summary/${meetingId}`);
 }
+export function getAttendanceRecords(meetingId) {
+  return apiClient.get(`/meeting/records/${meetingId}`);
+}
 
 export function listMeetings() {
   return apiClient.get('/meeting');
@@ -58,6 +61,42 @@ export function notifyMeeting(meetingId, payload = {}) {
 
 export function getMeetingNotifyPreview(meetingId) {
   return apiClient.get(`/meetings/${meetingId}/notify/preview`);
+}
+
+// === 提案投票相關 API ===
+// 依會議列出提案（含票數統計）
+export function listProposals(meetingId) {
+  return apiClient.get(`/proposal/meeting/${meetingId}`);
+}
+
+// 提案詳情
+export function getProposal(proposalId) {
+  return apiClient.get(`/proposal/${proposalId}`);
+}
+
+// 新增提案
+export function createProposal(data) {
+  return apiClient.post('/proposal', data);
+}
+
+// 更新提案
+export function updateProposal(proposalId, data) {
+  return apiClient.patch(`/proposal/${proposalId}`, data);
+}
+
+// 刪除提案
+export function deleteProposal(proposalId) {
+  return apiClient.delete(`/proposal/${proposalId}`);
+}
+
+// 取得整場會議的投票單列印資料
+export function getMeetingBallots(meetingId) {
+  return apiClient.get(`/proposal/meeting/${meetingId}/ballots`);
+}
+
+// 掃碼記票
+export function voteByQRCode(qrCode) {
+  return apiClient.post('/proposal/vote', { qrCode });
 }
 
 // 新增住戶

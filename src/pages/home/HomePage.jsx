@@ -16,7 +16,7 @@ function HomePage() {
       <header className="hero-section">
         <div className="hero-content">
           <div className="hero-eyebrow">社區大會管理系統</div>
-          <h1 className="hero-title">高效管理<br />社區大會</h1>
+          <h1 className="hero-title">高效管理社區大會</h1>
           <p className="hero-desc">
             整合 QR Code 掃描與手動簽到，即時統計出席人數與出席率，讓每次大會管理更輕鬆有效率。
           </p>
@@ -32,23 +32,23 @@ function HomePage() {
               <span className="dashboard-badge">即時</span>
             </div>
             <div className="dashboard-stat">
-              <span className="dashboard-stat-value">87%</span>
+              <span className="dashboard-stat-value">81%</span>
               <span className="dashboard-stat-label">出席率</span>
             </div>
             <div className="dashboard-bar-wrap">
               <div className="dashboard-bar-label">
-                <span>已出席</span><span>52 / 60</span>
+                <span>已出席</span><span>26 / 32</span>
               </div>
               <div className="dashboard-bar-track">
-                <div className="dashboard-bar-fill" style={{ width: '87%' }}></div>
+                <div className="dashboard-bar-fill" style={{ width: '81%' }}></div>
               </div>
             </div>
             <div className="dashboard-bar-wrap">
               <div className="dashboard-bar-label">
-                <span>出席門檻</span><span>75%</span>
+                <span>出席門檻</span><span>67%</span>
               </div>
               <div className="dashboard-bar-track">
-                <div className="dashboard-bar-fill threshold" style={{ width: '75%' }}></div>
+                <div className="dashboard-bar-fill threshold" style={{ width: '67%' }}></div>
               </div>
             </div>
             <div className="dashboard-items">

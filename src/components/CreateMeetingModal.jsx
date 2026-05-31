@@ -30,8 +30,8 @@ function CreateMeetingModal({ isOpen, onClose, onSuccess }) {
             newErrors.date = '請選擇會議時間';
         }
 
-        if (!formData.sqmThreshold || formData.sqmThreshold < 0) {
-            newErrors.sqmThreshold = '請輸入有效的坪數門檻';
+        if (formData.sqmThreshold === '' || formData.sqmThreshold < 0 || formData.sqmThreshold > 100) {
+            newErrors.sqmThreshold = '請輸入 0~100 之間的坪數門檻百分比';
         } else if (formData.sqmThreshold.toString().includes('.')) {
             const decimalPart = formData.sqmThreshold.toString().split('.')[1];
             if (decimalPart && decimalPart.length > 2) {
@@ -39,8 +39,8 @@ function CreateMeetingModal({ isOpen, onClose, onSuccess }) {
             }
         }
 
-        if (!formData.residentThreshold || formData.residentThreshold < 0) {
-            newErrors.residentThreshold = '請輸入有效的戶數門檻';
+        if (formData.residentThreshold === '' || formData.residentThreshold < 0 || !Number.isInteger(Number(formData.residentThreshold))) {
+            newErrors.residentThreshold = '請輸入有效的戶數門檻（整數戶數）';
         }
 
         setErrors(newErrors);
@@ -61,7 +61,7 @@ function CreateMeetingModal({ isOpen, onClose, onSuccess }) {
                 status: formData.status,
                 date: new Date(formData.date).toISOString(),
                 sqmThreshold: parseFloat(Number(formData.sqmThreshold).toFixed(2)),
-                residentThreshold: parseFloat(formData.residentThreshold)
+                residentThreshold: parseInt(formData.residentThreshold, 10)
             };
 
             console.log('提交新增會議數據:', createData);
@@ -207,13 +207,14 @@ function CreateMeetingModal({ isOpen, onClose, onSuccess }) {
 
                     <div className="form-group">
                         <label htmlFor="sqmThreshold" className="form-label">
-                            坪數門檻 <span className="required">*</span>
+                            坪數門檻（占社區總坪數 %）<span className="required">*</span>
                         </label>
                         <input
                             id="sqmThreshold"
                             type="number"
                             step="0.01"
                             min="0"
+                            max="100"
                             value={formData.sqmThreshold}
                             onChange={(e) => {
                                 let value = e.target.value;
@@ -230,7 +231,7 @@ function CreateMeetingModal({ isOpen, onClose, onSuccess }) {
                                 }
                             }}
                             className={`form-input ${errors.sqmThreshold ? 'error' : ''}`}
-                            placeholder="例如：100.50"
+                            placeholder="例如：66.7（即 2/3）"
                             disabled={isSubmitting}
                         />
                         {errors.sqmThreshold && <span className="error-message">{errors.sqmThreshold}</span>}
@@ -238,12 +239,13 @@ function CreateMeetingModal({ isOpen, onClose, onSuccess }) {
 
                     <div className="form-group">
                         <label htmlFor="residentThreshold" className="form-label">
-                            戶數門檻 <span className="required">*</span>
+                            戶數門檻（戶）<span className="required">*</span>
                         </label>
                         <input
                             id="residentThreshold"
                             type="number"
                             min="0"
+                            step="1"
                             value={formData.residentThreshold}
                             onChange={(e) => {
                                 setFormData({ ...formData, residentThreshold: e.target.value });
@@ -252,7 +254,7 @@ function CreateMeetingModal({ isOpen, onClose, onSuccess }) {
                                 }
                             }}
                             className={`form-input ${errors.residentThreshold ? 'error' : ''}`}
-                            placeholder="例如：50"
+                            placeholder="例如：22（出席需達幾戶）"
                             disabled={isSubmitting}
                         />
                         {errors.residentThreshold && <span className="error-message">{errors.residentThreshold}</span>}

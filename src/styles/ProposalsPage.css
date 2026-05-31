@@ -1,0 +1,141 @@
+/* ProposalsPage.css */
+.proposals-page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: var(--space-6, 24px) var(--space-4, 16px);
+}
+
+.proposals-state {
+    text-align: center;
+    padding: 48px 0;
+    color: var(--text-muted, #888);
+}
+
+.proposals-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.proposals-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.proposals-subtitle {
+    color: var(--text-muted, #888);
+    margin: 4px 0 0;
+}
+
+.proposals-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.proposals-empty {
+    text-align: center;
+    padding: 48px 16px;
+    background: var(--surface, #fafafa);
+    border: 1px dashed var(--border, #ddd);
+    border-radius: 12px;
+    color: var(--text-muted, #888);
+}
+
+.proposal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.proposal-card {
+    background: #fff;
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.proposal-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.proposal-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.proposal-badge {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+.proposal-badge.passed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.proposal-badge.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.proposal-card-content {
+    color: var(--text-secondary, #555);
+    line-height: 1.6;
+    margin: 12px 0;
+    white-space: pre-wrap;
+}
+
+.proposal-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.stat-pill {
+    font-size: 0.85rem;
+    padding: 4px 12px;
+    border-radius: 8px;
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.stat-pill.agree { background: #ecfdf5; color: #047857; }
+.stat-pill.disagree { background: #fef2f2; color: #b91c1c; }
+.stat-pill.void { background: #f3f4f6; color: #6b7280; }
+.stat-pill.total { background: #eff6ff; color: #1d4ed8; }
+
+.proposal-thresholds {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: var(--text-secondary, #555);
+}
+
+.threshold-line.ok {
+    color: #047857;
+    font-weight: 600;
+}
+
+.proposal-card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border, #eee);
+}

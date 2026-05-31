@@ -1,6 +1,6 @@
 //src/pages/meetings/SummaryPage.jsx
 import React, { useEffect, useState } from 'react';
-import { getAttendanceSummary } from '../../services/api';
+import { getAttendanceSummary, getAttendanceRecords } from '../../services/api';
 import { getErrorMessage } from '../../constants/errorCodes';
 import '../../styles/Summary.css';
 import { useMeeting } from '../../contexts/MeetingContext';
@@ -9,15 +9,20 @@ function Summary() {
   const { meeting } = useMeeting();
   const meetingId = meeting.id;
   const [summary, setSummary] = useState(null);
+  const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!meetingId) return;
 
-    getAttendanceSummary(meetingId)
-      .then((res) => {
-        setSummary(res.data.data);
+    Promise.all([
+      getAttendanceSummary(meetingId),
+      getAttendanceRecords(meetingId),
+    ])
+      .then(([summaryRes, recordsRes]) => {
+        setSummary(summaryRes.data.data);
+        setRecords(recordsRes.data.data || []);
         setError(null);
       })
       .catch((err) => {
@@ -67,14 +72,16 @@ function Summary() {
   const {
     residentAttendanceCount,
     totalAttendanceSqm,
+    totalCommunitySqm,
+    sqmPercent,
     residentThreshold,
     sqmThreshold,
     reachedResidentThreshold,
     reachedSqmThreshold
   } = summary;
 
-  const residentProgress = (residentAttendanceCount / residentThreshold) * 100;
-  const sqmProgress = (totalAttendanceSqm / sqmThreshold) * 100;
+  const residentProgress = residentThreshold > 0 ? (residentAttendanceCount / residentThreshold) * 100 : 100;
+  const sqmProgress = sqmThreshold > 0 ? (sqmPercent / sqmThreshold) * 100 : 100;
   const allThresholdReached = reachedResidentThreshold && reachedSqmThreshold;
 
   return (
@@ -123,12 +130,16 @@ function Summary() {
               <div className="threshold-header">
                 <div className="threshold-icon"></div>
                 <div className="threshold-info">
-                  <h3>出席坪數</h3>
+                  <h3>出席坪數比例</h3>
                   <div className="threshold-values">
-                    <span className="current-value">{totalAttendanceSqm.toFixed(1)}</span>
+                    <span className="current-value">{sqmPercent.toFixed(1)}</span>
+                    <span className="unit">%</span>
                     <span className="divider">/</span>
                     <span className="target-value">{sqmThreshold}</span>
-                    <span className="unit">坪</span>
+                    <span className="unit">%</span>
+                  </div>
+                  <div className="threshold-subtext">
+                    出席 {totalAttendanceSqm.toFixed(1)} 坪 / 全社區 {totalCommunitySqm.toFixed(1)} 坪
                   </div>
                 </div>
 
@@ -170,6 +181,46 @@ function Summary() {
               )}
             </div>
           </div>
+        </div>
+
+        {/* 報到名單 */}
+        <div className="attendance-records-card">
+          <div className="records-header">
+            <h2>報到名單</h2>
+            <span className="records-count">共 {records.length} 筆</span>
+          </div>
+          {records.length === 0 ? (
+            <div className="records-empty">尚無報到紀錄</div>
+          ) : (
+            <div className="records-table-wrap">
+              <table className="records-table">
+                <thead>
+                  <tr>
+                    <th>戶號</th>
+                    <th>坪數</th>
+                    <th>報到時間</th>
+                    <th>方式</th>
+                    <th>經辦人</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {records.map((r) => (
+                    <tr key={r.id}>
+                      <td>{r.residentCode}</td>
+                      <td>{r.residentSqm}</td>
+                      <td>{new Date(r.checkedInAt).toLocaleString('zh-TW')}</td>
+                      <td>
+                        <span className={`method-badge ${r.isManual ? 'manual' : 'qr'}`}>
+                          {r.isManual ? '手動' : '掃碼'}
+                        </span>
+                      </td>
+                      <td>{r.handledBy || '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </div>
