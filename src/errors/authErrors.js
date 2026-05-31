@@ -50,7 +50,7 @@ class ForbiddenError extends BaseError {
 }
 
 class DemoLoginDisabledError extends BaseError {
-    constructor() { super('Demo login is not enabled', 'DEMO_LOGIN_DISABLED', 404); }
+    constructor() { super('Demo login is not enabled', 'DEMO_LOGIN_DISABLED', 403); }
 }
 
 module.exports = {
