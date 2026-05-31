@@ -1,5 +1,6 @@
 // src/services/reportService.js
-const { existsLog, createLog, getAttendanceStats } = require('../models/attendanceLogModel');
+const { existsLog, createLog, getAttendanceStats, getAttendanceList } = require('../models/attendanceLogModel');
+const { getCommunityTotalSqm } = require('../models/residentModel');
 const { verifyToken } = require('../utils/jwt');
 const { getMeetingById, getMeetingsByCommunityId, updateMeeting, createMeetingModel, findResidentByCode } = require('../models/meetingModel');
 const { findById: findAdminById } = require('../models/adminUserModel');
@@ -54,17 +55,31 @@ async function getAttendanceSummary(meetingId) {
     }
 
     const { residentAttendanceCount, totalAttendanceSqm } = await getAttendanceStats(meetingId);
+    const totalCommunitySqm = await getCommunityTotalSqm(meeting.communityId);
+
+    // 戶數門檻為「絕對戶數」，坪數門檻為「占社區總坪數的百分比」
+    const sqmPercent = totalCommunitySqm > 0 ? (totalAttendanceSqm / totalCommunitySqm) * 100 : 0;
     const reachedResidentThreshold = residentAttendanceCount >= meeting.residentThreshold;
-    const reachedSqmThreshold = totalAttendanceSqm >= meeting.sqmThreshold;
+    const reachedSqmThreshold = sqmPercent >= meeting.sqmThreshold;
 
     return {
         residentAttendanceCount,
         totalAttendanceSqm,
+        totalCommunitySqm,
+        sqmPercent,
         residentThreshold: meeting.residentThreshold,
         sqmThreshold: meeting.sqmThreshold,
         reachedResidentThreshold,
         reachedSqmThreshold,
     };
+}
+
+async function getAttendanceRecords(meetingId) {
+    const meeting = await getMeetingById(meetingId);
+    if (!meeting) {
+        throw new MeetingNotFoundError();
+    }
+    return getAttendanceList(meetingId);
 }
 
 async function listMeetingsByAdminUser(adminUserId) {
@@ -105,13 +120,13 @@ async function updateMeetingDetail(adminUserId, meetingId, updateData) {
     }
 
     if (filteredData.sqmThreshold !== undefined) {
-        if (typeof filteredData.sqmThreshold !== 'number' || filteredData.sqmThreshold < 0) {
+        if (typeof filteredData.sqmThreshold !== 'number' || filteredData.sqmThreshold < 0 || filteredData.sqmThreshold > 100) {
             throw new MeetingSqmThresholdInvalidError();
         }
     }
 
     if (filteredData.residentThreshold !== undefined) {
-        if (typeof filteredData.residentThreshold !== 'number' || filteredData.residentThreshold < 0) {
+        if (!Number.isInteger(filteredData.residentThreshold) || filteredData.residentThreshold < 0) {
             throw new MeetingResidentThresholdInvalidError();
         }
     }
@@ -155,8 +170,8 @@ async function createMeeting(adminUserId, communityId, { name, status, date, sqm
     }
     const sqm = Number(sqmThreshold);
     const residents = Number(residentThreshold);
-    if (Number.isNaN(sqm) || sqm < 0) throw new MeetingSqmThresholdInvalidError();
-    if (Number.isNaN(residents) || residents < 0) throw new MeetingResidentThresholdInvalidError();
+    if (Number.isNaN(sqm) || sqm < 0 || sqm > 100) throw new MeetingSqmThresholdInvalidError();
+    if (!Number.isInteger(residents) || residents < 0) throw new MeetingResidentThresholdInvalidError();
 
     return createMeetingModel(adminUserId, communityId, {
         name,
@@ -171,6 +186,7 @@ module.exports = {
     checkinByManual,
     checkinByQRCode,
     getAttendanceSummary,
+    getAttendanceRecords,
     listMeetingsByAdminUser,
     getMeetingDetail,
     updateMeetingDetail,

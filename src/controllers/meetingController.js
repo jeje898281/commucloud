@@ -1,6 +1,6 @@
 // src/controllers/meetingController.js
 const {
-    checkinByQRCode, checkinByManual, getAttendanceSummary,
+    checkinByQRCode, checkinByManual, getAttendanceSummary, getAttendanceRecords,
     listMeetingsByAdminUser, getMeetingDetail, updateMeetingDetail, createMeeting
 } = require('../services/meetingService');
 const { generateBatchQRCodes, getResidentIdsByMeetingId } = require('../services/qrService');
@@ -27,6 +27,12 @@ async function handleGetAttendanceSummary(req, res) {
     const meetingId = parseInt(req.params.meetingId, 10);
     const summary = await getAttendanceSummary(meetingId);
     res.status(200).json({ data: summary });
+}
+
+async function handleGetAttendanceRecords(req, res) {
+    const meetingId = parseInt(req.params.meetingId, 10);
+    const records = await getAttendanceRecords(meetingId);
+    res.status(200).json({ data: records });
 }
 
 async function handleListMeetings(req, res) {
@@ -79,6 +85,7 @@ async function handleCreateMeeting(req, res) {
 module.exports = {
     handleCheckin,
     handleGetAttendanceSummary,
+    handleGetAttendanceRecords,
     handleGenerateQRCodes,
     handleListMeetings,
     handleGetMeeting,

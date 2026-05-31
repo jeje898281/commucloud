@@ -36,4 +36,26 @@ async function getAttendanceStats(meetingId) {
     };
 }
 
-module.exports = { existsLog, createLog, getAttendanceStats };
+async function getAttendanceList(meetingId) {
+    const logs = await prisma.meetingAttendanceLog.findMany({
+        where: { meetingId },
+        orderBy: { checkedInAt: 'asc' },
+        select: {
+            id: true,
+            checkedInAt: true,
+            isManual: true,
+            resident: { select: { code: true, residentSqm: true } },
+            handledBy: { select: { displayName: true } },
+        },
+    });
+    return logs.map((log) => ({
+        id: log.id,
+        residentCode: log.resident.code,
+        residentSqm: log.resident.residentSqm,
+        checkedInAt: log.checkedInAt,
+        isManual: log.isManual,
+        handledBy: log.handledBy?.displayName || null,
+    }));
+}
+
+module.exports = { existsLog, createLog, getAttendanceStats, getAttendanceList };
