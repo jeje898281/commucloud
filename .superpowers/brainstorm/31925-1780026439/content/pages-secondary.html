@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>次要頁面與元件</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', 'Noto Sans TC', system-ui, sans-serif; background: #e0e4ec; color: #1e293b; padding: 32px 24px; }
+  h1 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .page-subtitle { font-size: 13px; color: #64748b; margin-bottom: 32px; }
+  .section-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 14px; margin-top: 36px; }
+
+  :root {
+    --bg: #eaedf2; --surface: #f4f6f9; --surface-2: #ffffff;
+    --border: #d1d9e6; --border-light: #e2e8f0;
+    --primary: #5b7fa6; --primary-alt: #7c6fa8;
+    --primary-grad: linear-gradient(135deg,#5b7fa6,#7c6fa8);
+    --primary-light: #dbe4f0; --primary-dark: #3a5a8c;
+    --text-1: #1e293b; --text-2: #475569; --text-3: #64748b; --text-4: #94a3b8;
+    --success: #4a9e6e; --warning: #d4a017; --danger: #dc6060;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.07);
+    --shadow-md: 0 2px 8px rgba(91,127,166,.12);
+    --shadow-lg: 0 8px 24px rgba(91,127,166,.16);
+  }
+
+  .navbar { background:var(--surface); border-bottom:1px solid var(--border); height:56px; display:flex; align-items:center; padding:0 24px; gap:8px; }
+  .nav-logo { width:28px; height:28px; background:var(--primary-grad); border-radius:8px; flex-shrink:0; }
+  .nav-title { font-size:14px; font-weight:700; color:var(--text-1); }
+  .nav-divider { width:1px; height:20px; background:var(--border); margin:0 8px; }
+  .nav-link { font-size:13px; color:var(--text-3); padding:6px 14px; border-radius:999px; font-weight:500; }
+  .nav-link.active { color:var(--primary-dark); background:var(--primary-light); font-weight:600; }
+  .nav-avatar { width:32px; height:32px; background:var(--primary-grad); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:12px; font-weight:700; margin-left:auto; }
+  .nav-community { font-size:12px; color:var(--text-3); background:var(--bg); border-radius:999px; padding:4px 12px; border:1px solid var(--border); margin-left:auto; margin-right:10px; }
+
+  .shell { background:var(--bg); border-radius:14px; overflow:hidden; box-shadow:var(--shadow-lg); margin-bottom:40px; }
+  .page-body { padding:28px 24px; }
+  .page-title { font-size:20px; font-weight:700; color:var(--text-1); margin-bottom:4px; }
+  .page-desc { font-size:13px; color:var(--text-3); margin-bottom:24px; }
+
+  .meeting-tabs { background:var(--surface); border-bottom:1px solid var(--border); padding:0 24px; display:flex; }
+  .tab { font-size:13px; font-weight:500; color:var(--text-3); padding:14px 18px; border-bottom:2px solid transparent; }
+  .tab.active { color:var(--primary-dark); border-bottom-color:var(--primary); font-weight:600; }
+
+  .card { background:var(--surface); border-radius:14px; box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:16px; }
+  .card-header { padding:16px 20px; border-bottom:1px solid var(--border-light); display:flex; align-items:center; justify-content:space-between; }
+  .card-title { font-size:14px; font-weight:700; color:var(--text-1); }
+
+  .table { width:100%; border-collapse:collapse; }
+  .table th { font-size:11px; font-weight:600; color:var(--text-4); text-transform:uppercase; letter-spacing:.05em; padding:12px 20px; text-align:left; border-bottom:1px solid var(--border-light); }
+  .table td { font-size:13px; color:var(--text-2); padding:13px 20px; border-bottom:1px solid var(--border-light); }
+  .table tr:last-child td { border-bottom:none; }
+  .table tr:hover td { background:rgba(91,127,166,.04); }
+
+  .btn { display:inline-flex; align-items:center; gap:6px; border-radius:999px; font-size:13px; font-weight:600; padding:8px 20px; cursor:pointer; border:none; }
+  .btn-primary { background:var(--primary-grad); color:white; }
+  .btn-ghost { background:transparent; color:var(--primary-dark); border:1.5px solid var(--border); }
+  .btn-danger { background:#fdf0f0; color:var(--danger); border:1.5px solid #f5d0d0; }
+  .btn-sm { font-size:11px; padding:5px 14px; }
+
+  .badge { display:inline-block; border-radius:999px; font-size:11px; font-weight:600; padding:3px 10px; }
+  .badge-blue { background:var(--primary-light); color:var(--primary-dark); }
+  .badge-green { background:#d8ead2; color:#2d6a4f; }
+  .badge-amber { background:#f5e8c8; color:#8a5c00; }
+  .badge-gray { background:#e8edf4; color:var(--text-3); }
+  .badge-red { background:#f5d8d8; color:#8a1c1c; }
+
+  .form-label { font-size:12px; font-weight:600; color:var(--text-2); margin-bottom:6px; display:block; }
+  .form-input { background:var(--surface); border:1.5px solid var(--border); border-radius:12px; padding:9px 14px; font-size:13px; color:var(--text-1); width:100%; }
+  .form-group { margin-bottom:14px; }
+
+  /* ── MODAL ── */
+  .modal-backdrop { background:rgba(15,23,42,.35); backdrop-filter:blur(4px); padding:32px 20px; display:flex; align-items:center; justify-content:center; border-radius:0 0 14px 14px; }
+  .modal { background:white; border-radius:20px; padding:28px; width:100%; max-width:440px; box-shadow:var(--shadow-lg); }
+  .modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .modal-title { font-size:16px; font-weight:700; color:var(--text-1); }
+  .modal-close { width:28px; height:28px; border-radius:50%; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:14px; color:var(--text-3); cursor:pointer; border:none; }
+  .modal-footer { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; padding-top:20px; border-top:1px solid var(--border-light); }
+
+  /* ── SUMMARY STATS ── */
+  .summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+  .summary-stat { background:var(--surface); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow-sm); text-align:center; }
+  .summary-stat-value { font-size:24px; font-weight:700; color:var(--text-1); }
+  .summary-stat-label { font-size:11px; color:var(--text-4); margin-top:2px; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap { background:var(--bg); border-radius:999px; height:8px; overflow:hidden; margin-top:6px; }
+  .progress-bar { height:100%; border-radius:999px; background:var(--primary-grad); }
+
+  /* ── PROFILE ── */
+  .profile-grid { display:grid; grid-template-columns:240px 1fr; gap:16px; }
+  .profile-sidebar { background:var(--surface); border-radius:14px; padding:24px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; align-items:center; gap:12px; }
+  .profile-avatar { width:72px; height:72px; background:var(--primary-grad); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:24px; font-weight:700; }
+  .profile-name { font-size:15px; font-weight:700; color:var(--text-1); }
+  .profile-role { font-size:12px; color:var(--text-3); }
+
+  .toast-stack { display:flex; flex-direction:column; gap:8px; }
+  .toast { border-radius:12px; padding:12px 16px; display:flex; align-items:center; gap:10px; font-size:13px; font-weight:500; box-shadow:var(--shadow-md); }
+  .toast-success { background:white; border-left:4px solid var(--success); color:var(--text-1); }
+  .toast-error { background:white; border-left:4px solid var(--danger); color:var(--text-1); }
+  .toast-warning { background:white; border-left:4px solid var(--warning); color:var(--text-1); }
+  .toast-info { background:white; border-left:4px solid var(--primary); color:var(--text-1); }
+  .toast-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<h1>次要頁面與元件</h1>
+<p class="page-subtitle">住戶列表、出席統計、人工報到、個人資料、Modal 元件、Toast 通知</p>
+
+<!-- ═══ 1. RESIDENTS LIST ═══ -->
+<div class="section-label">1 · 住戶資料頁</div>
+<div class="shell">
+  <div class="navbar">
+    <div class="nav-logo"></div><div style="width:8px;"></div>
+    <div class="nav-title">社區管理平台</div>
+    <div class="nav-divider"></div>
+    <div class="nav-link">首頁</div>
+    <div class="nav-link active">住戶資料</div>
+    <div class="nav-community">陽光社區</div>
+    <div class="nav-avatar">王</div>
+  </div>
+  <div class="page-body">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+      <div><div class="page-title">住戶資料</div><div class="page-desc">管理社區住戶資訊</div></div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost">批次匯入</button>
+        <button class="btn btn-primary">+ 新增住戶</button>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;"><input class="form-input" placeholder="搜尋戶號或姓名..." readonly /></div>
+    <div class="card">
+      <table class="table">
+        <thead><tr><th>戶號</th><th>姓名</th><th>聯絡電話</th><th>出席次數</th><th style="text-align:right;">操作</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:600;">A101</td><td>陳小明</td><td>0912-345-678</td><td>8</td><td style="text-align:right;"><div style="display:flex;gap:6px;justify-content:flex-end;"><button class="btn btn-ghost btn-sm">編輯</button><button class="btn btn-danger btn-sm">刪除</button></div></td></tr>
+          <tr><td style="font-weight:600;">A102</td><td>林美華</td><td>0923-456-789</td><td>6</td><td style="text-align:right;"><div style="display:flex;gap:6px;justify-content:flex-end;"><button class="btn btn-ghost btn-sm">編輯</button><button class="btn btn-danger btn-sm">刪除</button></div></td></tr>
+          <tr><td style="font-weight:600;">B201</td><td>張建國</td><td>0934-567-890</td><td>10</td><td style="text-align:right;"><div style="display:flex;gap:6px;justify-content:flex-end;"><button class="btn btn-ghost btn-sm">編輯</button><button class="btn btn-danger btn-sm">刪除</button></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 2. SUMMARY PAGE ═══ -->
+<div class="section-label">2 · 出席統計頁</div>
+<div class="shell">
+  <div class="navbar">
+    <div class="nav-logo"></div><div style="width:8px;"></div>
+    <div class="nav-title">社區管理平台</div>
+    <div class="nav-divider"></div>
+    <div class="nav-link active">會議管理</div>
+    <div class="nav-community">陽光社區</div>
+    <div class="nav-avatar">王</div>
+  </div>
+  <div class="meeting-tabs">
+    <div class="tab">QR 掃描</div>
+    <div class="tab">人工報到</div>
+    <div class="tab active">出席統計</div>
+    <div class="tab">QR 代碼</div>
+  </div>
+  <div class="page-body">
+    <div class="page-title">出席統計</div>
+    <div class="page-desc">2025 年第一季大會</div>
+    <div class="summary-grid">
+      <div class="summary-stat"><div class="summary-stat-value">128</div><div class="summary-stat-label">住戶總數</div></div>
+      <div class="summary-stat"><div class="summary-stat-value" style="color:var(--success);">107</div><div class="summary-stat-label">已出席</div></div>
+      <div class="summary-stat"><div class="summary-stat-value" style="color:var(--danger);">21</div><div class="summary-stat-label">未出席</div></div>
+      <div class="summary-stat"><div class="summary-stat-value">83.6<span style="font-size:14px;">%</span></div><div class="summary-stat-label">出席率</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">出席門檻達成</div>
+        <span class="badge badge-green">已達成 50%</span>
+      </div>
+      <div style="padding:16px 20px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-3);margin-bottom:6px;"><span>出席率 83.6%</span><span>門檻 50%</span></div>
+        <div class="progress-wrap"><div class="progress-bar" style="width:83.6%;"></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">出席名單</div><button class="btn btn-ghost btn-sm">匯出 CSV</button></div>
+      <table class="table">
+        <thead><tr><th>戶號</th><th>姓名</th><th>報到方式</th><th>報到時間</th><th>狀態</th></tr></thead>
+        <tbody>
+          <tr><td>A101</td><td>陳小明</td><td>QR 掃描</td><td>14:32</td><td><span class="badge badge-green">已出席</span></td></tr>
+          <tr><td>A102</td><td>林美華</td><td>人工報到</td><td>14:28</td><td><span class="badge badge-green">已出席</span></td></tr>
+          <tr><td>B201</td><td>張建國</td><td>—</td><td>—</td><td><span class="badge badge-red">未出席</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 3. MANUAL CHECK-IN ═══ -->
+<div class="section-label">3 · 人工報到頁</div>
+<div class="shell">
+  <div class="navbar">
+    <div class="nav-logo"></div><div style="width:8px;"></div>
+    <div class="nav-title">社區管理平台</div>
+    <div class="nav-divider"></div>
+    <div class="nav-link active">會議管理</div>
+    <div class="nav-community">陽光社區</div>
+    <div class="nav-avatar">王</div>
+  </div>
+  <div class="meeting-tabs">
+    <div class="tab">QR 掃描</div>
+    <div class="tab active">人工報到</div>
+    <div class="tab">出席統計</div>
+    <div class="tab">QR 代碼</div>
+  </div>
+  <div class="page-body">
+    <div class="page-title">人工報到</div>
+    <div class="page-desc">手動輸入戶號或姓名進行報到確認</div>
+    <div class="card" style="max-width:480px;">
+      <div style="padding:20px;">
+        <div class="form-group">
+          <label class="form-label">搜尋住戶</label>
+          <input class="form-input" placeholder="輸入戶號或姓名..." readonly />
+        </div>
+        <div style="background:var(--bg);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div><div style="font-size:13px;font-weight:600;color:var(--text-1);">A101 · 陳小明</div><div style="font-size:11px;color:var(--text-4);margin-top:2px;">0912-345-678</div></div>
+          <span class="badge badge-gray">未報到</span>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;">確認報到</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 4. PROFILE PAGE ═══ -->
+<div class="section-label">4 · 個人資料頁</div>
+<div class="shell">
+  <div class="navbar">
+    <div class="nav-logo"></div><div style="width:8px;"></div>
+    <div class="nav-title">社區管理平台</div>
+    <div class="nav-divider"></div>
+    <div class="nav-link">首頁</div>
+    <div class="nav-community">陽光社區</div>
+    <div class="nav-avatar">王</div>
+  </div>
+  <div class="page-body">
+    <div class="page-title">個人資料</div>
+    <div class="page-desc" style="margin-bottom:20px;">管理帳號資訊與安全設定</div>
+    <div class="profile-grid">
+      <div class="profile-sidebar">
+        <div class="profile-avatar">王</div>
+        <div class="profile-name">王大明</div>
+        <div class="profile-role"><span class="badge badge-blue">管理員</span></div>
+        <div style="font-size:12px;color:var(--text-4);text-align:center;">陽光社區</div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-header"><div class="card-title">基本資訊</div></div>
+          <div style="padding:20px;display:flex;flex-direction:column;gap:14px;">
+            <div class="form-group" style="margin:0;"><label class="form-label">顯示名稱</label><input class="form-input" value="王大明" readonly /></div>
+            <div class="form-group" style="margin:0;"><label class="form-label">帳號</label><input class="form-input" value="admin_wang" readonly /></div>
+            <div style="display:flex;justify-content:flex-end;"><button class="btn btn-primary btn-sm">儲存變更</button></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">修改密碼</div></div>
+          <div style="padding:20px;">
+            <button class="btn btn-ghost">變更密碼</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5. MODALS ═══ -->
+<div class="section-label">5 · Modal 元件</div>
+<div class="shell">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
+
+    <!-- Create Meeting Modal -->
+    <div style="border-right:1px solid var(--border);">
+      <div style="padding:14px 16px;background:var(--surface);border-bottom:1px solid var(--border);font-size:11px;font-weight:600;color:var(--text-4);text-transform:uppercase;letter-spacing:.06em;">新增會議</div>
+      <div class="modal-backdrop" style="border-radius:0;min-height:340px;">
+        <div class="modal">
+          <div class="modal-header">
+            <div class="modal-title">新增會議</div>
+            <button class="modal-close">✕</button>
+          </div>
+          <div class="form-group"><label class="form-label">會議名稱</label><input class="form-input" placeholder="例：2025 年第二季大會" readonly /></div>
+          <div class="form-group"><label class="form-label">出席門檻（%）</label><input class="form-input" placeholder="50" readonly /></div>
+          <div class="form-group"><label class="form-label">備註說明</label><div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:9px 14px;font-size:13px;color:var(--text-4);min-height:60px;">選填</div></div>
+          <div class="modal-footer">
+            <button class="btn btn-ghost btn-sm">取消</button>
+            <button class="btn btn-primary btn-sm">建立會議</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirm Modal -->
+    <div>
+      <div style="padding:14px 16px;background:var(--surface);border-bottom:1px solid var(--border);font-size:11px;font-weight:600;color:var(--text-4);text-transform:uppercase;letter-spacing:.06em;">刪除確認</div>
+      <div class="modal-backdrop" style="border-radius:0;min-height:340px;">
+        <div class="modal" style="max-width:360px;">
+          <div style="text-align:center;padding:8px 0 20px;">
+            <div style="width:48px;height:48px;background:#fdf0f0;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:20px;color:var(--danger);border:2px solid #f5d0d0;">!</div>
+            <div class="modal-title" style="margin-bottom:8px;">確認刪除</div>
+            <div style="font-size:13px;color:var(--text-3);line-height:1.6;">您確定要刪除<strong style="color:var(--text-1);">「臨時協調會議」</strong>嗎？此操作無法復原。</div>
+          </div>
+          <div class="modal-footer" style="justify-content:center;">
+            <button class="btn btn-ghost">取消</button>
+            <button class="btn btn-danger" style="background:var(--danger);color:white;">確認刪除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ 6. TOAST ═══ -->
+<div class="section-label">6 · Toast 通知</div>
+<div class="shell">
+  <div style="padding:24px;">
+    <div class="toast-stack">
+      <div class="toast toast-success"><div class="toast-dot" style="background:var(--success);"></div>報到成功，A101 陳小明 已完成出席登記。</div>
+      <div class="toast toast-error"><div class="toast-dot" style="background:var(--danger);"></div>操作失敗，請確認帳號資訊後重試。</div>
+      <div class="toast toast-warning"><div class="toast-dot" style="background:var(--warning);"></div>出席率尚未達到門檻，請繼續報到作業。</div>
+      <div class="toast toast-info"><div class="toast-dot" style="background:var(--primary);"></div>QR 代碼已成功產生並下載。</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

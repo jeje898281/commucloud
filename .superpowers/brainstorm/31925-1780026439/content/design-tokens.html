@@ -1,0 +1,183 @@
+<h2>設計 Token 系統</h2>
+<p class="subtitle">這是整個重構的基礎，確認後所有頁面都以此為準</p>
+
+<style>
+  .token-section { margin-bottom: 28px; }
+  .token-section h3 { font-size: 13px; font-weight: 700; color: #1e293b; margin-bottom: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  .swatch-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .swatch { border-radius: 8px; overflow: hidden; width: 80px; }
+  .swatch-color { height: 48px; }
+  .swatch-label { font-size: 10px; color: #475569; padding: 4px 6px; background: #f8fafc; text-align: center; line-height: 1.4; }
+
+  .radius-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+  .radius-demo { background: #dbe4f0; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #3d5273; font-weight: 600; width: 64px; height: 40px; }
+
+  .shadow-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .shadow-demo { background: #f4f6f9; width: 80px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #64748b; font-weight: 500; }
+
+  .type-row { display: flex; flex-direction: column; gap: 8px; }
+  .type-sample { color: #1e293b; }
+
+  .component-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .btn-pill { background: linear-gradient(135deg, #5b7fa6, #7c6fa8); color: white; border-radius: 20px; padding: 8px 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+  .btn-pill-ghost { border: 1.5px solid #7c6fa8; color: #7c6fa8; border-radius: 20px; padding: 7px 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+  .btn-pill-danger { background: #dc6060; color: white; border-radius: 20px; padding: 8px 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+  .badge-blue { background: #dbe4f0; color: #3a5a8c; border-radius: 20px; padding: 3px 12px; font-size: 11px; font-weight: 600; display: inline-block; }
+  .badge-green { background: #d8ead2; color: #2d6a4f; border-radius: 20px; padding: 3px 12px; font-size: 11px; font-weight: 600; display: inline-block; }
+  .badge-amber { background: #f5e8c8; color: #8a5c00; border-radius: 20px; padding: 3px 12px; font-size: 11px; font-weight: 600; display: inline-block; }
+  .badge-red { background: #f5d8d8; color: #8a1c1c; border-radius: 20px; padding: 3px 12px; font-size: 11px; font-weight: 600; display: inline-block; }
+  .mock-input { background: #f4f6f9; border: 1.5px solid #c8d3e0; border-radius: 12px; padding: 8px 14px; font-size: 12px; color: #475569; }
+  .mock-input:focus { border-color: #7c6fa8; outline: none; }
+</style>
+
+<div class="token-section">
+  <h3>底色系統</h3>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#eaedf2;border:1px solid #d4d9e3;"></div>
+      <div class="swatch-label">頁面底色<br>#eaedf2</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#f4f6f9;"></div>
+      <div class="swatch-label">卡片底色<br>#f4f6f9</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#ffffff;border:1px solid #e2e8f0;"></div>
+      <div class="swatch-label">Modal 底色<br>#ffffff</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#f0f3f8;"></div>
+      <div class="swatch-label">Input 底色<br>#f0f3f8</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#d1d9e6;"></div>
+      <div class="swatch-label">邊框色<br>#d1d9e6</div>
+    </div>
+  </div>
+</div>
+
+<div class="token-section">
+  <h3>主色調（互動元素）</h3>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#5b7fa6;"></div>
+      <div class="swatch-label">Primary<br>#5b7fa6</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#7c6fa8;"></div>
+      <div class="swatch-label">Primary Alt<br>#7c6fa8</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:linear-gradient(135deg,#5b7fa6,#7c6fa8);"></div>
+      <div class="swatch-label">漸層主色<br>按鈕/強調</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#dbe4f0;"></div>
+      <div class="swatch-label">Primary 淺色<br>選中/Badge</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#3a5a8c;"></div>
+      <div class="swatch-label">Primary 深色<br>文字連結</div>
+    </div>
+  </div>
+</div>
+
+<div class="token-section">
+  <h3>語意色（狀態）</h3>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#4a9e6e;"></div>
+      <div class="swatch-label">成功<br>#4a9e6e</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#d4a017;"></div>
+      <div class="swatch-label">警告<br>#d4a017</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#dc6060;"></div>
+      <div class="swatch-label">錯誤/危險<br>#dc6060</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1e293b;"></div>
+      <div class="swatch-label">主文字<br>#1e293b</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#64748b;"></div>
+      <div class="swatch-label">次要文字<br>#64748b</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#94a3b8;"></div>
+      <div class="swatch-label">輔助文字<br>#94a3b8</div>
+    </div>
+  </div>
+</div>
+
+<div class="token-section">
+  <h3>圓角</h3>
+  <div class="radius-row">
+    <div>
+      <div class="radius-demo" style="border-radius:4px;">4px</div>
+      <div style="font-size:10px;color:#94a3b8;text-align:center;margin-top:4px;">Table row</div>
+    </div>
+    <div>
+      <div class="radius-demo" style="border-radius:8px;">8px</div>
+      <div style="font-size:10px;color:#94a3b8;text-align:center;margin-top:4px;">小元件</div>
+    </div>
+    <div>
+      <div class="radius-demo" style="border-radius:12px;">12px</div>
+      <div style="font-size:10px;color:#94a3b8;text-align:center;margin-top:4px;">Input / 卡片</div>
+    </div>
+    <div>
+      <div class="radius-demo" style="border-radius:16px;width:80px;">16px</div>
+      <div style="font-size:10px;color:#94a3b8;text-align:center;margin-top:4px;">Modal / 大卡片</div>
+    </div>
+    <div>
+      <div class="radius-demo" style="border-radius:999px;width:80px;">Pill</div>
+      <div style="font-size:10px;color:#94a3b8;text-align:center;margin-top:4px;">按鈕 / Badge</div>
+    </div>
+  </div>
+</div>
+
+<div class="token-section">
+  <h3>陰影</h3>
+  <div class="shadow-row">
+    <div>
+      <div class="shadow-demo" style="box-shadow:0 1px 3px rgba(0,0,0,.07);">sm</div>
+      <div style="font-size:10px;color:#94a3b8;text-align:center;margin-top:6px;">卡片</div>
+    </div>
+    <div>
+      <div class="shadow-demo" style="box-shadow:0 2px 8px rgba(91,127,166,.12);">md</div>
+      <div style="font-size:10px;color:#94a3b8;text-align:center;margin-top:6px;">懸浮卡片</div>
+    </div>
+    <div>
+      <div class="shadow-demo" style="box-shadow:0 8px 24px rgba(91,127,166,.16);">lg</div>
+      <div style="font-size:10px;color:#94a3b8;text-align:center;margin-top:6px;">Modal</div>
+    </div>
+    <div>
+      <div class="shadow-demo" style="box-shadow:0 2px 12px rgba(124,111,168,.2);">accent</div>
+      <div style="font-size:10px;color:#94a3b8;text-align:center;margin-top:6px;">按鈕 hover</div>
+    </div>
+  </div>
+</div>
+
+<div class="token-section">
+  <h3>元件預覽</h3>
+  <div class="component-row" style="margin-bottom:10px;">
+    <div class="btn-pill">主要操作</div>
+    <div class="btn-pill-ghost">次要操作</div>
+    <div class="btn-pill-danger">刪除</div>
+  </div>
+  <div class="component-row" style="margin-bottom:10px;">
+    <div class="badge-blue">進行中</div>
+    <div class="badge-green">已完成</div>
+    <div class="badge-amber">待確認</div>
+    <div class="badge-red">已取消</div>
+  </div>
+  <div class="component-row">
+    <input class="mock-input" placeholder="搜尋會議或住戶..." readonly style="width:200px;" />
+  </div>
+</div>
+
+<div class="section" style="background:rgba(91,127,166,.08);border-radius:12px;padding:16px;margin-top:8px;">
+  <p class="subtitle" style="margin:0;font-size:12px;">這套 Token 會直接對應到 design-system.css 的 CSS 變數。確認後就開始設計各頁面的細節。</p>
+</div>

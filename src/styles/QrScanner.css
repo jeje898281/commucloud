@@ -1,0 +1,102 @@
+/* QR Scanner Component */
+.qr-scanner-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+#qr-reader {
+  border: none !important;
+  border-radius: var(--radius-base);
+  overflow: hidden;
+  background: var(--bg-primary);
+  width: 100% !important;
+}
+
+#qr-reader video {
+  border-radius: var(--radius-base);
+  width: 100% !important;
+}
+
+#qr-reader img { display: none; }
+
+#qr-reader__scan_region {
+  background: transparent !important;
+  min-height: 0 !important;
+}
+
+/* Dashboard area (lib controls) */
+#qr-reader__dashboard {
+  padding: var(--space-3) 0 0 !important;
+  background: transparent !important;
+  text-align: center !important;
+  border-top: 0 !important;
+}
+
+/* Library header text — usually small status text, keep subtle */
+#qr-reader__dashboard_section_csr span,
+#qr-reader__header_message {
+  font-size: var(--text-xs) !important;
+  color: var(--text-tertiary) !important;
+}
+
+/* Hide the noisy section dividers / swap link / file input */
+#qr-reader__dashboard_section_swaplink,
+#qr-reader__filescan_input,
+#qr-reader__dashboard_section_fsr {
+  display: none !important;
+}
+
+/* Style the lib's buttons (e.g. Request Camera Permissions, Stop Scanning) */
+#qr-reader__dashboard button,
+#qr-reader button {
+  background: var(--primary-grad) !important;
+  color: var(--text-inverse) !important;
+  border: none !important;
+  border-radius: var(--radius-full) !important;
+  padding: var(--space-3) var(--space-6) !important;
+  font-size: var(--text-sm) !important;
+  font-weight: var(--font-semibold) !important;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+#qr-reader__dashboard button:hover,
+#qr-reader button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+#qr-reader select {
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-base);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-3);
+  margin: 0 var(--space-2);
+}
+
+/* Our own controls */
+.scanner-controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.scanner-status {
+  text-align: center;
+  min-height: 1.25rem;
+}
+.scanner-status .status-text {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+.scanner-status .status-text.success {
+  color: var(--success-700);
+  font-weight: var(--font-semibold);
+}

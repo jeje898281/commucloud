@@ -1,0 +1,269 @@
+/* Summary / Attendance Statistics Page */
+.summary-page {
+  min-height: calc(100vh - 112px);
+  background: var(--bg-primary);
+  padding: var(--space-6) 0;
+}
+
+.summary-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+/* ── Meeting Status Card ── */
+.meeting-status-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: var(--space-6);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border-medium);
+}
+
+.meeting-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.meeting-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  border-radius: var(--radius-full);
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.meeting-status-badge.success {
+  background: var(--success-100);
+  color: var(--success-700);
+}
+
+.meeting-status-badge.warning {
+  background: var(--warning-100);
+  color: var(--warning-700);
+}
+
+/* ── Threshold Grid ── */
+.threshold-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.threshold-item {
+  background: var(--bg-light);
+  border-radius: var(--radius-base);
+  border: 1px solid var(--border-light);
+  padding: var(--space-5);
+  transition: box-shadow var(--transition-base);
+}
+
+.threshold-item:hover { box-shadow: var(--shadow-md); }
+
+.threshold-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.threshold-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-base);
+  background: var(--primary-100);
+  flex-shrink: 0;
+}
+
+.threshold-info { flex: 1; min-width: 0; }
+
+.threshold-info h3 {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-tertiary);
+  margin: 0 0 var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.threshold-values {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.threshold-values .current-value {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--primary-700);
+  line-height: 1;
+}
+
+.threshold-values .divider {
+  font-size: var(--text-xl);
+  color: var(--text-muted);
+  font-weight: var(--font-light);
+}
+
+.threshold-values .target-value {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+}
+
+.threshold-values .unit {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+
+/* ── Progress Bar ── */
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.progress-container .progress-bar {
+  flex: 1;
+  background: var(--bg-primary);
+  border-radius: var(--radius-full);
+  height: 8px;
+  overflow: hidden;
+}
+
+.progress-container .progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--primary-grad);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-container .progress-fill.reached {
+  background: linear-gradient(135deg, var(--success-500), var(--success-600));
+}
+
+.progress-container .progress-text {
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+  min-width: 48px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Status Summary ── */
+.status-summary {
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-medium);
+}
+
+.status-summary .summary-content { display: block; }
+
+.status-summary .success-message,
+.status-summary .warning-message {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-base);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  border: 1px solid transparent;
+}
+
+.status-summary .success-message {
+  background: var(--success-50);
+  color: var(--success-700);
+  border-color: rgba(82,174,122,.25);
+}
+
+.status-summary .warning-message {
+  background: var(--warning-50);
+  color: var(--warning-700);
+  border-color: rgba(220,160,23,.25);
+}
+
+.status-summary .message-icon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* ── Loading / Error ── */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  gap: var(--space-3);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  margin: 0 auto;
+  max-width: 480px;
+  text-align: center;
+}
+
+.loading-container p,
+.error-container p { color: var(--text-tertiary); font-size: var(--text-sm); }
+
+.error-container h3 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: var(--space-2) 0;
+}
+
+.error-container .error-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--error-100);
+}
+
+.error-container .error-message {
+  color: var(--error-700);
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .summary-page { padding: var(--space-4) 0; }
+  .summary-container { padding: 0 var(--space-4); }
+  .meeting-status-card { padding: var(--space-5); }
+  .status-header { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+  .threshold-grid { grid-template-columns: 1fr; gap: var(--space-3); }
+  .meeting-title { font-size: var(--text-xl); }
+}
+
+@media (max-width: 480px) {
+  .summary-container { padding: 0 var(--space-3); }
+  .meeting-status-card { padding: var(--space-4); }
+  .threshold-item { padding: var(--space-4); }
+  .threshold-values .current-value { font-size: var(--text-2xl); }
+}
