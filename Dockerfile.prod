@@ -33,7 +33,7 @@ RUN corepack enable \
 # 2. 複製程式碼與 Prisma schema（需在 generate 前就放好）
 COPY --from=builder /app/prisma ./prisma
 # 3. 再次產生「精簡版」 Prisma Client（僅 production 依賴，體積更小）
-RUN npx --package prisma -c "prisma generate"
+RUN npx prisma generate
 
 # 4. 複製其它靜態資源（如果有）
 COPY --from=builder /app/docs ./docs
@@ -45,7 +45,7 @@ COPY --from=builder /app/prisma/seed.js ./prisma/seed.js
 # 6. 預設環境變數與健康檢查（可自行調整）
 ENV NODE_ENV=production
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD node -e \
-  "require('http').get('http://localhost:3000/health', res => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
+  "require('http').get('http://localhost:3000/api/health', res => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
 
 # 7. 啟動服務
 EXPOSE 3000
