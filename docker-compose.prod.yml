@@ -81,10 +81,12 @@ services:
     build:
       context: ../frontend
       dockerfile: Dockerfile.prod
-    ports:
-      - "${FRONTEND_PORT}:80"
+    restart: unless-stopped
+    # 不對 host 開 port — 流量由外層 community-nginx 透過 edge-net 反向代理進來
     networks:
       - edge-net
+    depends_on:
+      - backend
 
 volumes:
   db-data:
