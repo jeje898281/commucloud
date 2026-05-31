@@ -18,6 +18,7 @@ import HomePage from './pages/home/HomePage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import PleaseLoginPage from './pages/auth/PleaseLoginPage';
+import DemoLoginPage from './pages/auth/DemoLoginPage';
 import ProfilePage from './pages/auth/ProfilePage';
 import CommunityPage from './pages/auth/CommunityPage';
 import MeetingListPage from './pages/meetings/MeetingListPage';
@@ -51,6 +52,9 @@ root.render(
 
           {/* 2. 請先登入頁面 */}
           <Route path="/please-login" element={<PleaseLoginPage />} />
+
+          {/* Demo 自動登入：URL 不帶 token，由後端用環境變數指定帳號簽發 */}
+          <Route path="/demo" element={<DemoLoginPage />} />
 
           {/* 3. 主要布局 */}
           <Route element={<MainLayout />}>
