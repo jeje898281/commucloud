@@ -190,7 +190,8 @@
   flex: none;
 }
 
-.loading-spinner {
+.btn .loading-spinner {
+  display: inline-block;
   width: 14px;
   height: 14px;
   border: 2px solid rgba(255,255,255,.3);
@@ -198,6 +199,7 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
   flex-shrink: 0;
+  vertical-align: middle;
 }
 
 .datetime-group {

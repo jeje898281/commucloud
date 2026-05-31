@@ -2,6 +2,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { listResidents } from '../services/api';
 import { getErrorMessage } from '../constants/errorCodes';
+import { useAuth } from '../contexts/AuthContext';
+import { can } from '../utils/permissions';
 import CreateResidentModal from './CreateResidentModal';
 import BulkImportModal from './BulkImportModal';
 import Toast from './Toast';
@@ -10,6 +12,7 @@ import DeleteConfirmModal from './DeleteConfirmModal';
 import '../styles/ResidentsList.css';
 
 function ResidentsList() {
+  const { role } = useAuth();
   const [residents, setResidents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -185,18 +188,22 @@ function ResidentsList() {
           </h1>
         </div>
         <div className="header-actions">
-          <button
-            className="btn btn-primary"
-            onClick={() => setIsCreateModalOpen(true)}
-          >
-            新增住戶
-          </button>
-          <button
-            className="btn btn-secondary"
-            onClick={() => setIsBulkImportModalOpen(true)}
-          >
-            批量匯入
-          </button>
+          {can(role, 'resident.write') && (
+            <button
+              className="btn btn-primary"
+              onClick={() => setIsCreateModalOpen(true)}
+            >
+              新增住戶
+            </button>
+          )}
+          {can(role, 'resident.write') && (
+            <button
+              className="btn btn-secondary"
+              onClick={() => setIsBulkImportModalOpen(true)}
+            >
+              批量匯入
+            </button>
+          )}
         </div>
       </div>
 
@@ -302,20 +309,24 @@ function ResidentsList() {
                   </td>
                   <td className="col-actions">
                     <div className="action-buttons">
-                      <button
-                        className="btn-action btn-edit"
-                        onClick={() => handleEditResident(resident)}
-                        title="編輯住戶"
-                      >
-                        編輯
-                      </button>
-                      <button
-                        className="btn-action btn-delete"
-                        onClick={() => handleDeleteResident(resident)}
-                        title="刪除住戶"
-                      >
-                        刪除
-                      </button>
+                      {can(role, 'resident.write') && (
+                        <button
+                          className="btn-action btn-edit"
+                          onClick={() => handleEditResident(resident)}
+                          title="編輯住戶"
+                        >
+                          編輯
+                        </button>
+                      )}
+                      {can(role, 'resident.write') && (
+                        <button
+                          className="btn-action btn-delete"
+                          onClick={() => handleDeleteResident(resident)}
+                          title="刪除住戶"
+                        >
+                          刪除
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>

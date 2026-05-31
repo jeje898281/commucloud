@@ -126,6 +126,33 @@
   margin-right: var(--space-2);
 }
 
+/* Alt-link (switch between login / register) */
+.auth-alt {
+  padding: var(--space-4) var(--space-6) var(--space-5);
+  text-align: center;
+  font-size: var(--text-sm);
+  border-top: 1px solid var(--border-medium);
+}
+
+.auth-alt-text {
+  color: var(--text-tertiary);
+  margin-right: var(--space-2);
+}
+
+.auth-alt-link {
+  color: var(--primary-700);
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.auth-alt-link:hover {
+  background: var(--primary-50);
+  color: var(--primary-800);
+}
+
 .login-footer {
   padding: var(--space-4) var(--space-6);
   background: var(--bg-tertiary);

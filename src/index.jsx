@@ -16,6 +16,7 @@ import MeetingLayout from './components/layout/MeetingLayout';
 // Pages
 import HomePage from './pages/home/HomePage';
 import LoginPage from './pages/auth/LoginPage';
+import RegisterPage from './pages/auth/RegisterPage';
 import PleaseLoginPage from './pages/auth/PleaseLoginPage';
 import ProfilePage from './pages/auth/ProfilePage';
 import CommunityPage from './pages/auth/CommunityPage';
@@ -28,6 +29,10 @@ import QRCodePage from './pages/meetings/QRCodePage';
 
 // Guards
 import RequireAuth from './components/RequireAuth';
+import RequireRole from './components/RequireRole';
+
+// Admin pages
+import AdminUsersPage from './pages/admin/AdminUsersPage';
 
 import './index.css';
 
@@ -39,6 +44,7 @@ root.render(
         <Routes>
           {/* 1. 登入頁，不需驗證 */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
           {/* 2. 請先登入頁面 */}
           <Route path="/please-login" element={<PleaseLoginPage />} />
@@ -75,6 +81,13 @@ root.render(
               <RequireAuth redirectTo="/please-login">
                 <MeetingListPage />
               </RequireAuth>
+            } />
+
+            {/* 帳號管理 */}
+            <Route path="admin/users" element={
+              <RequireRole permission="admin.manage" redirectTo="/please-login">
+                <AdminUsersPage />
+              </RequireRole>
             } />
 
             {/* 4. 單一會議上下文 - 也在 MainLayout 內 */}

@@ -117,5 +117,25 @@ export function updateCommunityInfo(data) {
   return apiClient.put('/community', data);
 }
 
+// --- Account / Auth ---
+export function registerAccount(payload) {
+  return apiClient.post('/auth/register', payload);
+}
 
+// --- Admin user management ---
+export function listAdminUsers() {
+  return apiClient.get('/admin/users');
+}
+
+export function createAdminUser(payload) {
+  return apiClient.post('/admin/users', payload);
+}
+
+export function updateAdminUser(id, patch) {
+  return apiClient.patch(`/admin/users/${id}`, patch);
+}
+
+export function deactivateAdminUser(id) {
+  return apiClient.delete(`/admin/users/${id}`);
+}
 

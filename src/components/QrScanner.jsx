@@ -1,6 +1,6 @@
 // frontend/src/components/QrScanner.jsx
 import React, { useEffect, useCallback, useState, useRef } from 'react';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { Html5QrcodeScanner, Html5QrcodeScanType } from 'html5-qrcode';
 import '../styles/QrScanner.css';
 
 function QrScanner({ onScanSuccess, onError }) {
@@ -81,7 +81,7 @@ function QrScanner({ onScanSuccess, onError }) {
         showZoomSliderIfSupported: false,
         rememberLastUsedCamera: true,
         disableFlip: false,
-        supportedScanTypes: [],
+        supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
         experimentalFeatures: {
           useBarCodeDetectorIfSupported: true
         }
@@ -101,6 +101,33 @@ function QrScanner({ onScanSuccess, onError }) {
 
       setIsInitialized(true);
       console.log('掃描器初始化完成');
+
+      // 將套件預設英文 UI 翻成中文
+      const translate = () => {
+        const root = document.getElementById('qr-reader');
+        if (!root) return;
+        root.querySelectorAll('button, span, a').forEach((el) => {
+          const t = (el.textContent || '').trim();
+          const map = {
+            'Request Camera Permissions': '開啟相機權限',
+            'Scan an Image File': '改用圖片掃描',
+            'Scan using camera directly': '改用相機掃描',
+            'Stop Scanning': '停止掃描',
+            'Start Scanning': '開始掃描',
+            'Switch On Torch': '開啟手電筒',
+            'Switch Off Torch': '關閉手電筒',
+            'Launching Camera...': '相機啟動中…',
+            'Select Camera': '選擇相機',
+            'Choose Image': '選擇圖片',
+            'No image choosen': '尚未選擇圖片',
+          };
+          if (map[t]) el.textContent = map[t];
+        });
+      };
+      const ob = new MutationObserver(translate);
+      const target = document.getElementById('qr-reader');
+      if (target) ob.observe(target, { childList: true, subtree: true, characterData: true });
+      translate();
 
     } catch (error) {
       console.error('初始化掃描器失敗:', error);
@@ -138,38 +165,28 @@ function QrScanner({ onScanSuccess, onError }) {
       {/* 掃描框 */}
       <div id="qr-reader" className="qr-reader" />
 
-      {/* 控制按鈕 */}
-      <div className="scanner-controls">
-        <button
-          className="btn btn-secondary btn-sm"
-          onClick={restartScanner}
-          style={{ marginTop: '10px' }}
-        >
-          重新啟動掃描器
-        </button>
-
-        {!scannerReady && isInitialized && (
-          <button
-            className="btn btn-primary btn-sm"
-            onClick={initializeScanner}
-            style={{ marginTop: '10px', marginLeft: '10px' }}
-          >
-            啟動相機
-          </button>
-        )}
-      </div>
-
       {/* 掃描狀態提示 */}
       <div className="scanner-status">
         {!isInitialized && (
-          <p className="status-text">正在初始化掃描器...</p>
+          <p className="status-text">掃描器準備中…</p>
         )}
         {isInitialized && !scannerReady && (
-          <p className="status-text">等待相機啟動...</p>
+          <p className="status-text">請允許瀏覽器使用相機</p>
         )}
         {scannerReady && (
-          <p className="status-text success">掃描器已就緒，請對準QR碼</p>
+          <p className="status-text success">已就緒，請將 QR 碼對準掃描框</p>
         )}
+      </div>
+
+      {/* 控制按鈕 */}
+      <div className="scanner-controls">
+        <button
+          type="button"
+          className="btn btn-secondary btn-sm"
+          onClick={restartScanner}
+        >
+          重新整理掃描器
+        </button>
       </div>
     </div>
   );

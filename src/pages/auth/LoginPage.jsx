@@ -1,6 +1,6 @@
 // src/pages/auth/LoginPage.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { login as apiLogin } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { getErrorMessage } from '../../constants/errorCodes';
@@ -123,6 +123,11 @@ export default function LoginPage() {
               )}
             </button>
           </form>
+
+          <div className="auth-alt">
+            <span className="auth-alt-text">還沒有帳號？</span>
+            <Link to="/register" className="auth-alt-link">立即註冊</Link>
+          </div>
 
           <div className="login-footer">
             <p className="help-text">

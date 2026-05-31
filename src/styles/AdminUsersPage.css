@@ -1,0 +1,223 @@
+/* Admin Users Page */
+.admin-users-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-6);
+  min-height: calc(100vh - 56px);
+  background: var(--bg-primary);
+}
+
+.admin-users-page .page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.admin-users-page .page-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.admin-users-page .page-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  margin-top: var(--space-1);
+}
+
+/* Loading state */
+.admin-users-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  gap: var(--space-3);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+}
+
+.admin-users-loading .spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-medium);
+  border-top-color: var(--primary-600);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Empty state */
+.admin-users-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  gap: var(--space-2);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+}
+
+/* Table card */
+.users-table-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.users-table thead th {
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-weight: var(--font-semibold);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border-medium);
+  white-space: nowrap;
+}
+
+.users-table tbody td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-medium);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.users-table tbody tr:last-child td { border-bottom: none; }
+
+.users-table tbody tr:hover { background: var(--bg-tertiary); }
+
+.users-table tbody tr.is-self { background: var(--primary-25); }
+.users-table tbody tr.is-self:hover { background: var(--primary-50); }
+
+.users-table .username {
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+}
+
+.users-table .display-name { color: var(--text-secondary); }
+
+.users-table .self-tag {
+  display: inline-block;
+  margin-left: var(--space-2);
+  padding: 0 var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--primary-700);
+  background: var(--primary-100);
+  border-radius: var(--radius-full);
+}
+
+/* Role badge */
+.role-badge {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.02em;
+}
+
+.role-badge.role-admin {
+  background: var(--primary-100);
+  color: var(--primary-800);
+}
+
+.role-badge.role-manager {
+  background: var(--warning-100);
+  color: var(--warning-800);
+}
+
+.role-badge.role-meeting_assistant {
+  background: var(--success-100);
+  color: var(--success-800);
+}
+
+/* Status pill */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+}
+
+.status-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-pill.active {
+  background: var(--success-50);
+  color: var(--success-700);
+}
+
+.status-pill.inactive {
+  background: var(--error-50);
+  color: var(--error-700);
+}
+
+/* Action buttons */
+.user-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.users-table .col-actions {
+  text-align: right;
+  width: 1%;
+  white-space: nowrap;
+}
+
+.user-actions .btn-danger {
+  background: var(--error-50);
+  color: var(--error-700);
+  border: 1px solid var(--error-100);
+}
+
+.user-actions .btn-danger:hover {
+  background: var(--error-100);
+}
+
+/* Responsive — wrap actions on narrow screens */
+@media (max-width: 720px) {
+  .admin-users-page { padding: var(--space-4); }
+  .users-table thead { display: none; }
+  .users-table, .users-table tbody, .users-table tr, .users-table td { display: block; }
+  .users-table tbody tr {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border-medium);
+  }
+  .users-table tbody td {
+    padding: var(--space-1) 0;
+    border-bottom: none;
+  }
+  .users-table .col-actions { text-align: left; }
+  .user-actions { justify-content: flex-start; margin-top: var(--space-2); }
+}

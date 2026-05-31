@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../styles/NavBar.css';
 import { useAuth } from '../contexts/AuthContext';
+import { can } from '../utils/permissions';
 
 export default function NavBar() {
   const { isLoggedIn, displayName, communityName, role, logout } = useAuth();
@@ -114,6 +115,16 @@ export default function NavBar() {
                         onClick={handleMenuItemClick}
                       >
                         社區管理
+                      </Link>
+                    </li>
+                  )}
+                  {can(role, 'admin.manage') && (
+                    <li className={location.pathname === '/admin/users' ? 'active' : ''}>
+                      <Link
+                        to="/admin/users"
+                        onClick={handleMenuItemClick}
+                      >
+                        帳號管理
                       </Link>
                     </li>
                   )}

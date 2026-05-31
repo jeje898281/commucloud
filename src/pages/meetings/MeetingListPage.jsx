@@ -8,8 +8,11 @@ import Toast from '../../components/Toast';
 import CreateMeetingModal from '../../components/CreateMeetingModal';
 import NotifyResidentsModal from '../../components/NotifyResidentsModal';
 import '../../styles/MeetingList.css';
+import { useAuth } from '../../contexts/AuthContext';
+import { can } from '../../utils/permissions';
 
 export default function MeetingListPage() {
+  const { role } = useAuth();
   const [meetings, setMeetings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
@@ -111,9 +114,23 @@ export default function MeetingListPage() {
   if (loading) {
     return (
       <div className="meeting-list-container">
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>載入會議資料中...</p>
+        <div className="page-header">
+          <div className="header-left">
+            <h1 className="page-title">會議列表</h1>
+          </div>
+        </div>
+        <div className="meetings-grid">
+          {[0, 1, 2].map(i => (
+            <div key={i} className="meeting-card-skeleton">
+              <div className="skeleton sk-title"></div>
+              <div className="skeleton sk-row"></div>
+              <div className="skeleton sk-row sk-short"></div>
+              <div className="sk-footer">
+                <div className="skeleton sk-btn"></div>
+                <div className="skeleton sk-btn"></div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -128,9 +145,11 @@ export default function MeetingListPage() {
           </h1>
         </div>
         <div className="header-actions">
-          <button className="btn btn-primary" onClick={handleCreateMeeting}>
-            新增會議
-          </button>
+          {can(role, 'meeting.write') && (
+            <button className="btn btn-primary" onClick={handleCreateMeeting}>
+              新增會議
+            </button>
+          )}
         </div>
       </div>
 
@@ -207,21 +226,25 @@ export default function MeetingListPage() {
 
               <div className="meeting-card-footer">
                 <div className="button-group">
-                  <button
-                    className="btn btn-outline btn-sm"
-                    onClick={() => handleEditMeeting(meeting)}
-                    title="編輯會議"
-                  >
-                    編輯
-                  </button>
-                  <button
-                    className="btn btn-secondary btn-sm"
-                    onClick={() => handleOpenNotifyModal(meeting)}
-                    disabled={meeting.status === 'completed' || meeting.status === 'cancelled'}
-                    title="通知住戶"
-                  >
-                    通知住戶
-                  </button>
+                  {can(role, 'meeting.write') && (
+                    <button
+                      className="btn btn-outline btn-sm"
+                      onClick={() => handleEditMeeting(meeting)}
+                      title="編輯會議"
+                    >
+                      編輯
+                    </button>
+                  )}
+                  {can(role, 'meeting.notify') && (
+                    <button
+                      className="btn btn-secondary btn-sm"
+                      onClick={() => handleOpenNotifyModal(meeting)}
+                      disabled={meeting.status === 'completed' || meeting.status === 'cancelled'}
+                      title="通知住戶"
+                    >
+                      通知住戶
+                    </button>
+                  )}
                   <button
                     className="btn btn-primary btn-sm"
                     onClick={() => navigate(`/meetings/${meeting.id}/scan`)}
