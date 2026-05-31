@@ -18,8 +18,7 @@ FROM nginx:alpine
 # 直接複製 vite 輸出的靜態檔到 nginx 預設目錄
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# 如果有自定 nginx 設定可以加
-# COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
