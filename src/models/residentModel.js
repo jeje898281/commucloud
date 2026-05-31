@@ -55,6 +55,22 @@ async function findByCommunityWithEmail(communityId) {
     return residents;
 }
 
+async function getResidentsByCommunity(communityId) {
+    return prisma.resident.findMany({
+        where: { communityId },
+        orderBy: { code: 'asc' },
+        select: { id: true, code: true, residentSqm: true },
+    });
+}
+
+async function getCommunityTotalSqm(communityId) {
+    const result = await prisma.resident.aggregate({
+        where: { communityId },
+        _sum: { residentSqm: true },
+    });
+    return result._sum.residentSqm || 0;
+}
+
 async function findResidentIdsByMeetingId(meetingId) {
     const result = await prisma.$queryRaw`
       SELECT r.id
@@ -143,6 +159,8 @@ module.exports = {
     findResidentById,
     updateResident,
     findByCommunityWithEmail,
+    getResidentsByCommunity,
+    getCommunityTotalSqm,
     findResidentIdsByMeetingId,
     createResidentModel,
     bulkCreateResidents,

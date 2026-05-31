@@ -8,6 +8,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const residentRoutes = require('./routes/residentRoutes');
 const meetingRoutes = require('./routes/meetingRoutes');
+const proposalRoutes = require('./routes/proposalRoutes');
 const adminUserRoutes = require('./routes/adminUserRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const profileRoutes = require('./routes/profileRoutes');
@@ -46,6 +47,7 @@ function buildApp() {
     const apiRouter = express.Router();
     apiRouter.use('/resident', residentRoutes);
     apiRouter.use('/meeting', meetingRoutes);
+    apiRouter.use('/proposal', proposalRoutes);
     apiRouter.use('/admin', adminUserRoutes);
     apiRouter.use(notificationRoutes);
     apiRouter.use(profileRoutes);

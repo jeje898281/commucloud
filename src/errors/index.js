@@ -27,10 +27,23 @@ const { ResidentCodeAlreadyExistsError, ResidentNotFoundError, ResidentHasChecki
 
 const { BadRequestError } = require('./commonError');
 
+const {
+    ProposalNotFoundError, ProposalTitleInvalidError, ProposalContentInvalidError,
+    ProposalSqmThresholdInvalidError, ProposalResidentThresholdInvalidError,
+    AlreadyVotedError, VoteResultInvalidError
+} = require('./proposalError');
+
 const BaseError = require('./BaseError');
 
 module.exports = {
     BaseError,
+    ProposalNotFoundError,
+    ProposalTitleInvalidError,
+    ProposalContentInvalidError,
+    ProposalSqmThresholdInvalidError,
+    ProposalResidentThresholdInvalidError,
+    AlreadyVotedError,
+    VoteResultInvalidError,
     MeetingNotFoundError,
     UnauthorizedError,
     TokenNotFoundError,

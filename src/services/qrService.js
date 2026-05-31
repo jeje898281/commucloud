@@ -30,4 +30,11 @@ async function getResidentIdsByMeetingId(meetingId) {
     return residents;
 }
 
-module.exports = { generateBatchQRCodes, getResidentIdsByMeetingId };
+// 投票 QR：每張票的「同意 / 不同意」各自編碼成一個 token，秘書掃描即記票
+async function generateVoteQRCode({ proposalId, residentId, result }) {
+    const token = jwt.sign({ proposalId, residentId, result }, SECRET, { noTimestamp: true });
+    const qrDataURL = await QRCode.toDataURL(token);
+    return { token, qrDataURL };
+}
+
+module.exports = { generateBatchQRCodes, getResidentIdsByMeetingId, generateVoteQRCode };
