@@ -66,4 +66,34 @@ async function register({ username, email, password, displayName, communityName,
     };
 }
 
-module.exports = { login, register };
+async function demoLogin() {
+    if (process.env.DEMO_LOGIN_ENABLED !== 'true') {
+        const { DemoLoginDisabledError } = require('../errors');
+        throw new DemoLoginDisabledError();
+    }
+    const username = process.env.DEMO_USERNAME;
+    if (!username) {
+        const { DemoLoginDisabledError } = require('../errors');
+        throw new DemoLoginDisabledError();
+    }
+    const user = await findByUsername(username);
+    if (!user) throw new UserNotFoundError();
+    if (!user.isActive) {
+        const { AccountDeactivatedError } = require('../errors');
+        throw new AccountDeactivatedError();
+    }
+    const token = signToken({ userId: user.id, role: user.role, communityId: user.community.id });
+    return {
+        token,
+        username: user.username,
+        displayName: user.displayName,
+        role: user.role,
+        community: {
+            id: user.community.id,
+            name: user.community.name,
+            description: user.community.description
+        }
+    };
+}
+
+module.exports = { login, register, demoLogin };

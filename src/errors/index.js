@@ -20,7 +20,7 @@ const { AlreadyCheckedInError, MeetingIdInvalidError, MeetingSqmThresholdInvalid
 
 const { WrongPasswordError, PasswordTooShortError,
     PasswordTooLongError, PasswordInvalidFormatError, PasswordSameAsCurrentError,
-    AccountDeactivatedError, ForbiddenError
+    AccountDeactivatedError, ForbiddenError, DemoLoginDisabledError
 } = require('./authErrors');
 
 const { ResidentCodeAlreadyExistsError, ResidentNotFoundError, ResidentHasCheckinDataError } = require('./residentError');
@@ -82,5 +82,6 @@ module.exports = {
     TargetUserNotInCommunityError,
     AccountDeactivatedError,
     ForbiddenError,
+    DemoLoginDisabledError,
     QRCodeInvalidError
 };

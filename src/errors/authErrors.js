@@ -49,8 +49,12 @@ class ForbiddenError extends BaseError {
     constructor() { super('Forbidden', 'FORBIDDEN', 403); }
 }
 
+class DemoLoginDisabledError extends BaseError {
+    constructor() { super('Demo login is not enabled', 'DEMO_LOGIN_DISABLED', 404); }
+}
+
 module.exports = {
     UnauthorizedError, TokenNotFoundError, WrongPasswordError, PasswordTooShortError,
     PasswordTooLongError, PasswordInvalidFormatError, PasswordSameAsCurrentError,
-    AccountDeactivatedError, ForbiddenError
+    AccountDeactivatedError, ForbiddenError, DemoLoginDisabledError
 };
