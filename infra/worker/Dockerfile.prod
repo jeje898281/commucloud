@@ -1,0 +1,12 @@
+FROM node:20-bullseye-slim
+
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml* ./
+RUN corepack enable && corepack prepare pnpm@9 --activate && pnpm install
+
+COPY . .
+
+CMD ["node", "index.js"]
+
+

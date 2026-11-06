@@ -1,0 +1,124 @@
+# docker-compose.dev.yml
+# 適用於本機開發環境。支援熱重載、健康檢查、分層清楚、可擴充。
+
+services:
+  ###########################################################################
+  # 🗄️ PostgreSQL 資料庫
+  ###########################################################################
+  db:
+    image: postgres:16
+    env_file:
+      - .env.dev
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - service-net
+      - dev-net
+
+  ###########################################################################
+  # 🐏 Redis
+  ###########################################################################
+  redis:
+    image: redis:7-alpine
+    env_file:
+      - .env.dev
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-h", "localhost", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - service-net
+
+  ###########################################################################
+  # 👷 Worker
+  ###########################################################################
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env.dev
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./worker:/app
+    networks:
+      - service-net
+      - dev-net
+
+  ###########################################################################
+  # 🔙 Backend
+  ###########################################################################
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile.dev
+    working_dir: /app
+    command: npx nodemon src/index.js
+    env_file:
+      - .env.dev
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ../backend:/app
+    networks:
+      - service-net
+      - dev-net
+
+  ###########################################################################
+  # 🌐 Frontend
+  ###########################################################################
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile.dev
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host"
+    env_file:
+      - .env.dev
+    ports:
+      - "${FRONTEND_PORT}:5173"
+    volumes:
+      - ../frontend:/app
+    depends_on:
+      - backend
+    networks:
+      - dev-net
+
+volumes:
+  db-data:
+  redis-data:
+
+
+networks:
+  service-net:
+    internal: true
+  dev-net:
+    external: true

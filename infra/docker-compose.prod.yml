@@ -1,0 +1,99 @@
+# /dev-env/community-app-workspace/infra/docker-compose.prod.yml
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432" 
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - service-net
+      - edge-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+    command: redis-server --save 60 1 --loglevel warning
+    networks:
+      - service-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    tmpfs:
+      - /data
+
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    networks:
+      - service-net
+    env_file:
+      - .env.prod
+    depends_on:
+      - redis
+    volumes:
+      - ./worker:/app
+
+  backend:
+    build:
+      context: ../backend          
+      dockerfile: Dockerfile.prod  
+    working_dir: /app
+    command: node src/index.js
+    networks:
+      - service-net
+      - edge-net        
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      REDIS_URL: ${REDIS_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: 3000
+      APP_NAMESPACE: ${APP_NAMESPACE}
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      # Redis 連線
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_CLUSTER: ${REDIS_CLUSTER}
+    ports:
+      - "${BACKEND_PORT}:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    # 不對 host 開 port — 流量由外層 community-nginx 透過 edge-net 反向代理進來
+    networks:
+      - edge-net
+    depends_on:
+      - backend
+
+volumes:
+  db-data:
+  redis-data:
+
+networks:
+  edge-net:
+    external: true  
+  service-net:
+    internal: true
