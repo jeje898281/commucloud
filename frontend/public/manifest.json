@@ -1,0 +1,15 @@
+{
+  "short_name": "社區大會",
+  "name": "社區大會管理系統",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#5b7fa6",
+  "background_color": "#ffffff"
+}

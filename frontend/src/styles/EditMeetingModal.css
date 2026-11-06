@@ -1,0 +1,27 @@
+/* Edit / Create Meeting Modal */
+
+.edit-meeting-modal .modal-content,
+.create-meeting-modal .modal-content {
+  max-width: 480px;
+}
+
+.threshold-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.threshold-input-wrap .form-input {
+  max-width: 120px;
+}
+
+.threshold-unit {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.edit-meeting-modal .modal-icon,
+.create-meeting-modal .modal-icon {
+  color: var(--primary-600);
+}

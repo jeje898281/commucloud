@@ -1,0 +1,65 @@
+/* Please Login Page */
+.please-login-page {
+  min-height: calc(100vh - 56px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  padding: var(--space-6) var(--space-4);
+}
+
+.login-prompt {
+  width: 100%;
+  max-width: 440px;
+}
+
+.prompt-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-10) var(--space-8);
+  text-align: center;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.prompt-icon {
+  width: 56px;
+  height: 56px;
+  background: var(--primary-grad);
+  border-radius: var(--radius-lg);
+  margin: 0 auto var(--space-5);
+  box-shadow: var(--shadow-accent);
+}
+
+.prompt-content h1 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3);
+  line-height: var(--leading-snug);
+}
+
+.prompt-content p {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 var(--space-6);
+}
+
+.prompt-content .action-buttons {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+.prompt-content .action-buttons .btn {
+  padding: var(--space-3) var(--space-6);
+  min-width: 120px;
+}
+
+@media (max-width: 480px) {
+  .prompt-content { padding: var(--space-8) var(--space-5); }
+  .prompt-content .action-buttons { flex-direction: column; }
+  .prompt-content .action-buttons .btn { width: 100%; }
+}

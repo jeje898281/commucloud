@@ -1,0 +1,14 @@
+/* Create Resident Modal */
+.create-resident-modal .modal-content {
+  max-width: 480px;
+}
+
+.create-resident-modal .modal-icon { color: var(--success-600); }
+
+.unit-code-hint {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
+
+.form-input-uppercase { text-transform: uppercase; }

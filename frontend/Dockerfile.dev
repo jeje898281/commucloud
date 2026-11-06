@@ -1,0 +1,21 @@
+# ---------- base image ----------
+FROM node:20-alpine
+
+WORKDIR /app
+
+# 1️⃣ 安裝 pnpm（鎖定版本避免踩雷）
+RUN corepack enable && corepack prepare pnpm@8.15.4 --activate
+
+# 2️⃣ 使用 lock 檔先安裝依賴，這層最常被快取
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install --frozen-lockfile
+
+# 3️⃣ 複製其餘原始碼
+COPY . .
+
+# 4️⃣ 讓開發伺服器能被主機瀏覽器存取
+EXPOSE 5173
+
+# 5️⃣ 啟動 Vite Dev Server
+CMD ["pnpm", "dev", "--", "--host", "0.0.0.0"]
+    
