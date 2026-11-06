@@ -1,5 +1,7 @@
 # CommuCloud — Backend
 
+**English** · [中文](#中文)
+
 REST API for **CommuCloud**, a web app that runs condominium owners' meetings (區分所有權人會議) end to end: resident check-in, proposal voting, and live quorum tracking by both headcount and floor area.
 
 Taiwan's condominium law requires a meeting to reach two quorums at once — a number of owners *and* a share of total floor area. Committees usually track this on paper during the meeting. CommuCloud records each check-in and vote as it happens and reports whether both thresholds are met.
@@ -100,3 +102,58 @@ pnpm test
 | Admin users | `GET/POST/PATCH/DELETE /api/admin/users` |
 | Notifications | `GET /api/meetings/:id/notify/preview`, `POST /api/meetings/:id/notify` |
 | Community & profile | `GET/PUT /api/community`, `GET/PUT /api/profile`, `PUT /api/profile/password` |
+
+---
+
+## 中文
+
+**CommuCloud** 的 REST API。CommuCloud 是社區區分所有權人會議的管理系統，涵蓋住戶報到、提案表決，以及依出席戶數與坪數比例即時計算的法定門檻。
+
+依《公寓大廈管理條例》，區權會須同時達到人數與區分所有權比例兩項門檻，多數管委會在會議現場仍以紙本統計。CommuCloud 於報到與投票當下即寫入紀錄，並即時回報兩項門檻是否達成。
+
+| Repository | 角色 |
+| --- | --- |
+| **community-app-backend**（本 repo） | Express API、PostgreSQL 資料結構、工作佇列 producer |
+| [community-app-frontend](https://github.com/jeje898281/community-app-frontend) | React 管理後台與 QR 掃描頁面 |
+| [community-app-infra](https://github.com/jeje898281/community-app-infra) | Docker Compose 部署設定與寄信 worker |
+
+### 功能
+
+- **多社區隔離** — 管理員、住戶、會議與投票皆隸屬單一社區，所有讀寫前都會檢查歸屬。
+- **角色權限** — `admin`、`manager`、`meeting_assistant` 三種角色，並防止自行修改權限與移除最後一位管理員。
+- **報到** — 批次產生每戶 QR Code，另支援手動報到，每筆紀錄保留經手人員。
+- **門檻統計** — 依每場會議設定的出席戶數與坪數百分比門檻，即時計算是否達成。
+- **提案表決** — 為每戶、每個提案產生可列印的 QR 選票，掃描後記錄投票結果與監票人員。
+- **住戶匯入** — 批次建立住戶的戶號、坪數與 Email。
+- **Email 通知** — 會議通知排入 BullMQ（Redis），具重試與指數退避，由獨立 worker 寄送。
+- **安全設定** — Helmet 標頭、CORS 白名單、登入路由限流、bcrypt 密碼雜湊、JWT 驗證、帳號軟停用。
+
+### 技術
+
+Node.js · Express 5 · PostgreSQL 16 · Prisma · Redis · BullMQ · JWT · Jest · Supertest · Docker
+
+### 架構
+
+程式採 routes → controllers → services → models 分層。領域錯誤皆繼承共用的 `BaseError`，由統一的錯誤處理器轉為 HTTP 回應與固定的錯誤代碼（例如 `USERNAME_TAKEN`、`TARGET_USER_NOT_IN_COMMUNITY`）。架構圖與目錄結構請見上方英文段落。
+
+### 本機啟動
+
+完整環境（PostgreSQL、Redis、worker、後端、前端）由 [community-app-infra](https://github.com/jeje898281/community-app-infra) 啟動。單獨執行 API：
+
+```bash
+pnpm install
+cp .env.example .env        # 填入 DATABASE_URL、JWT_SECRET 等設定
+pnpm migrate                # prisma migrate dev
+pnpm seed                   # 選用：建立含會議、提案與投票的示範社區
+pnpm dev                    # http://localhost:3000
+```
+
+健康檢查：`GET /api/health`。環境變數說明見上方英文段落的表格。
+
+### 測試
+
+整合測試透過 Supertest 呼叫 API，連接真實的 PostgreSQL 與 Redis，涵蓋登入註冊、角色權限、多社區隔離與子帳號管理。
+
+```bash
+pnpm test
+```
