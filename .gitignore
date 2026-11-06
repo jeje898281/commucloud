@@ -270,3 +270,13 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Build output and local tooling
+dist/
+.vite/
+.vscode/
+.claude/
+.superpowers/
+.env
+.env.*
+!.env.example
