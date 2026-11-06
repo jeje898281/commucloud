@@ -4,11 +4,7 @@
 
 Docker Compose stacks and the email worker for **CommuCloud**, a web app that runs condominium owners' meetings: resident check-in, proposal voting, and live quorum tracking.
 
-| Repository | Role |
-| --- | --- |
-| [community-app-backend](https://github.com/jeje898281/community-app-backend) | Express API, PostgreSQL schema, job producer |
-| [community-app-frontend](https://github.com/jeje898281/community-app-frontend) | React admin console and QR scanning pages |
-| **community-app-infra** (this repo) | Docker Compose stacks and the email worker |
+Part of the [CommuCloud](../README.md) monorepo: [`backend/`](../backend) · [`frontend/`](../frontend) · [`infra/`](../infra).
 
 ## Services
 
@@ -34,21 +30,7 @@ flowchart LR
 
 ## Directory layout
 
-The compose files build the backend and frontend from sibling directories:
-
-```
-community-app/
-  backend/    ← community-app-backend
-  frontend/   ← community-app-frontend
-  infra/      ← this repo
-```
-
-```bash
-mkdir community-app && cd community-app
-git clone https://github.com/jeje898281/community-app-backend.git backend
-git clone https://github.com/jeje898281/community-app-frontend.git frontend
-git clone https://github.com/jeje898281/community-app-infra.git infra
-```
+The compose files build the backend and frontend from the sibling `backend/` and `frontend/` directories, so run every command below from `infra/`.
 
 ## Local development
 
@@ -86,11 +68,7 @@ cp .env.dev.example .env.prod     # use production values
 
 **CommuCloud** 的 Docker Compose 部署設定與寄信 worker。CommuCloud 是社區區分所有權人會議的管理系統，涵蓋住戶報到、提案表決與即時門檻統計。
 
-| Repository | 角色 |
-| --- | --- |
-| [community-app-backend](https://github.com/jeje898281/community-app-backend) | Express API、PostgreSQL 資料結構、工作佇列 producer |
-| [community-app-frontend](https://github.com/jeje898281/community-app-frontend) | React 管理後台與 QR 掃描頁面 |
-| **community-app-infra**（本 repo） | Docker Compose 部署設定與寄信 worker |
+本目錄屬於 [CommuCloud](../README.md) monorepo：[`backend/`](../backend) · [`frontend/`](../frontend) · [`infra/`](../infra)。
 
 ### 服務
 
@@ -106,14 +84,7 @@ cp .env.dev.example .env.prod     # use production values
 
 ### 目錄結構
 
-compose 檔從同層目錄建置前後端：
-
-```bash
-mkdir community-app && cd community-app
-git clone https://github.com/jeje898281/community-app-backend.git backend
-git clone https://github.com/jeje898281/community-app-frontend.git frontend
-git clone https://github.com/jeje898281/community-app-infra.git infra
-```
+compose 檔從同層的 `backend/` 與 `frontend/` 目錄建置，以下指令皆於 `infra/` 目錄下執行。
 
 ### 本機開發
 

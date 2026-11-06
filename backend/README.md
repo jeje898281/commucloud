@@ -6,11 +6,7 @@ REST API for **CommuCloud**, a web app that runs condominium owners' meetings (�
 
 Taiwan's condominium law requires a meeting to reach two quorums at once — a number of owners *and* a share of total floor area. Committees usually track this on paper during the meeting. CommuCloud records each check-in and vote as it happens and reports whether both thresholds are met.
 
-| Repository | Role |
-| --- | --- |
-| **community-app-backend** (this repo) | Express API, PostgreSQL schema, job producer |
-| [community-app-frontend](https://github.com/jeje898281/community-app-frontend) | React admin console and QR scanning pages |
-| [community-app-infra](https://github.com/jeje898281/community-app-infra) | Docker Compose stacks and the email worker |
+Part of the [CommuCloud](../README.md) monorepo: [`backend/`](../backend) · [`frontend/`](../frontend) · [`infra/`](../infra).
 
 ## Features
 
@@ -60,7 +56,7 @@ See [`prisma/schema.prisma`](prisma/schema.prisma).
 
 ## Getting started
 
-The full stack (PostgreSQL, Redis, worker, backend, frontend) is started from [community-app-infra](https://github.com/jeje898281/community-app-infra). To run the API on its own:
+The full stack (PostgreSQL, Redis, worker, backend, frontend) is started from [`infra/`](../infra). To run the API on its own:
 
 ```bash
 pnpm install
@@ -111,11 +107,7 @@ pnpm test
 
 依《公寓大廈管理條例》，區權會須同時達到人數與區分所有權比例兩項門檻，多數管委會在會議現場仍以紙本統計。CommuCloud 於報到與投票當下即寫入紀錄，並即時回報兩項門檻是否達成。
 
-| Repository | 角色 |
-| --- | --- |
-| **community-app-backend**（本 repo） | Express API、PostgreSQL 資料結構、工作佇列 producer |
-| [community-app-frontend](https://github.com/jeje898281/community-app-frontend) | React 管理後台與 QR 掃描頁面 |
-| [community-app-infra](https://github.com/jeje898281/community-app-infra) | Docker Compose 部署設定與寄信 worker |
+本目錄屬於 [CommuCloud](../README.md) monorepo：[`backend/`](../backend) · [`frontend/`](../frontend) · [`infra/`](../infra)。
 
 ### 功能
 
@@ -138,7 +130,7 @@ Node.js · Express 5 · PostgreSQL 16 · Prisma · Redis · BullMQ · JWT · Jes
 
 ### 本機啟動
 
-完整環境（PostgreSQL、Redis、worker、後端、前端）由 [community-app-infra](https://github.com/jeje898281/community-app-infra) 啟動。單獨執行 API：
+完整環境（PostgreSQL、Redis、worker、後端、前端）由 [`infra/`](../infra) 啟動。單獨執行 API：
 
 ```bash
 pnpm install

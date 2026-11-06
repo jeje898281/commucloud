@@ -6,11 +6,7 @@ Admin console for **CommuCloud**, a web app that runs condominium owners' meetin
 
 Committee staff use it on a laptop or phone during the meeting: scan a resident's QR code at the door, scan paper ballots as votes are cast, and watch the attendance summary update against the legal thresholds.
 
-| Repository | Role |
-| --- | --- |
-| [community-app-backend](https://github.com/jeje898281/community-app-backend) | Express API, PostgreSQL schema, job producer |
-| **community-app-frontend** (this repo) | React admin console and QR scanning pages |
-| [community-app-infra](https://github.com/jeje898281/community-app-infra) | Docker Compose stacks and the email worker |
+Part of the [CommuCloud](../README.md) monorepo: [`backend/`](../backend) · [`frontend/`](../frontend) · [`infra/`](../infra).
 
 ## What staff can do
 
@@ -46,7 +42,7 @@ src/
 
 ## Getting started
 
-Start the API first (see [community-app-backend](https://github.com/jeje898281/community-app-backend)), or bring up the whole stack with [community-app-infra](https://github.com/jeje898281/community-app-infra).
+Start the API first (see [`backend/`](../backend)), or bring up the whole stack with [`infra/`](../infra).
 
 ```bash
 pnpm install
@@ -69,11 +65,7 @@ pnpm build        # outputs dist/
 
 管委會人員於會議現場以筆電或手機操作：入口掃描住戶 QR Code 報到、投票時掃描紙本選票，並即時查看出席統計是否達到法定門檻。
 
-| Repository | 角色 |
-| --- | --- |
-| [community-app-backend](https://github.com/jeje898281/community-app-backend) | Express API、PostgreSQL 資料結構、工作佇列 producer |
-| **community-app-frontend**（本 repo） | React 管理後台與 QR 掃描頁面 |
-| [community-app-infra](https://github.com/jeje898281/community-app-infra) | Docker Compose 部署設定與寄信 worker |
+本目錄屬於 [CommuCloud](../README.md) monorepo：[`backend/`](../backend) · [`frontend/`](../frontend) · [`infra/`](../infra)。
 
 ### 頁面功能
 
@@ -97,7 +89,7 @@ React 18 · React Router 6 · Vite 5 · Axios · html5-qrcode · JSZip · Nginx�
 
 ### 本機啟動
 
-請先啟動 API（見 [community-app-backend](https://github.com/jeje898281/community-app-backend)），或以 [community-app-infra](https://github.com/jeje898281/community-app-infra) 啟動完整環境。
+請先啟動 API（見 [`backend/`](../backend)），或以 [`infra/`](../infra) 啟動完整環境。
 
 ```bash
 pnpm install
