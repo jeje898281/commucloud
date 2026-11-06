@@ -1,5 +1,7 @@
 # CommuCloud — Frontend
 
+**English** · [中文](#中文)
+
 Admin console for **CommuCloud**, a web app that runs condominium owners' meetings (區分所有權人會議): resident check-in, proposal voting, and live quorum tracking by both headcount and floor area.
 
 Committee staff use it on a laptop or phone during the meeting: scan a resident's QR code at the door, scan paper ballots as votes are cast, and watch the attendance summary update against the legal thresholds.
@@ -58,3 +60,49 @@ pnpm build        # outputs dist/
 ```
 
 `Dockerfile.prod` builds the app and serves `dist/` with Nginx. [`nginx.conf`](nginx.conf) disables caching for `index.html`, caches hashed assets for a year, and proxies `/api/` to the backend service inside the Docker network.
+
+---
+
+## 中文
+
+**CommuCloud** 的管理後台。CommuCloud 是社區區分所有權人會議的管理系統，涵蓋住戶報到、提案表決，以及依出席戶數與坪數比例即時計算的法定門檻。
+
+管委會人員於會議現場以筆電或手機操作：入口掃描住戶 QR Code 報到、投票時掃描紙本選票，並即時查看出席統計是否達到法定門檻。
+
+| Repository | 角色 |
+| --- | --- |
+| [community-app-backend](https://github.com/jeje898281/community-app-backend) | Express API、PostgreSQL 資料結構、工作佇列 producer |
+| **community-app-frontend**（本 repo） | React 管理後台與 QR 掃描頁面 |
+| [community-app-infra](https://github.com/jeje898281/community-app-infra) | Docker Compose 部署設定與寄信 worker |
+
+### 頁面功能
+
+| 頁面 | 用途 |
+| --- | --- |
+| 會議 | 建立會議，設定出席戶數與坪數門檻 |
+| 住戶 | 管理戶號、坪數與 Email，支援試算表批次匯入 |
+| QR Code | 為所有住戶產生報到 QR Code，打包為 ZIP 下載 |
+| 掃描／手動報到 | 以相機掃描報到，或於無 QR Code 時手動登記 |
+| 統計 | 出席戶數與坪數比例對照會議門檻 |
+| 提案／選票 | 建立提案，為每戶列印各選項的 QR 選票 |
+| 投票掃描 | 掃描選票記錄投票結果與監票人員 |
+| 通知 | 預覽並以 Email 寄送會議通知 |
+| 管理員帳號 | 建立 `admin`、`manager`、`meeting_assistant` 角色的子帳號 |
+
+頁面與操作依登入者角色隱藏或停用，API 端亦執行相同的權限規則。
+
+### 技術
+
+React 18 · React Router 6 · Vite 5 · Axios · html5-qrcode · JSZip · Nginx（正式環境映像檔）
+
+### 本機啟動
+
+請先啟動 API（見 [community-app-backend](https://github.com/jeje898281/community-app-backend)），或以 [community-app-infra](https://github.com/jeje898281/community-app-infra) 啟動完整環境。
+
+```bash
+pnpm install
+pnpm dev          # http://localhost:5173，/api 轉發至 VITE_API_TARGET（預設 http://localhost:3000）
+pnpm build        # 輸出至 dist/
+```
+
+`Dockerfile.prod` 建置後以 Nginx 提供 `dist/`。[`nginx.conf`](nginx.conf) 設定 `index.html` 不快取、hashed assets 快取一年，並將 `/api/` 轉發至 Docker 網路內的後端服務。
