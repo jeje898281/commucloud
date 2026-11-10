@@ -81,7 +81,7 @@ Health check: `GET /api/health`.
 
 ## Tests
 
-Integration tests call the API through Supertest against a real PostgreSQL and Redis and cover authentication, RBAC, tenant isolation and sub-account management.
+Integration tests call the API through Supertest against a real PostgreSQL and Redis and cover authentication, RBAC, tenant isolation, sub-account management, check-in, voting and quorum calculation, including the same QR code being scanned on several devices at once.
 
 ```bash
 pnpm test
@@ -144,7 +144,7 @@ pnpm dev                    # http://localhost:3000
 
 ### 測試
 
-整合測試透過 Supertest 呼叫 API，連接真實的 PostgreSQL 與 Redis，涵蓋登入註冊、角色權限、多社區隔離與子帳號管理。
+整合測試透過 Supertest 呼叫 API，連接真實的 PostgreSQL 與 Redis，涵蓋登入註冊、角色權限、多社區隔離、子帳號管理、報到、表決與門檻計算，包含同一張 QR Code 同時在多台裝置被掃描的情況。
 
 ```bash
 pnpm test

@@ -1,6 +1,6 @@
 // src/controllers/meetingController.js
 const {
-    checkinByQRCode, checkinByManual, getAttendanceSummary, getAttendanceRecords,
+    getCommunityMeeting, checkinByQRCode, checkinByManual, getAttendanceSummary, getAttendanceRecords,
     listMeetingsByAdminUser, getMeetingDetail, updateMeetingDetail, createMeeting
 } = require('../services/meetingService');
 const { generateBatchQRCodes, getResidentIdsByMeetingId } = require('../services/qrService');
@@ -15,9 +15,8 @@ async function handleCheckin(req, res) {
     }
     let checkInRecord;
     if (qrCode) {
-        checkInRecord = await checkinByQRCode(qrCode, userId);
+        checkInRecord = await checkinByQRCode(qrCode, communityId, userId);
     } else {
-        console.log('checkinByManual', meetingId, residentCode, communityId, userId);
         checkInRecord = await checkinByManual(meetingId, residentCode, communityId, userId);
     }
     res.status(201).json({ data: checkInRecord });
@@ -25,13 +24,13 @@ async function handleCheckin(req, res) {
 
 async function handleGetAttendanceSummary(req, res) {
     const meetingId = parseInt(req.params.meetingId, 10);
-    const summary = await getAttendanceSummary(meetingId);
+    const summary = await getAttendanceSummary(meetingId, req.user.communityId);
     res.status(200).json({ data: summary });
 }
 
 async function handleGetAttendanceRecords(req, res) {
     const meetingId = parseInt(req.params.meetingId, 10);
-    const records = await getAttendanceRecords(meetingId);
+    const records = await getAttendanceRecords(meetingId, req.user.communityId);
     res.status(200).json({ data: records });
 }
 
@@ -62,8 +61,9 @@ async function handleGenerateQRCodes(req, res) {
     if (!meetingId) {
         throw new MeetingIdInvalidError();
     }
-    const residentIds = await getResidentIdsByMeetingId(meetingId);
-    const data = await generateBatchQRCodes({ meetingId, residentIds });
+    const meeting = await getCommunityMeeting(meetingId, req.user.communityId);
+    const residentIds = await getResidentIdsByMeetingId(meeting.id);
+    const data = await generateBatchQRCodes({ meetingId: meeting.id, residentIds });
     res.status(200).json({
         data: data.map(item => ({
             residentId: item.residentId,
