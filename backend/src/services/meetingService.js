@@ -1,60 +1,68 @@
 // src/services/reportService.js
-const { existsLog, createLog, getAttendanceStats, getAttendanceList } = require('../models/attendanceLogModel');
-const { getCommunityTotalSqm } = require('../models/residentModel');
-const { verifyToken } = require('../utils/jwt');
+const { createLog, getAttendanceStats, getAttendanceList } = require('../models/attendanceLogModel');
+const { getCommunityTotalSqm, findResidentById } = require('../models/residentModel');
+const { verifyCheckinToken } = require('../utils/jwt');
 const { getMeetingById, getMeetingsByCommunityId, updateMeeting, createMeetingModel, findResidentByCode } = require('../models/meetingModel');
 const { findById: findAdminById } = require('../models/adminUserModel');
-const { MeetingNotFoundError, AlreadyCheckedInError, UserNotFoundError,
+const { MeetingNotFoundError, UserNotFoundError,
     MeetingSqmThresholdInvalidError, MeetingResidentThresholdInvalidError,
     MeetingDateInvalidError, MeetingStatusInvalidError, NoUpdateFieldsError, ResidentNotFoundError,
-    MissingRequiredFieldsError, QRCodeInvalidError
+    MissingRequiredFieldsError, QRCodeInvalidError, MeetingIdInvalidError
 } = require('../errors');
 
+// A meeting of another community is reported as not found, the same as a missing one.
+async function getCommunityMeeting(meetingId, communityId) {
+    const id = Number(meetingId);
+    if (!Number.isInteger(id)) {
+        throw new MeetingIdInvalidError();
+    }
+    const meeting = await getMeetingById(id);
+    if (!meeting || meeting.communityId !== communityId) {
+        throw new MeetingNotFoundError();
+    }
+    return meeting;
+}
+
+async function getCheckinMeeting(meetingId, communityId) {
+    const meeting = await getCommunityMeeting(meetingId, communityId);
+    if (meeting.status === 'deleted') {
+        throw new MeetingNotFoundError();
+    }
+    return meeting;
+}
+
+// Duplicate check-ins are rejected by the unique index behind createLog.
 async function checkinByManual(meetingId, residentCode, communityId, userId) {
-    const checkinMeetingId = meetingId;
+    const meeting = await getCheckinMeeting(meetingId, communityId);
     const resident = await findResidentByCode(residentCode, communityId);
     if (!resident) {
         throw new ResidentNotFoundError();
     }
-    const checkinResidentId = resident.id;
-    const manualFlag = true;
-
-    const already = await existsLog(checkinMeetingId, checkinResidentId);
-    if (already) {
-        throw new AlreadyCheckedInError();
-    }
-    const checkInRecord = await createLog(checkinMeetingId, checkinResidentId, userId, manualFlag);
-    return checkInRecord;
+    return createLog(meeting.id, resident.id, userId, true);
 }
 
-async function checkinByQRCode(qrCode, userId) {
+async function checkinByQRCode(qrCode, communityId, userId) {
     let payload;
     try {
-        payload = await verifyToken(qrCode);
+        payload = await verifyCheckinToken(qrCode);
     } catch (err) {
         throw new QRCodeInvalidError();
     }
-    if (!payload || !payload.meetingId || !payload.residentId) {
+    if (!Number.isInteger(payload.meetingId) || !Number.isInteger(payload.residentId)) {
         throw new QRCodeInvalidError();
     }
-    const checkinMeetingId = payload.meetingId;
-    const checkinResidentId = payload.residentId;
-    const manualFlag = false;
-    const already = await existsLog(checkinMeetingId, checkinResidentId);
-    if (already) {
-        throw new AlreadyCheckedInError();
+    const meeting = await getCheckinMeeting(payload.meetingId, communityId);
+    const resident = await findResidentById(payload.residentId);
+    if (!resident || resident.communityId !== communityId) {
+        throw new ResidentNotFoundError();
     }
-    const checkInRecord = await createLog(checkinMeetingId, checkinResidentId, userId, manualFlag);
-    return checkInRecord;
+    return createLog(meeting.id, resident.id, userId, false);
 }
 
-async function getAttendanceSummary(meetingId) {
-    const meeting = await getMeetingById(meetingId);
-    if (!meeting) {
-        throw new MeetingNotFoundError();
-    }
+async function getAttendanceSummary(meetingId, communityId) {
+    const meeting = await getCommunityMeeting(meetingId, communityId);
 
-    const { residentAttendanceCount, totalAttendanceSqm } = await getAttendanceStats(meetingId);
+    const { residentAttendanceCount, totalAttendanceSqm } = await getAttendanceStats(meeting.id);
     const totalCommunitySqm = await getCommunityTotalSqm(meeting.communityId);
 
     // 戶數門檻為「絕對戶數」，坪數門檻為「占社區總坪數的百分比」
@@ -74,12 +82,9 @@ async function getAttendanceSummary(meetingId) {
     };
 }
 
-async function getAttendanceRecords(meetingId) {
-    const meeting = await getMeetingById(meetingId);
-    if (!meeting) {
-        throw new MeetingNotFoundError();
-    }
-    return getAttendanceList(meetingId);
+async function getAttendanceRecords(meetingId, communityId) {
+    const meeting = await getCommunityMeeting(meetingId, communityId);
+    return getAttendanceList(meeting.id);
 }
 
 async function listMeetingsByAdminUser(adminUserId) {
@@ -183,6 +188,7 @@ async function createMeeting(adminUserId, communityId, { name, status, date, sqm
 }
 
 module.exports = {
+    getCommunityMeeting,
     checkinByManual,
     checkinByQRCode,
     getAttendanceSummary,

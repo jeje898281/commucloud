@@ -96,6 +96,7 @@ model MeetingAttendanceLog {
   isManual         Boolean   @default(false) @map("is_manual")
   createdAt        DateTime  @default(now()) @map("created_at")
 
+  @@unique([meetingId, residentId])
   @@map("meeting_attendance_log")
 }
 
@@ -129,6 +130,7 @@ model VoteLog {
   votedAt            DateTime  @default(now()) @map("voted_at")
   createdAt          DateTime  @default(now()) @map("created_at")
 
+  @@unique([proposalId, residentId])
   @@map("vote_log")
 }
 

@@ -1,24 +1,26 @@
 // src/models/attendanceLogModel.js
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const { AlreadyCheckedInError } = require('../errors');
 
-async function existsLog(meetingId, residentId) {
-    const log = await prisma.meetingAttendanceLog.findFirst({
-        where: { meetingId, residentId },
-    });
-    return log;
-}
-
+// The unique index on (meeting_id, resident_id) decides who checked in first, so
+// simultaneous scans of one QR code cannot both be recorded.
 async function createLog(meetingId, residentId, userId, isManual) {
-    const log = await prisma.meetingAttendanceLog.create({
-        data: {
-            meetingId,
-            residentId,
-            createAdminUserId: userId,
-            isManual,
-        },
-    });
-    return log;
+    try {
+        return await prisma.meetingAttendanceLog.create({
+            data: {
+                meetingId,
+                residentId,
+                createAdminUserId: userId,
+                isManual,
+            },
+        });
+    } catch (error) {
+        if (error.code === 'P2002') {
+            throw new AlreadyCheckedInError();
+        }
+        throw error;
+    }
 }
 
 async function getAttendanceStats(meetingId) {
@@ -58,4 +60,4 @@ async function getAttendanceList(meetingId) {
     }));
 }
 
-module.exports = { existsLog, createLog, getAttendanceStats, getAttendanceList };
+module.exports = { createLog, getAttendanceStats, getAttendanceList };

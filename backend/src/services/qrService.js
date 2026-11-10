@@ -1,17 +1,10 @@
 // src/services/qrService.js
 const QRCode = require('qrcode');
-const jwt = require('jsonwebtoken');
 const { findResidentIdsByMeetingId } = require('../models/residentModel');
-const SECRET = process.env.JWT_SECRET;
+const { signCheckinToken, signVoteToken } = require('../utils/jwt');
 
 async function generateQRCodeForResident({ meetingId, residentId }) {
-    const payload = { meetingId, residentId };
-
-    const token = jwt.sign(
-        payload,
-        SECRET,
-        { noTimestamp: true }
-    );
+    const token = signCheckinToken({ meetingId, residentId });
 
     const qrDataURL = await QRCode.toDataURL(token);
 
@@ -32,7 +25,7 @@ async function getResidentIdsByMeetingId(meetingId) {
 
 // 投票 QR：每張票的「同意 / 不同意」各自編碼成一個 token，秘書掃描即記票
 async function generateVoteQRCode({ proposalId, residentId, result }) {
-    const token = jwt.sign({ proposalId, residentId, result }, SECRET, { noTimestamp: true });
+    const token = signVoteToken({ proposalId, residentId, result });
     const qrDataURL = await QRCode.toDataURL(token);
     return { token, qrDataURL };
 }

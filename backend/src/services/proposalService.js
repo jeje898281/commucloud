@@ -4,12 +4,12 @@ const { getMeetingById } = require('../models/meetingModel');
 const { getResidentsByCommunity, getCommunityTotalSqm, findResidentById } = require('../models/residentModel');
 const proposalModel = require('../models/proposalModel');
 const { generateVoteQRCode } = require('./qrService');
-const { verifyToken } = require('../utils/jwt');
+const { verifyVoteToken } = require('../utils/jwt');
 const {
     UserNotFoundError, MeetingNotFoundError, MissingRequiredFieldsError,
     ProposalNotFoundError, ProposalTitleInvalidError, ProposalContentInvalidError,
     ProposalSqmThresholdInvalidError, ProposalResidentThresholdInvalidError,
-    AlreadyVotedError, VoteResultInvalidError, QRCodeInvalidError, ResidentNotFoundError,
+    VoteResultInvalidError, QRCodeInvalidError, ResidentNotFoundError,
 } = require('../errors');
 
 const VOTE_RESULTS = ['agree', 'disagree', 'void'];
@@ -161,11 +161,11 @@ async function generateMeetingBallots(adminUserId, meetingId) {
 async function voteByQRCode(adminUserId, qrCode) {
     let payload;
     try {
-        payload = await verifyToken(qrCode);
+        payload = await verifyVoteToken(qrCode);
     } catch (err) {
         throw new QRCodeInvalidError();
     }
-    if (!payload || !payload.proposalId || !payload.residentId || !payload.result) {
+    if (!Number.isInteger(payload.proposalId) || !Number.isInteger(payload.residentId) || !payload.result) {
         throw new QRCodeInvalidError();
     }
     if (!VOTE_RESULTS.includes(payload.result)) {
@@ -181,9 +181,7 @@ async function voteByQRCode(adminUserId, qrCode) {
     const resident = await findResidentById(payload.residentId);
     if (!resident || resident.communityId !== admin.communityId) throw new ResidentNotFoundError();
 
-    const existing = await proposalModel.existsVote(payload.proposalId, payload.residentId);
-    if (existing) throw new AlreadyVotedError();
-
+    // A second vote by the same resident is rejected by the unique index behind createVote.
     const vote = await proposalModel.createVote({
         proposalId: payload.proposalId,
         residentId: payload.residentId,

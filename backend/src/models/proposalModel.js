@@ -1,6 +1,7 @@
 // src/models/proposalModel.js
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const { AlreadyVotedError } = require('../errors');
 
 const PROPOSAL_SELECT = {
     id: true,
@@ -75,14 +76,19 @@ async function getVoteStats(proposalId) {
     };
 }
 
-async function existsVote(proposalId, residentId) {
-    return prisma.voteLog.findFirst({ where: { proposalId, residentId } });
-}
-
+// The unique index on (proposal_id, resident_id) allows one vote per resident, so
+// scanning both ballots at once cannot record an agree and a disagree together.
 async function createVote({ proposalId, residentId, result, createAdminUserId }) {
-    return prisma.voteLog.create({
-        data: { proposalId, residentId, result, createAdminUserId },
-    });
+    try {
+        return await prisma.voteLog.create({
+            data: { proposalId, residentId, result, createAdminUserId },
+        });
+    } catch (error) {
+        if (error.code === 'P2002') {
+            throw new AlreadyVotedError();
+        }
+        throw error;
+    }
 }
 
 module.exports = {
@@ -92,6 +98,5 @@ module.exports = {
     updateProposal,
     deleteProposal,
     getVoteStats,
-    existsVote,
     createVote,
 };
