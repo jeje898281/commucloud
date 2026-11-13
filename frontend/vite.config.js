@@ -13,7 +13,8 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       strictPort: true,
       open: false,
-      allowedHosts: ['community.ctk-tw.com'],
+      // Extra hostnames the dev server answers to, comma-separated (e.g. when it sits behind a reverse proxy).
+      allowedHosts: env.VITE_ALLOWED_HOSTS ? env.VITE_ALLOWED_HOSTS.split(',').map((h) => h.trim()) : [],
 
       proxy: {
         '/api': {
